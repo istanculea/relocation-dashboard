@@ -1,0 +1,82 @@
+{
+  "languages": {
+    "python": {
+      "naming": {
+        "functions": {
+          "camelCase": 6,
+          "snake_case": 140,
+          "PascalCase": 0,
+          "SCREAMING_SNAKE": 0,
+          "kebab-case": 0,
+          "other": 122
+        },
+        "variables": {
+          "camelCase": 0,
+          "snake_case": 0,
+          "PascalCase": 0,
+          "SCREAMING_SNAKE": 23,
+          "kebab-case": 0,
+          "other": 6
+        }
+      },
+      "errorHandling": {
+        "tryCatch": 40,
+        "promiseCatch": 35,
+        "resultType": 0
+      },
+      "importStyle": {
+        "named": 0,
+        "default": 26,
+        "wildcard": 0,
+        "sideEffect": 0
+      },
+      "quoteStyle": {
+        "single": 116,
+        "double": 3660,
+        "backtick": 0
+      },
+      "totalFilesAnalyzed": 35,
+      "createdAt": "2026-04-17T09:27:29.267Z"
+    },
+    "js": {
+      "naming": {
+        "functions": {
+          "camelCase": 496,
+          "snake_case": 0,
+          "PascalCase": 4,
+          "SCREAMING_SNAKE": 6,
+          "kebab-case": 0,
+          "other": 311
+        },
+        "variables": {
+          "camelCase": 997,
+          "snake_case": 285,
+          "PascalCase": 23,
+          "SCREAMING_SNAKE": 2,
+          "kebab-case": 0,
+          "other": 647
+        }
+      },
+      "errorHandling": {
+        "tryCatch": 86,
+        "promiseCatch": 282,
+        "resultType": 5
+      },
+      "importStyle": {
+        "named": 0,
+        "default": 1,
+        "wildcard": 0,
+        "sideEffect": 0
+      },
+      "quoteStyle": {
+        "single": 450,
+        "double": 28975,
+        "backtick": 4254
+      },
+      "totalFilesAnalyzed": 100,
+      "createdAt": "2026-04-17T09:27:29.267Z"
+    }
+  },
+  "createdAt": "2026-04-17T09:27:29.267Z",
+  "version": 2
+}

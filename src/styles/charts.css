@@ -1,0 +1,265 @@
+/* ── Chart panel shell ────────────────────────────────────────── */
+.charts-panel {
+  gap: 20px;
+}
+
+/* ── Chart tab strip ──────────────────────────────────────────── */
+.chart-tab-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.chart-tab {
+  padding: 9px 20px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.75);
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 150ms ease;
+  color: var(--ink);
+}
+
+.chart-tab:hover,
+.chart-tab:focus-visible {
+  border-color: rgba(47, 127, 98, 0.3);
+  background: rgba(47, 127, 98, 0.07);
+}
+
+.chart-tab--active {
+  background: linear-gradient(120deg, var(--green), var(--green-dark));
+  border-color: transparent;
+  color: #f9fbf8;
+}
+
+/* ── Chart container ──────────────────────────────────────────── */
+.chart-container {
+  display: grid;
+  gap: 14px;
+}
+
+.chart-header {
+  display: grid;
+  gap: 4px;
+}
+
+.chart-header h3 {
+  margin: 0;
+  font-family: 'Fraunces', serif;
+  font-size: 1.25rem;
+}
+
+.chart-header p {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+/* ── SVG wrappers ─────────────────────────────────────────────── */
+.chart-scroll-wrap {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(47, 127, 98, 0.2) transparent;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid var(--line);
+  padding: 12px;
+}
+
+.chart-scroll-wrap--bar {
+  max-height: 680px;
+  overflow-y: auto;
+}
+
+.chart-scroll-wrap--radar {
+  max-width: 500px;
+  padding-left: 56px;
+  overflow: visible;
+}
+
+.scatter-svg,
+.bar-svg {
+  display: block;
+  width: 100%;
+  min-width: 560px;
+  height: auto;
+}
+
+.radar-svg {
+  display: block;
+  width: 100%;
+  max-width: 460px;
+  height: auto;
+  overflow: visible;
+}
+
+/* ── Radar layout (radar + legend side-by-side) ───────────────── */
+.radar-layout {
+  display: grid;
+  gap: 20px;
+  align-items: start;
+}
+
+@media (min-width: 840px) {
+  .radar-layout {
+    grid-template-columns: minmax(0, 1fr) 200px;
+  }
+
+  .chart-scroll-wrap--radar {
+    max-width: none;
+  }
+}
+
+/* ── Radar legend ─────────────────────────────────────────────── */
+.radar-legend {
+  display: grid;
+  gap: 6px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.radar-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: var(--ink);
+  padding: 5px 8px;
+  border-radius: 8px;
+  transition: background 140ms ease, opacity 140ms ease;
+  /* button reset */
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+}
+
+.radar-legend-item:hover,
+.radar-legend-item:focus-visible {
+  background: rgba(31, 42, 46, 0.06);
+}
+
+.radar-legend-item--active {
+  background: rgba(47, 127, 98, 0.1);
+  font-weight: 700;
+}
+
+.radar-legend-item--hidden {
+  opacity: 0.35;
+}
+
+.radar-legend-item--hidden .radar-legend-city {
+  text-decoration: line-through;
+  text-decoration-color: rgba(31, 42, 46, 0.3);
+}
+
+/* Show all button */
+.radar-legend-showall {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--green);
+  border: 1px solid rgba(47, 127, 98, 0.25);
+  background: rgba(47, 127, 98, 0.07);
+  border-radius: 6px;
+  padding: 4px 10px;
+  cursor: pointer;
+  margin-bottom: 4px;
+  transition: background 120ms ease;
+}
+
+.radar-legend-showall:hover {
+  background: rgba(47, 127, 98, 0.15);
+}
+
+.radar-legend-swatch {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  opacity: 0.85;
+}
+
+.radar-legend-city {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+}
+
+.radar-legend-score {
+  font-size: 0.72rem;
+  color: var(--muted);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+/* ── Scatter dot interactivity ────────────────────────────────── */
+.scatter-dot {
+  cursor: pointer;
+  outline: none;
+}
+
+.scatter-dot:hover circle:first-of-type,
+.scatter-dot:focus-visible circle:first-of-type {
+  r: 11;
+  opacity: 0.9;
+}
+
+/* ── Bar row interactivity ────────────────────────────────────── */
+.bar-row {
+  cursor: pointer;
+  outline: none;
+}
+
+.bar-row:hover rect:nth-child(3),
+.bar-row:focus-visible rect:nth-child(3) {
+  opacity: 0.9;
+}
+
+/* ── Country legend ───────────────────────────────────────────── */
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  padding: 10px 0 4px;
+}
+
+.chart-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.chart-legend-item--size {
+  align-items: center;
+}
+
+.chart-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── Filter note ──────────────────────────────────────────────── */
+.chart-filter-note {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--muted);
+  padding: 10px 14px;
+  background: rgba(197, 124, 42, 0.07);
+  border-radius: 10px;
+  border: 1px solid rgba(197, 124, 42, 0.15);
+}

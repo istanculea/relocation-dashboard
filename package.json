@@ -1,0 +1,31 @@
+{
+  "name": "price-dashboard-tooling",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dashboard:dev": "vite",
+    "dashboard:build": "vite build && node scripts/check-bundle-boundaries.mjs",
+    "dashboard:guard": "node scripts/check-bundle-boundaries.mjs",
+    "dashboard:preview": "vite preview",
+    "dashboard:test": "vitest run",
+    "rigour:init": "node scripts/rigour-init.cjs"
+  },
+  "unused_allowlist": [
+    "rigour-cli-shim"
+  ],
+  "rigour": {
+    "unused_allowlist": [
+      "rigour-cli-shim"
+    ]
+  },
+  "dependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^5.1.0",
+    "rigour-cli-shim": "file:tools/rigour-cli",
+    "vite": "^7.1.12",
+    "vitest": "^4.1.6"
+  }
+}

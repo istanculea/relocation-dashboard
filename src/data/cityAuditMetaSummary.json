@@ -1,0 +1,405 @@
+{
+  "bilbao": {
+    "overall": "verified",
+    "lastReviewed": "2026-05-15",
+    "sections": {
+      "housingCosts": "verified",
+      "childcareCosts": "verified",
+      "basketCosts": "mixed",
+      "healthcareAccess": "verified",
+      "mobilityCosts": "verified",
+      "familyBenefits": "verified",
+      "budgetModel": "mixed"
+    }
+  },
+  "bucharest": {
+    "overall": "mixed",
+    "lastReviewed": "2026-05-15",
+    "sections": {
+      "housingCosts": "verified",
+      "childcareCosts": "verified",
+      "basketCosts": "mixed",
+      "healthcareAccess": "verified",
+      "mobilityCosts": "verified",
+      "familyBenefits": "verified",
+      "budgetModel": "mixed"
+    }
+  },
+  "berlin": {
+    "overall": "verified",
+    "lastReviewed": "2026-05-15",
+    "sections": {
+      "housingCosts": "verified",
+      "childcareCosts": "verified",
+      "basketCosts": "mixed",
+      "healthcareAccess": "verified",
+      "mobilityCosts": "verified",
+      "familyBenefits": "verified",
+      "budgetModel": "mixed"
+    }
+  },
+  "dublin": {
+    "overall": "verified",
+    "lastReviewed": "2026-05-15",
+    "sections": {
+      "housingCosts": "verified",
+      "childcareCosts": "verified",
+      "basketCosts": "mixed",
+      "healthcareAccess": "verified",
+      "mobilityCosts": "verified",
+      "familyBenefits": "verified",
+      "budgetModel": "mixed"
+    }
+  },
+  "milan": {
+    "overall": "verified",
+    "lastReviewed": "2026-05-15",
+    "sections": {
+      "housingCosts": "verified",
+      "childcareCosts": "verified",
+      "basketCosts": "mixed",
+      "healthcareAccess": "verified",
+      "mobilityCosts": "verified",
+      "familyBenefits": "verified",
+      "budgetModel": "mixed"
+    }
+  },
+  "bologna": {
+    "overall": "verified",
+    "lastReviewed": "2026-05-15",
+    "sections": {
+      "housingCosts": "verified",
+      "childcareCosts": "verified",
+      "basketCosts": "mixed",
+      "healthcareAccess": "verified",
+      "mobilityCosts": "verified",
+      "familyBenefits": "verified",
+      "budgetModel": "mixed"
+    }
+  },
+  "lugo": {
+    "overall": "verified",
+    "lastReviewed": "2026-05-15",
+    "sections": {
+      "housingCosts": "verified",
+      "childcareCosts": "verified",
+      "basketCosts": "mixed",
+      "healthcareAccess": "verified",
+      "mobilityCosts": "verified",
+      "familyBenefits": "verified",
+      "budgetModel": "mixed"
+    }
+  },
+  "cologne": {
+    "overall": "verified",
+    "lastReviewed": "2026-05-15",
+    "sections": {
+      "housingCosts": "verified",
+      "childcareCosts": "verified",
+      "basketCosts": "mixed",
+      "healthcareAccess": "verified",
+      "mobilityCosts": "verified",
+      "familyBenefits": "verified",
+      "budgetModel": "mixed"
+    }
+  },
+  "valencia": {
+    "overall": "verified",
+    "lastReviewed": "2026-05-28",
+    "sections": {
+      "housingCosts": "verified",
+      "childcareCosts": "verified",
+      "basketCosts": "mixed",
+      "healthcareAccess": "verified",
+      "mobilityCosts": "verified",
+      "familyBenefits": "verified",
+      "budgetModel": "mixed"
+    }
+  },
+  "manchester": {
+    "overall": "verified",
+    "lastReviewed": "2026-05-15",
+    "sections": {
+      "housingCosts": "verified",
+      "childcareCosts": "verified",
+      "basketCosts": "mixed",
+      "healthcareAccess": "verified",
+      "mobilityCosts": "verified",
+      "familyBenefits": "verified",
+      "budgetModel": "mixed"
+    }
+  },
+  "vienna": {
+    "overall": "verified",
+    "lastReviewed": "2026-05-15",
+    "sections": {
+      "housingCosts": "verified",
+      "childcareCosts": "verified",
+      "basketCosts": "mixed",
+      "healthcareAccess": "verified",
+      "mobilityCosts": "verified",
+      "familyBenefits": "verified",
+      "budgetModel": "mixed"
+    }
+  },
+  "reggioEmilia": {
+    "overall": "verified",
+    "lastReviewed": "2026-05-15",
+    "sections": {
+      "housingCosts": "verified",
+      "childcareCosts": "verified",
+      "basketCosts": "mixed",
+      "healthcareAccess": "verified",
+      "mobilityCosts": "verified",
+      "familyBenefits": "verified",
+      "budgetModel": "mixed"
+    }
+  },
+  "salzburg": {
+    "overall": "mixed",
+    "lastReviewed": "2026-05-12",
+    "sections": {
+      "housingCosts": "verified",
+      "childcareCosts": "verified",
+      "basketCosts": "mixed",
+      "healthcareAccess": "verified",
+      "mobilityCosts": "verified",
+      "familyBenefits": "verified",
+      "budgetModel": "mixed"
+    }
+  },
+  "graz": {
+    "overall": "mixed",
+    "lastReviewed": "2026-05-12",
+    "sections": {
+      "housingCosts": "verified",
+      "childcareCosts": "verified",
+      "basketCosts": "mixed",
+      "healthcareAccess": "verified",
+      "mobilityCosts": "verified",
+      "familyBenefits": "verified",
+      "budgetModel": "mixed"
+    }
+  },
+  "hamburg": {
+    "overall": "mixed",
+    "lastReviewed": "2026-05-12",
+    "sections": {
+      "housingCosts": "verified",
+      "childcareCosts": "verified",
+      "basketCosts": "mixed",
+      "healthcareAccess": "verified",
+      "mobilityCosts": "verified",
+      "familyBenefits": "verified",
+      "budgetModel": "mixed"
+    }
+  },
+  "munich": {
+    "overall": "mixed",
+    "lastReviewed": "2026-05-12",
+    "sections": {
+      "housingCosts": "verified",
+      "childcareCosts": "verified",
+      "basketCosts": "mixed",
+      "healthcareAccess": "verified",
+      "mobilityCosts": "verified",
+      "familyBenefits": "verified",
+      "budgetModel": "mixed"
+    }
+  },
+  "malaga": {
+    "overall": "mixed",
+    "lastReviewed": "2026-05-12",
+    "sections": {
+      "housingCosts": "verified",
+      "childcareCosts": "verified",
+      "basketCosts": "mixed",
+      "healthcareAccess": "verified",
+      "mobilityCosts": "verified",
+      "familyBenefits": "verified",
+      "budgetModel": "mixed"
+    }
+  },
+  "bristol": {
+    "overall": "mixed",
+    "lastReviewed": "2026-05-12",
+    "sections": {
+      "housingCosts": "verified",
+      "childcareCosts": "verified",
+      "basketCosts": "mixed",
+      "healthcareAccess": "verified",
+      "mobilityCosts": "verified",
+      "familyBenefits": "verified",
+      "budgetModel": "mixed"
+    }
+  },
+  "edinburgh": {
+    "overall": "mixed",
+    "lastReviewed": "2026-05-12",
+    "sections": {
+      "housingCosts": "verified",
+      "childcareCosts": "verified",
+      "basketCosts": "mixed",
+      "healthcareAccess": "verified",
+      "mobilityCosts": "verified",
+      "familyBenefits": "verified",
+      "budgetModel": "mixed"
+    }
+  },
+  "parma": {
+    "overall": "mixed",
+    "lastReviewed": "2026-05-12",
+    "sections": {
+      "housingCosts": "verified",
+      "childcareCosts": "verified",
+      "basketCosts": "mixed",
+      "healthcareAccess": "verified",
+      "mobilityCosts": "verified",
+      "familyBenefits": "verified",
+      "budgetModel": "mixed"
+    }
+  },
+  "verona": {
+    "overall": "mixed",
+    "lastReviewed": "2026-05-12",
+    "sections": {
+      "housingCosts": "verified",
+      "childcareCosts": "verified",
+      "basketCosts": "mixed",
+      "healthcareAccess": "verified",
+      "mobilityCosts": "verified",
+      "familyBenefits": "verified",
+      "budgetModel": "mixed"
+    }
+  },
+  "bergamo": {
+    "overall": "mixed",
+    "lastReviewed": "2026-05-12",
+    "sections": {
+      "housingCosts": "verified",
+      "childcareCosts": "verified",
+      "basketCosts": "mixed",
+      "healthcareAccess": "verified",
+      "mobilityCosts": "verified",
+      "familyBenefits": "verified",
+      "budgetModel": "mixed"
+    }
+  },
+  "modena": {
+    "overall": "mixed",
+    "lastReviewed": "2026-05-12",
+    "sections": {
+      "housingCosts": "verified",
+      "childcareCosts": "verified",
+      "basketCosts": "mixed",
+      "healthcareAccess": "verified",
+      "mobilityCosts": "verified",
+      "familyBenefits": "verified",
+      "budgetModel": "mixed"
+    }
+  },
+  "torino": {
+    "overall": "mixed",
+    "lastReviewed": "2026-05-12",
+    "sections": {
+      "housingCosts": "verified",
+      "childcareCosts": "verified",
+      "basketCosts": "mixed",
+      "healthcareAccess": "verified",
+      "mobilityCosts": "verified",
+      "familyBenefits": "verified",
+      "budgetModel": "mixed"
+    }
+  },
+  "lucca": {
+    "overall": "mixed",
+    "lastReviewed": "2026-05-12",
+    "sections": {
+      "housingCosts": "verified",
+      "childcareCosts": "verified",
+      "basketCosts": "mixed",
+      "healthcareAccess": "verified",
+      "mobilityCosts": "verified",
+      "familyBenefits": "verified",
+      "budgetModel": "mixed"
+    }
+  },
+  "udine": {
+    "overall": "mixed",
+    "lastReviewed": "2026-05-12",
+    "sections": {
+      "housingCosts": "verified",
+      "childcareCosts": "verified",
+      "basketCosts": "mixed",
+      "healthcareAccess": "verified",
+      "mobilityCosts": "verified",
+      "familyBenefits": "verified",
+      "budgetModel": "mixed"
+    }
+  },
+  "padova": {
+    "overall": "mixed",
+    "lastReviewed": "2026-05-12",
+    "sections": {
+      "housingCosts": "verified",
+      "childcareCosts": "verified",
+      "basketCosts": "mixed",
+      "healthcareAccess": "verified",
+      "mobilityCosts": "verified",
+      "familyBenefits": "verified",
+      "budgetModel": "mixed"
+    }
+  },
+  "trento": {
+    "overall": "mixed",
+    "lastReviewed": "2026-05-12",
+    "sections": {
+      "housingCosts": "verified",
+      "childcareCosts": "verified",
+      "basketCosts": "mixed",
+      "healthcareAccess": "verified",
+      "mobilityCosts": "verified",
+      "familyBenefits": "verified",
+      "budgetModel": "mixed"
+    }
+  },
+  "sanLazzaro": {
+    "overall": "mixed",
+    "lastReviewed": "2026-05-12",
+    "sections": {
+      "housingCosts": "verified",
+      "childcareCosts": "verified",
+      "basketCosts": "mixed",
+      "healthcareAccess": "verified",
+      "mobilityCosts": "verified",
+      "familyBenefits": "verified",
+      "budgetModel": "mixed"
+    }
+  },
+  "imola": {
+    "overall": "mixed",
+    "lastReviewed": "2026-05-12",
+    "sections": {
+      "housingCosts": "verified",
+      "childcareCosts": "verified",
+      "basketCosts": "mixed",
+      "healthcareAccess": "verified",
+      "mobilityCosts": "verified",
+      "familyBenefits": "verified",
+      "budgetModel": "mixed"
+    }
+  },
+  "urbino": {
+    "overall": "mixed",
+    "lastReviewed": "2026-05-12",
+    "sections": {
+      "housingCosts": "verified",
+      "childcareCosts": "verified",
+      "basketCosts": "mixed",
+      "healthcareAccess": "verified",
+      "mobilityCosts": "verified",
+      "familyBenefits": "verified",
+      "budgetModel": "mixed"
+    }
+  }
+}

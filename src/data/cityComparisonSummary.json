@@ -1,0 +1,114 @@
+{
+  "bilbao": {
+    "primaryPro": "Best combined balance of rent pressure, stroller-friendly mobility, and everyday family ease.",
+    "primaryCon": "Clean-basket pricing still sits outside the strict layer because no official Bilbao item-price table was retrievable."
+  },
+  "bucharest": {
+    "primaryPro": "Lowest housing burn in the set, which keeps disposable income and downside risk strong.",
+    "primaryCon": "Air, pavement quality, and fragmented bike infrastructure make daily infant logistics rougher."
+  },
+  "milan": {
+    "primaryPro": "Very strong hospital network and specialist depth for a large Italian city.",
+    "primaryCon": "Poor air quality remains one of the clearest structural negatives for a family with an infant."
+  },
+  "bologna": {
+    "primaryPro": "Best large-city Italy compromise if you want stronger services than Reggio Emilia without full Milan pricing.",
+    "primaryCon": "Po Valley air quality is still the main structural drawback."
+  },
+  "lugo": {
+    "primaryPro": "Lowest Italian housing pressure in the final roster, with calmer day-to-day family rhythm than Bologna or Milan.",
+    "primaryCon": "Job-market depth and expat-network depth are much thinner than in Bologna, Vienna, or Cologne."
+  },
+  "reggioEmilia": {
+    "primaryPro": "Strongest pedagogical identity in the set for early years, with real local public-system depth.",
+    "primaryCon": "Air quality remains a recurring Po Valley penalty."
+  },
+  "cologne": {
+    "primaryPro": "Good all-round German family platform with verified childcare and benefit anchors already in place.",
+    "primaryCon": "Rent pressure is still high for a family-sized flat in the best districts."
+  },
+  "valencia": {
+    "primaryPro": "Outstanding climate and one of the best cycling networks in Spain make daily life genuinely enjoyable.",
+    "primaryCon": "Salaries lag German cities significantly — the gap is real for STEM and IT households."
+  },
+  "vienna": {
+    "primaryPro": "Best overall safety, transit ease, and family calm in the final set.",
+    "primaryCon": "Infant-care tariff detail is still less transparent than the free-kindergarten headline suggests."
+  },
+  "salzburg": {
+    "primaryPro": "Clean air and low day-to-day safety stress.",
+    "primaryCon": "Buying is expensive for a mid-size city."
+  },
+  "graz": {
+    "primaryPro": "Lower housing burn than Salzburg or Vienna without giving up Austrian family support.",
+    "primaryCon": "The salary ceiling is still well below Munich or Hamburg."
+  },
+  "hamburg": {
+    "primaryPro": "Broad employer base across logistics, maritime, media, aviation, and services.",
+    "primaryCon": "Housing still lands in premium territory in the best family districts."
+  },
+  "munich": {
+    "primaryPro": "Very high day-to-day safety for a major metro.",
+    "primaryCon": "Housing cost is severe both for renting and buying."
+  },
+  "malaga": {
+    "primaryPro": "Strong climate and outdoor-living upside.",
+    "primaryCon": "Preschool benchmark is high relative to the local wage base."
+  },
+  "bristol": {
+    "primaryPro": "Strong employer base across tech, aerospace, health, and education.",
+    "primaryCon": "Childcare benchmark is among the harshest in the expansion wave."
+  },
+  "edinburgh": {
+    "primaryPro": "Strong day-to-day safety for a UK city.",
+    "primaryCon": "Childcare is still very expensive even before inflation psychology is added."
+  },
+  "parma": {
+    "primaryPro": "Good ownership and rental value relative to Milan and Bologna.",
+    "primaryCon": "Air quality remains the structural drag."
+  },
+  "verona": {
+    "primaryPro": "Good everyday value relative to Milan and some larger northern-Italian peers.",
+    "primaryCon": "Air quality is still a clear drag."
+  },
+  "bergamo": {
+    "primaryPro": "Very strong rental and ownership value relative to the wider Lombardy corridor.",
+    "primaryCon": "Air remains a structural drag as part of the wider Lombardy basin."
+  },
+  "modena": {
+    "primaryPro": "Food quality and market culture are genuine everyday advantages over more anonymous northern cities.",
+    "primaryCon": "Air quality is a persistent Po Valley drag shared with the rest of the Emilia plain."
+  },
+  "torino": {
+    "primaryPro": "Politecnico di Torino (ranked #1 in Italy for engineering) and Università di Torino anchor a strong resident higher-education asset.",
+    "primaryCon": "PM2.5 is the worst in the Italian set — Po Valley combined with Alpine basin trapping gives Turin some of the most persistent air stagnation in northern Europe."
+  },
+  "lucca": {
+    "primaryPro": "Significantly better air quality than any Po Valley city in the Italian set.",
+    "primaryCon": "Job market is thin outside tourism, services, and manufacturing — remote work or a portable career is nearly essential for international households."
+  },
+  "udine": {
+    "primaryPro": "Very low ownership barrier by northern-Italy standards.",
+    "primaryCon": "Job-market depth is thinner than the larger northern Italian cities."
+  },
+  "padova": {
+    "primaryPro": "University and hospital depth are strong for the cost level.",
+    "primaryCon": "Safety feels more mixed than the Austrian and Munich comparators."
+  },
+  "trento": {
+    "primaryPro": "Very low childcare benchmark in the current market snapshot.",
+    "primaryCon": "The job market is smaller and more specialized."
+  },
+  "sanLazzaro": {
+    "primaryPro": "Materially cheaper than central Bologna with the same TPER metropolitan transit access.",
+    "primaryCon": "Very limited own-city depth — cultural, career, and service variety depends entirely on Bologna access."
+  },
+  "imola": {
+    "primaryPro": "Rent is meaningfully cheaper than Bologna while maintaining access to Bologna's services by road or bus.",
+    "primaryCon": "Own-city job market is very thin outside manufacturing and local services — Bologna dependence is high for career households."
+  },
+  "urbino": {
+    "primaryPro": "The cleanest air in the Italian set by a wide margin — Apennine hilltop location at 415m puts Urbino entirely outside the Po Valley inversion zone.",
+    "primaryCon": "Smallest job market in the set by a wide margin — practically all paid employment is university-related or in local services; remote work is near-mandatory for international households."
+  }
+}

@@ -1,0 +1,98 @@
+export const requestedExpansionCities = [
+  {
+    city: 'Manchester',
+    country: 'United Kingdom',
+    status: 'live',
+    note: 'Already present in the current audited model and included in the live scoring roster.',
+  },
+  {
+    city: 'Salzburg',
+    country: 'Austria',
+    status: 'live',
+    note: 'Live now as a benchmark-backed expansion dossier with a mixed audit and transparent strict-layer gaps.',
+  },
+  {
+    city: 'Graz',
+    country: 'Austria',
+    status: 'live',
+    note: 'Live now as a benchmark-backed expansion dossier with a mixed audit and transparent strict-layer gaps.',
+  },
+  {
+    city: 'Hamburg',
+    country: 'Germany',
+    status: 'live',
+    note: 'Live now as a benchmark-backed expansion dossier with a mixed audit and transparent strict-layer gaps.',
+  },
+  {
+    city: 'Munich',
+    country: 'Germany',
+    status: 'live',
+    note: 'Live now as a benchmark-backed expansion dossier with a mixed audit and transparent strict-layer gaps.',
+  },
+  {
+    city: 'Malaga',
+    country: 'Spain',
+    status: 'live',
+    note: 'Live now as a benchmark-backed expansion dossier with a mostly modeled audit and transparent strict-layer gaps.',
+  },
+  {
+    city: 'Bristol',
+    country: 'United Kingdom',
+    status: 'live',
+    note: 'Live now as a benchmark-backed expansion dossier with a mixed audit and transparent strict-layer gaps.',
+  },
+  {
+    city: 'Edinburgh',
+    country: 'United Kingdom',
+    status: 'live',
+    note: 'Live now as a benchmark-backed expansion dossier with a mixed audit and transparent strict-layer gaps.',
+  },
+  {
+    city: 'Udine',
+    country: 'Italy',
+    status: 'live',
+    note: 'Live now as a benchmark-backed expansion dossier with a mixed audit and transparent strict-layer gaps.',
+  },
+  {
+    city: 'Parma',
+    country: 'Italy',
+    status: 'live',
+    note: 'Live now as a benchmark-backed expansion dossier with a mixed audit and transparent strict-layer gaps.',
+  },
+  {
+    city: 'Verona',
+    country: 'Italy',
+    status: 'live',
+    note: 'Live now as a benchmark-backed expansion dossier with a mixed audit and transparent strict-layer gaps.',
+  },
+  {
+    city: 'Bergamo',
+    country: 'Italy',
+    status: 'live',
+    note: 'Live now as a benchmark-backed expansion dossier with a mixed audit and transparent strict-layer gaps.',
+  },
+  {
+    city: 'Padua',
+    country: 'Italy',
+    status: 'live',
+    note: 'Live now as a benchmark-backed expansion dossier with a mixed audit and transparent strict-layer gaps.',
+  },
+  {
+    city: 'Trento',
+    country: 'Italy',
+    status: 'live',
+    note: 'Live now as a benchmark-backed expansion dossier with a mixed audit and transparent strict-layer gaps.',
+  },
+  {
+    city: 'Modena',
+    country: 'Italy',
+    status: 'live',
+    note: 'Live now. Benchmark data verified against Numbeo May 2026. Safety, rent, and transit figures corrected to match current Numbeo data.',
+  },
+  {
+    city: 'San Lazzaro di Savena',
+    country: 'Italy',
+    status: 'live',
+    note: 'Live now. Uses Bologna metro as proxy benchmark. Transit and rent figures updated to reflect TPER metropolitan rates and suburban pricing.',
+  },
+];

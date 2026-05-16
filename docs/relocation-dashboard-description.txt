@@ -1,0 +1,320 @@
+RELOCATION DASHBOARD — DEEP DESCRIPTION
+========================================
+
+
+BUILD SYSTEM
+------------
+Built with Vite + React (JSX). Entry point is src/main.jsx, root component is src/App.jsx.
+The production build is triggered with `npm run dashboard:build` and writes static assets to
+`dist/relocation-dashboard/`. The dev server runs via `npm run dashboard:dev`. There are no
+backend calls at runtime — everything is static data embedded at build time.
+
+
+DATA LAYER (src/data/)
+-----------------------
+This is the engine of the dashboard. All data is authored JavaScript, never fetched at runtime.
+
+CITY ROSTER
+City data is split into two groups:
+
+  src/data/citiesCore.js — the primary hand-authored cities (Bilbao, Bucharest, Berlin,
+  Dublin, Milan, Bologna, Lugo, and others). Each city object carries:
+    - key, city, country, tagline
+    - scores: housing / environment / childcare / safety / healthcare + weighted
+    - housing: rent ranges, buy prices, taxes
+    - childcare: nursery net cost, school start age
+    - basket: grocery price benchmarks
+    - health: registration, waits, private cover, hospitals
+    - support: child benefits, safety index
+    - mobility: transit pass, one-way fare, car need, bike lanes, PM2.5, park score
+    - budgets: for two household scenarios (oneParent / bothWorking)
+
+  src/data/citiesExpanded.js + src/data/cityExpansionWave/ — a second wave of cities
+  assembled programmatically. The wave is split by region (Austria, Germany, Italy East/West,
+  Western Europe), each defined as config objects and passed through a shared
+  buildExpansionWaveCity assembler that produces a normalized city shape plus budgetModel,
+  auditMeta, comparisonMeta, city360, sourceMeta, and trendData for each entry.
+
+SUPPLEMENTARY DATA MODULES
+
+  cityAuditMeta.js
+    Per-city audit records with overall status (verified / mixed / modeled), lastReviewed date,
+    human-readable notes, and a per-section breakdown:
+      housingCosts, childcareCosts, basketCosts, healthcareAccess,
+      mobilityCosts, familyBenefits, budgetModel
+
+  city360Meta/ (split by region: Iberia+Romania, Italy, North+Central Europe + expansion wave)
+    Each entry: personality, fittingIn, moveHereIf, stayAwayIf, honestTruth (good[], bad[]),
+    ecoFactors, and more.
+
+  cityBudgetModels.js
+    Itemised monthly cost components for oneParent and bothWorking scenarios. Values are summed
+    to produce the midpoint budget figure.
+
+  cityComparisonMeta.js
+    pros[], cons[], and comparison narrative for each city.
+
+  citySourceMeta/
+    Per-city, per-section source citations. Each source entry carries label, url, verifiedAt,
+    and optionally strictLines, snapshotValue, note, or gapNote.
+
+  cityTrendData.js
+    Year-indexed metric snapshots per city for charting trends over time.
+
+  dashboardConfig.js
+    The scoring configuration:
+      - scoreWeights: 5 classic pillars
+      - strategicBalanceWeights: 9 pillars with tier weighting
+      - strategicBalancePillars: labels
+      - priorityPresets: lens definitions (Balanced, Budget First, Clean Air,
+        Health First, Transit Mobility, and others)
+
+  strategicBalanceMatrix.js
+    The computation module. buildStrategicBalanceMatrix(city) derives a 9-pillar
+    strategicBalance object from the city's raw data. Each pillar is computed from multiple
+    sub-signals (e.g. Housing & Living Costs uses midpointScore(averageBudgetMidpoint),
+    a tax score, etc.), then weighted to produce a weightedScore.
+
+  sourceSelection.js
+    Verification filtering utilities:
+      - isSourceInVerificationWindow(source): checks for a verifiedAt matching 2022-2026
+      - getVerifiedSources, getFirstVerifiedSource, getStrictDisplaySources, getGapReason
+        control what appears in verified cards vs. gap-fill messaging.
+
+  officialChildcareTariffs.js, numbeoBenchmarks.js, secondaryBenchmarks.js
+    Additional anchor data fed into scoring and display.
+
+ASSEMBLY IN relocationData.js
+  This module combines everything. `cities` is the final merged array: it spreads coreCities
+  and expandedCities, then for each city calls enrichAudit, sums cityBudgetModels components
+  to produce midpoint, attaches city360Meta, citySourceMeta, cityTrendData, and finally calls
+  buildStrategicBalanceMatrix to attach the strategic balance.
+
+  buildRanking(lensKey) — sorts cities and attaches activeWeightedScore based on the chosen
+  lens (either a direct strategicBalance.weightedScore or a re-weighted pillar subset).
+
+  buildVerifiedSnapshotRows — builds the verification audit surface consumed by
+  verification panels.
+
+
+SCORING SYSTEM
+--------------
+Two scoring tracks run in parallel:
+
+1. CLASSIC 5-PILLAR SCORE (scores.weighted)
+   A weighted sum of:
+     Housing      30%
+     Childcare    25%
+     Healthcare   22%
+     Safety       13%
+     Environment  10%
+   This is a static value on each city object.
+
+2. STRATEGIC BALANCE MATRIX
+   9 pillars computed dynamically from city data by strategicBalanceMatrix.js.
+   Pillar weights (tiered):
+     Housing & Living Costs                23%   (Tier 1)
+     Health, Medical & Safety              19%   (Tier 2)
+     Childcare & Educational Path          18%   (Tier 2)
+     Climate & Macroeconomics              14%   (Tier 2)
+     Social Capital & Work-Life Balance     8%   (Tier 3)
+     Security & Environment                 7%   (Tier 3)
+     Infrastructure, Mobility & Logistics   5%   (Tier 3)
+     Urban Design                           4%   (Tier 3)
+     Nutrition & Gastronomy                 2%   (Tier 4)
+
+LENS SYSTEM
+  priorityPresets in dashboardConfig.js defines several named lenses:
+    - Balanced Decision: uses the full 9-pillar strategic score
+    - Budget First: re-weights Housing (55%), Climate/Macro (25%), Childcare (10%),
+      Health (10%)
+    - Clean Air & Environment: Security/Env (50%), Climate/Macro (25%), Urban Design (15%),
+      Housing (10%)
+    - Health & Medical First: Health/Medical/Safety (55%), Security/Env (20%),
+      Childcare (15%), Social Capital (10%)
+    - Public Transport & Mobility: (and others)
+  buildRanking(lensKey) applies the active lens to produce activeWeightedScore for every city.
+
+
+APPLICATION STATE (App.jsx)
+----------------------------
+The root component manages all interactive state via useState and useMemo.
+
+PERSISTED STATE (localStorage):
+  lensKey        — active priority preset
+  scenarioKey    — oneParent or bothWorking
+  selectedCityKey — currently selected city
+  selectedYear   — year for trend charts
+
+SESSION STATE:
+  page               — hash-based routing: '' (main dashboard) or 'explorer'
+  searchValue        — free-text search
+  sortKey            — active sort order
+  verificationFilter — verification coverage filter
+  budgetFilter       — monthly budget band filter
+  mobilityFilter     — mobility profile filter
+  airFilter          — air quality filter
+
+KEY DERIVED MEMOS:
+  scoreRankingRows      — full ranked list with lens-weighted scores, verified snapshot
+                          joins, and scenario budget attached
+  filteredComparisonRows — scoreRankingRows after search + all 5 filter predicates + sort
+  selectedCity / selectedVerifiedSnapshot — currently focused city and its verification record
+
+A useEffect auto-selects the first filtered city if the current selection falls outside the
+active filter result set.
+
+
+ROUTING
+-------
+Hash-based, no router library. window.location.hash is set to #/explorer or cleared.
+navigateTo('explorer') sets state and scrolls to top. The ExplorerPage route is rendered via
+an early return before the main dashboard JSX.
+
+
+VIEWS AND COMPONENTS
+--------------------
+
+MAIN DASHBOARD (page === ''):
+
+  1. Hero Header
+     - Title, subtitle, quick-jump nav links (Score Charts, Command Centre, Shortlist Cards,
+       City Explorer)
+     - Export buttons: Save as PDF / Export Excel / Export CSV / Export JSON
+     - Verification window label and generation date metadata
+
+  2. CityChartsPanel (src/components/cityChartsPanel.jsx)
+     Visual charts: budget band charts (buildBudgetBands), threshold rows, PM2.5 air quality
+     charts, and score comparisons across the filtered city set. Accepts isPrinting to expose
+     all details for PDF print.
+
+  3. StrategicBalanceMatrix (src/components/strategicBalanceMatrix.jsx)
+     A visual matrix of all 9 strategic pillars across all cities, showing relative strength.
+     Displays the active lens's weighting context.
+
+  4. InteractiveComparisonPanel → FamilyComparisonTables
+     (src/components/comparisonPanels.jsx + familyComparisonTables.jsx)
+     The main comparison board ("Command Centre"). Contains:
+       - Lens selector and scenario (household type) toggle
+       - Search input and 4 dropdown filters (verification, budget, mobility, air)
+       - Active filter pill strip with clear-all
+       - Ranked city cards/rows with scores, budget midpoints, pros/cons, and click-to-select
+
+  5. Shortlist Cards
+     Detailed expandable cards per city with housing, childcare, transport, health, and
+     family benefits data.
+
+CITY EXPLORER PAGE (page === 'explorer'):
+
+  ExplorerPage (src/components/explorerPage.jsx)
+    Wraps a CityExplorerPanel in its own shell with a "Back to Dashboard" header.
+
+  CityExplorerPanel (src/components/cityExplorerPanel.jsx)
+    City selector dropdown plus:
+
+    City360OverviewPanel (src/components/city360Panels.jsx)
+      The full 360-degree city brief: personality, honest pros/cons, moveHereIf/stayAwayIf,
+      eco factors, trend charts (year-selectable), budget breakdown, housing/childcare/
+      health/mobility/family benefits detail, and audit section statuses.
+
+    SelectedCityVerificationPanel (src/components/verifiedSnapshotPanels.jsx)
+      Verified source cards. For each section with verified sources within 2022-2026, renders
+      a strict evidence card with source label, URL, verifiedAt date, and any
+      strictLines/snapshotValue. For sections without verified sources, renders explicit gap
+      messaging (getGapReason).
+
+ADDITIONAL PANELS IN verifiedSnapshotPanels.jsx:
+  - VerifiedSnapshotTable — full cross-city verification table
+  - VerifiedMobilityTable — mobility-specific verified facts
+  - VerificationGapsPanel, VerificationPolicyPanel — policy and known gaps explanation
+  - DataQualityOverview, BenchmarkMethodologyPanel — source quality legend and benchmark
+    methodology disclosure
+
+
+FILTERS AND SORTING
+--------------------
+Defined in src/components/familyComparisonTableHelpers.js:
+
+  SORT OPTIONS:
+    score    — family-fit score (default)
+    budget   — lowest monthly burn (midpoint ascending)
+    verified — verified section count (descending)
+    air      — cleaner air (PM2.5 ascending)
+
+  VERIFICATION FILTER:
+    all                    — all evidence profiles
+    childcareVerified      — verified childcare only
+    officialBands          — official tariff bands recovered
+    highCoverage           — 4+ verified sections
+
+  BUDGET FILTER:
+    all              — all budget bands
+    under3000        — up to EUR3,000 / month
+    between3000And4000 — EUR3,001-EUR4,000 / month
+    over4000         — over EUR4,000 / month
+
+  MOBILITY FILTER:
+    all            — all mobility profiles
+    carLight       — car-light daily life
+    fifteenMinute  — 15-minute districts
+    transitStrong  — transit score 7+/10
+
+  AIR FILTER:
+    all      — all air-risk profiles
+    cleaner  — lower max AQI (150 or less)
+    moderate — avoid highest pollution cluster
+
+  Helpers like getMonthlyPassDisplay, getSafetyIndex, getMaxAqi, and parseBikeScore extract
+  numeric values from free-text fields for filter and sort comparison logic.
+
+
+EXPORT SYSTEM
+-------------
+Four export formats triggered from the hero header:
+
+  PDF
+    Uses window.print(). Before printing, a double requestAnimationFrame ensures React has
+    committed the isPrinting=true render (which forces all <details> elements open), then
+    the print dialog opens and isPrinting is reset.
+
+  CSV
+    buildCsvDocument(exportRows) serializes the flat exportRows array. Values containing
+    commas, quotes, or newlines are properly quoted and escaped (RFC 4180).
+
+  XLS
+    buildXlsDocument(filteredComparisonRows, ...) produces an HTML-in-XLS file with XML
+    Office namespace headers for Excel compatibility. Includes all 9 strategic pillar scores
+    as individual columns plus all city metadata (housing, childcare, mobility, health,
+    audit, verified count, lens, scenario, year).
+
+  JSON
+    JSON.stringify(exportPayload, null, 2) dumps the full structured payload including:
+    active filters, lens and scenario labels, verification window metadata, benchmark source
+    references, and per-city verified details with source citations.
+
+  All exports reflect the currently active filters, lens, scenario, and year.
+
+
+VERIFICATION SYSTEM
+--------------------
+Verification is a first-class concern throughout the dashboard.
+
+  Verification window: 2022-2026
+
+  A source is "verified" if it has a verifiedAt field matching that window and comes from
+  an official source (municipal, operator, or national) — not Numbeo/Expatistan/benchmark
+  sites.
+
+  Each section per city is tagged verified, mixed, or modeled in cityAuditMeta.
+
+  The UI consistently:
+    - Shows verified sections first in evidence cards
+    - Renders explicit gap messaging (not empty space) when verification is missing
+    - Labels modeled sections as explicitly modeled throughout
+    - Lets users filter the city list to only cities with verified childcare, official tariff
+      bands, or high coverage counts
+
+  Audit statuses per section:
+    verified — a source within the verification window is attached
+    mixed    — sourced anchors and modeled assumptions are both present
+    modeled  — no official city source attached; comparison relies on benchmarks or estimates

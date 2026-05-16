@@ -1,0 +1,806 @@
+{
+  "bilbao": {
+    "personality": "Compact, civic-minded, and calm by Spanish metro standards. Bilbao feels practical rather than flashy, with a strong everyday rhythm for families.",
+    "fittingIn": "Spanish is the real integration language, with Basque as cultural context rather than a daily blocker for most newcomers. Friend-making is easier through school, neighborhood, and sports networks than through a huge expat scene. The Romanian community exists in Bizkaia, but it is not large enough to remove the need to integrate locally.",
+    "honestTruth": {
+      "good": [
+        "Strong balance between rent pressure and family quality of life.",
+        "Very workable no-car daily life for a stroller household.",
+        "Public and concertado schooling is stronger than the city size suggests.",
+        "Good access to parks, coast, and green weekend escapes."
+      ],
+      "bad": [
+        "Smaller expat and English-speaking network than Vienna or Cologne.",
+        "Salaries do not compensate like Stuttgart or Milan for top-end careers.",
+        "Infant-care tariffs still are not cleanly verified in the strict audit layer.",
+        "Rain and damp can wear on households used to sunnier climates."
+      ]
+    },
+    "utilities": "EUR190-260/month for electricity, gas, water, trash, fiber, and phones.",
+    "stateAid": "Spanish family support is more national than municipal. Public early-years care is the big cost lever when a place is secured.",
+    "fifteenMinute": "Yes in most family neighborhoods.",
+    "moveHereIf": "You want a balanced, walkable family city with good services and can live without a huge expat bubble.",
+    "stayAwayIf": "You need top-tier salaries, guaranteed English-first integration, or ultra-sunny weather.",
+    "bikeLanes": "8/10 for protected lanes and stroller walkability.",
+    "personalTax": "Roughly 25%-32% effective for middle-income families, depending on deductions.",
+    "waterQuality": "Good tap water; filters are mostly for taste preference rather than necessity.",
+    "dining": "EUR45-70 for a family meal with drinks.",
+    "extremeWeather": "Heavy rain and localized flooding matter more than heat or cold. Seismic risk is low.",
+    "maxAqi": 140
+  },
+  "bucharest": {
+    "personality": "Fast, practical, and cost-efficient, but rougher around the edges. Bucharest rewards households that prioritize affordability over polish.",
+    "fittingIn": "For Romanians, fitting in is obviously easiest here. For non-Romanian newcomers, English works in private services and professional circles, but daily bureaucracy still rewards Romanian. The Romanian community point is moot here because the city itself is the home-base environment.",
+    "honestTruth": {
+      "good": [
+        "Best affordability in the final roster.",
+        "Private healthcare access can be very fast if you pay for it.",
+        "Home ownership remains reachable for middle-income households.",
+        "Romanian families keep natural language and social continuity."
+      ],
+      "bad": [
+        "Air quality and street-level traffic are real daily friction points.",
+        "Walking with a stroller is less pleasant than in Bilbao or Vienna.",
+        "Public-school quality varies sharply by district.",
+        "Administrative systems still feel inconsistent and paperwork-heavy."
+      ]
+    },
+    "utilities": "EUR170-260/month including utilities, internet, and phones.",
+    "stateAid": "State crese can be cheap when secured, but scarcity pushes many families into private infant care.",
+    "fifteenMinute": "No as a citywide promise; only some districts come close.",
+    "moveHereIf": "You are budget-first, already Romanian-speaking, or want the cheapest path to decent private services.",
+    "stayAwayIf": "You want clean air, elegant walking infrastructure, or a calm stroller-first urban environment.",
+    "bikeLanes": "3/10 for protected lanes and stroller walkability.",
+    "personalTax": "Roughly 35%-40% effective once payroll contributions are included.",
+    "waterQuality": "Tap water is potable, but many families still use filters or bottled water because trust and hardness vary by building.",
+    "dining": "EUR30-50 for a family meal with drinks.",
+    "extremeWeather": "Heatwaves and winter inversion episodes matter, and seismic resilience is a real housing filter when buying older stock.",
+    "maxAqi": 220
+  },
+  "valencia": {
+    "personality": "Warm, sociable, and unhurried. Valencia is a Mediterranean city that takes quality of life seriously — beaches, markets, and cafe culture weave into the family week rather than being reserved for weekends.",
+    "fittingIn": "Spanish is the integration language, with Valencian (co-official) used widely in public signage and schools. Friend-making is easier than in northern Spain; the city is friendly to newcomers and has a meaningful expat layer. Romanian is not widely spoken, but the city is warm enough that language-building feels manageable.",
+    "honestTruth": {
+      "good": [
+        "Outstanding climate — over 300 sunny days, mild winters, and a coast 30 minutes from family neighborhoods.",
+        "One of the best cycling networks in Spain: flat, extensive, and genuinely family-friendly.",
+        "Rent is affordable relative to Barcelona or Madrid without sacrificing urban quality.",
+        "Hospital La Fe is a serious anchor for paediatric and specialist care."
+      ],
+      "bad": [
+        "Salaries are below German levels — the gap is real for IT and STEM households.",
+        "Flash flooding risk (DANA events, most recently October 2024) is the city's most significant climate vulnerability.",
+        "Psychotherapy recognition requires a full Spanish homologación — the process is long and in Spanish.",
+        "Pickpocketing in tourist-heavy areas is a routine issue that families should plan around."
+      ]
+    },
+    "utilities": "EUR180-250/month for electricity, water, trash, fiber, and phones.",
+    "stateAid": "Spain-wide child benefit (Prestación por hijo a cargo) and deducción por maternidad are the main levers. Valencian Community adds supplemental regional benefits for large families and low-income households.",
+    "fifteenMinute": "Yes in most of the city's denser family neighborhoods.",
+    "moveHereIf": "You want outstanding climate, genuinely excellent cycling, affordable family life, and strong healthcare — and can adapt to a lower headline salary.",
+    "stayAwayIf": "You need German-level salaries, or are not prepared to learn Spanish for daily life and professional registration.",
+    "bikeLanes": "8/10 for protected lanes and flat stroller-friendly routes.",
+    "personalTax": "Roughly 28%-36% effective for middle-income families under Spanish IRPF.",
+    "waterQuality": "Tap water is officially safe but high in minerals; many families use filters or bottled water for taste.",
+    "dining": "EUR40-65 for a family meal with drinks in a neighborhood restaurant.",
+    "extremeWeather": "DANA flash flooding (Levante gota fría events) is the main risk — October and November are the highest-risk months. The October 2024 flood was a major event; flood-zone awareness is important when choosing an area.",
+    "maxAqi": 45
+  },
+  "bologna": {
+    "personality": "A smart, compact, university-driven Italian city that feels livable and competent without Milan-level intensity.",
+    "fittingIn": "Italian is the real integration language, but the city is used to students and newcomers. Social entry is easier than in many Northern European cities if you show up consistently. The Romanian community is present and visible, though still secondary to broader local integration.",
+    "honestTruth": {
+      "good": [
+        "Best large-city Italy compromise in the roster.",
+        "Strong hospital network for a city this size.",
+        "Very walkable core with decent transit.",
+        "Food, schools, and daily services are consistently solid."
+      ],
+      "bad": [
+        "Po Valley air remains the structural drawback.",
+        "Central rent pressure has risen fast since 2023.",
+        "Student pressure makes some inner districts noisy and competitive.",
+        "Italian bureaucracy is still bureaucracy, even when services are good."
+      ]
+    },
+    "utilities": "EUR220-310/month including utilities, fiber, and phones.",
+    "stateAid": "Bonus Nido and ISEE-linked municipal pricing are the main financial levers rather than a flat city childcare price.",
+    "fifteenMinute": "Yes in much of the established urban fabric.",
+    "moveHereIf": "You want the best big-city Italy tradeoff between services, costs, and daily livability.",
+    "stayAwayIf": "Clean air and cheap central housing are non-negotiable.",
+    "bikeLanes": "6/10 for bike-lane depth and stroller walkability.",
+    "personalTax": "Roughly 32%-38% effective for middle-income families.",
+    "waterQuality": "Tap water is generally safe but hard; filters are common for limescale and taste, not purity panic.",
+    "dining": "EUR40-60 for a family meal with drinks.",
+    "extremeWeather": "Heatwaves, flood events, and winter pollution episodes are more relevant than snow or seismic risk.",
+    "maxAqi": 220
+  },
+  "lugo": {
+    "personality": "Quiet, slow, and practical. Lugo is a small-town family option, not a prestige urban move.",
+    "fittingIn": "Italian matters quickly because the town is small and routines are local. Friend-making happens through school, family, and neighborhood circles more than through an expat scene. The Romanian community exists in Emilia-Romagna, but Lugo itself is a thin-network environment.",
+    "honestTruth": {
+      "good": [
+        "Lowest-burn Italian option in the roster.",
+        "Very calm daily rhythm for families with a baby.",
+        "Parking and errands are much easier than in Bologna or Milan.",
+        "Housing remains reachable by normal middle-class standards."
+      ],
+      "bad": [
+        "Thin expat and international-career ecosystem.",
+        "More car friction than Bilbao, Cologne, or Vienna.",
+        "Less direct, transparent pricing data than the bigger cities.",
+        "Choice depth in schools and childcare is narrower."
+      ]
+    },
+    "utilities": "EUR200-280/month including utilities, fiber, and phones.",
+    "stateAid": "National Assegno Unico and Bonus Nido matter more than any city-specific subsidy. Local childcare economics still remain partly modeled in this build.",
+    "fifteenMinute": "Partial rather than full.",
+    "moveHereIf": "You want a calm, low-burn Italian base and can accept a smaller-town lifestyle.",
+    "stayAwayIf": "You need a major international job market, dense expat life, or truly car-light mobility.",
+    "bikeLanes": "5/10 for bike and stroller comfort.",
+    "personalTax": "Roughly 32%-38% effective for middle-income families.",
+    "waterQuality": "Generally safe but harder water is common; filters are often used for taste and scale rather than necessity.",
+    "dining": "EUR35-55 for a family meal with drinks.",
+    "extremeWeather": "Heatwaves, fog, and local flood exposure matter more than snow or seismic events.",
+    "maxAqi": 190
+  },
+  "milan": {
+    "personality": "Fast, polished, career-heavy, and efficient by Italian standards. Milan gives you services and status, but it charges for both.",
+    "fittingIn": "Italian still matters, but Milan is the easiest Italian city here for international professionals. Social entry is easiest through work, school, and private networks. The Romanian community is real and visible, but the city is too large for any diaspora alone to solve belonging.",
+    "honestTruth": {
+      "good": [
+        "Deepest job market in Italy.",
+        "Strong hospital and specialist network.",
+        "Good transit if you choose the neighborhood well.",
+        "Best international-school and expat-service depth in Italy."
+      ],
+      "bad": [
+        "Worst value-for-money case in the final roster.",
+        "Air quality is a real family-health drag.",
+        "Rent and buying costs are both punishing.",
+        "Petty crime and nuisance are persistent."
+      ]
+    },
+    "utilities": "EUR240-340/month including utilities, internet, and phones.",
+    "stateAid": "Bonus Nido helps, but the bigger reality is simply that Milan private and bilingual care is expensive.",
+    "fifteenMinute": "Yes in selected neighborhoods, not citywide by default.",
+    "moveHereIf": "You are high-earning, want the deepest Italian job market, and value hospital depth over cost efficiency.",
+    "stayAwayIf": "You are air-sensitive, budget-sensitive, or want the best family-value ratio.",
+    "bikeLanes": "5/10 for protected-lane quality and stroller comfort.",
+    "personalTax": "Roughly 34%-40% effective for middle-income families.",
+    "waterQuality": "Safe but hard; many families filter for taste and scale.",
+    "dining": "EUR55-85 for a family meal with drinks.",
+    "extremeWeather": "Heatwaves, flood events, and winter pollution episodes are the real resilience risks.",
+    "maxAqi": 240
+  },
+  "reggioEmilia": {
+    "personality": "Measured, family-centered, and quietly competent. Reggio Emilia feels more like a practical family base than a status move.",
+    "fittingIn": "Italian matters quickly, but the city is less anonymous than Milan and easier to enter through schools and local routines. The Romanian presence is visible in Emilia-Romagna, which helps with familiarity without replacing local integration.",
+    "honestTruth": {
+      "good": [
+        "Strongest early-years pedagogy identity in the roster.",
+        "Better housing value than Milan or Bologna.",
+        "Calmer family rhythm than the bigger metros.",
+        "Good health infrastructure for city size."
+      ],
+      "bad": [
+        "Po Valley air quality remains the constant tax.",
+        "Career upside is narrower than Milan, Cologne, or Vienna.",
+        "Transit is serviceable, not exceptional.",
+        "International-school and expat-service depth is modest."
+      ]
+    },
+    "utilities": "EUR220-310/month including utilities, fiber, and phones.",
+    "stateAid": "Municipal nido pricing and national Assegno Unico matter more than a flat local subsidy headline.",
+    "fifteenMinute": "Partial to yes near the center.",
+    "moveHereIf": "You care more about child development, calmer pace, and decent value than about prestige or global career depth.",
+    "stayAwayIf": "You need clean air, a major international ecosystem, or premium salary upside.",
+    "bikeLanes": "6/10 for bike and stroller friendliness.",
+    "personalTax": "Roughly 32%-38% effective for middle-income families.",
+    "waterQuality": "Safe but hard; filters are common for scale and taste.",
+    "dining": "EUR40-60 for a family meal with drinks.",
+    "extremeWeather": "Heatwaves, river flooding, and winter pollution are the resilience issues that matter.",
+    "maxAqi": 220
+  },
+  "cologne": {
+    "personality": "Open, social, and workable. Cologne feels like a practical German family city rather than a stiff prestige capital.",
+    "fittingIn": "German helps a lot, but Cologne is easier socially than many German cities once school or neighborhood routines start. The Romanian community is meaningful in NRW, which can help with soft landing, though local integration still matters most.",
+    "honestTruth": {
+      "good": [
+        "Very workable car-light daily life.",
+        "Good family-infrastructure balance for Germany.",
+        "Kindergeld and childcare anchors are cleaner than in many cities here.",
+        "More socially relaxed than Stuttgart."
+      ],
+      "bad": [
+        "Buying math is still not attractive.",
+        "Late-night station zones reduce the overall polish.",
+        "Doctor availability can be the hidden bottleneck.",
+        "Rainy grey stretches are real quality-of-life friction."
+      ]
+    },
+    "utilities": "EUR260-340/month including utilities, internet, and phones.",
+    "stateAid": "Income-based Kita fees plus Kindergeld are the main family levers rather than a single flat subsidy.",
+    "fifteenMinute": "Yes in many core family districts.",
+    "moveHereIf": "You want a broad-based German family city with good transit and a more relaxed social tone.",
+    "stayAwayIf": "You need cheap ownership, instant doctor access, or a sunnier climate.",
+    "bikeLanes": "7/10 for bike and stroller accessibility.",
+    "personalTax": "Roughly 32%-40% effective for middle-income families.",
+    "waterQuality": "Tap water is safe and good; hardness varies, but RO is usually unnecessary.",
+    "dining": "EUR50-75 for a family meal with drinks.",
+    "extremeWeather": "Heavy rain, river-flood events, and warm summers matter more than extreme cold or heat.",
+    "maxAqi": 170
+  },
+  "vienna": {
+    "personality": "Orderly, safe, green, and exceptionally functional for families. Vienna is the least stressful big-city parent environment in the final set.",
+    "fittingIn": "German matters for full integration, but the city is used to international households. Friend-making is easier through kindergarten, parks, and neighborhood routines than through nightlife or work alone. The Romanian community is meaningful enough to offer soft landing without defining the city.",
+    "honestTruth": {
+      "good": [
+        "Best overall safety and family calm in the roster.",
+        "Exceptional no-car daily life.",
+        "Strong public realm for babies and young children.",
+        "Public systems are reliable by European standards."
+      ],
+      "bad": [
+        "Buying property is still expensive.",
+        "Infant-care tariff detail is less transparent than the free-kindergarten headline suggests.",
+        "Social integration can stay surface-level if German never improves.",
+        "Administrative culture can feel formal and rule-heavy."
+      ]
+    },
+    "utilities": "EUR230-320/month including utilities, internet, and phones.",
+    "stateAid": "Free kindergarten is the headline, while infant care still needs careful provider-by-provider reading. Familienbeihilfe is reliable and current.",
+    "fifteenMinute": "Yes in large parts of the city.",
+    "moveHereIf": "You want the strongest all-round family platform in the final roster and can accept a formal integration culture.",
+    "stayAwayIf": "You want cheap ownership or do not intend to build at least basic German over time.",
+    "bikeLanes": "9/10 for bike and stroller comfort.",
+    "personalTax": "Roughly 28%-36% effective for middle-income families.",
+    "waterQuality": "Tap water is excellent; RO filters are unnecessary for normal use.",
+    "dining": "EUR45-70 for a family meal with drinks.",
+    "extremeWeather": "Heatwaves are growing more relevant, but the city remains resilient and low-risk on seismic exposure.",
+    "maxAqi": 150
+  },
+  "salzburg": {
+    "personality": "Compact, orderly, and outdoors-first. Salzburg feels small enough for infant logistics to stay manageable and polished enough to avoid small-town stagnation.",
+    "fittingIn": "German matters quickly, but the city is used to cross-border students and tourism. Integration is easier through neighborhood routines than through a deep expat scene.",
+    "honestTruth": {
+      "good": [
+        "Clean air and low day-to-day safety stress.",
+        "Compact form makes stroller errands and school runs simple.",
+        "Austrian family support keeps early-years downside lower than the headline housing costs suggest.",
+        "Day access to alpine lakes and forests is a genuine everyday asset, not a marketing footnote."
+      ],
+      "bad": [
+        "Buying is expensive for a mid-size city.",
+        "Career depth is thinner than Munich, Hamburg, or Vienna.",
+        "Tourism pressure makes the core busier than the postcard calm implies.",
+        "Job-market depth at mid-to-senior level is thin enough that remote work or Vienna commuting defines the real career ceiling for many."
+      ]
+    },
+    "utilities": "EUR547-787 including utilities, internet, and phones.",
+    "stateAid": "Familienbeihilfe and Kinderbetreuungsgeld are the main family levers; city-specific discounts matter less than the federal support frame.",
+    "fifteenMinute": "Yes in most central family districts.",
+    "moveHereIf": "You want clean air, alpine access, and one of the safest everyday parent environments in the expanded roster.",
+    "stayAwayIf": "You need deep multinational career options or plan to buy quickly on a mid-range budget.",
+    "bikeLanes": "8/10 for bike and stroller comfort.",
+    "personalTax": "Roughly 28%-36% effective for middle-income families.",
+    "waterQuality": "Tap water is excellent and safe; filters are usually optional rather than necessary.",
+    "dining": "About EUR85-117 equivalent for a family meal with drinks.",
+    "extremeWeather": "Cold snaps and flood-style rain events matter more than heat stress, and the city stays comparatively resilient on air-quality risk.",
+    "maxAqi": 23.66
+  },
+  "graz": {
+    "personality": "Student-driven, manageable, and practical. Graz feels meaningfully easier than a capital without tipping into a thin-services small town.",
+    "fittingIn": "German helps quickly, but the university and engineering base make first landing easier than in many cities of this size. The social graph still forms through routine, not an expat bubble.",
+    "honestTruth": {
+      "good": [
+        "Lower housing burn than Salzburg or Vienna without giving up Austrian family support.",
+        "Compact form and strong tram coverage keep daily logistics efficient.",
+        "University and engineering depth make the city more future-proof than its size suggests.",
+        "Austrian family benefits — Familienbeihilfe and free kindergarten access — provide a solid welfare floor regardless of city size."
+      ],
+      "bad": [
+        "The salary ceiling is still well below Munich or Hamburg.",
+        "The city can feel socially thin if you stay outside German too long.",
+        "Graz sits in a basin prone to winter temperature inversions, making it Austria's most PM2.5-challenged city despite recent improvements.",
+        "Buying pressure in the best family districts has risen faster than the salary base justifies, narrowing the historic value advantage."
+      ]
+    },
+    "utilities": "EUR505-726 including utilities, internet, and phones.",
+    "stateAid": "Familienbeihilfe and Kinderbetreuungsgeld are the main family levers; city-specific discounts matter less than the federal support frame.",
+    "fifteenMinute": "Yes in many central districts.",
+    "moveHereIf": "You want an Austrian family platform with better value than Salzburg and less pressure than Vienna.",
+    "stayAwayIf": "You need the deepest German-speaking job market or want every city score backed by a hard local air capture today.",
+    "bikeLanes": "8/10 for bike and stroller comfort.",
+    "personalTax": "Roughly 28%-36% effective for middle-income families.",
+    "waterQuality": "Tap water is excellent and safe; filters are usually optional rather than necessary.",
+    "dining": "About EUR78-108 equivalent for a family meal with drinks.",
+    "extremeWeather": "Heat spikes are rising, but the bigger resilience story is still manageable seasonality rather than chronic air or flood stress.",
+    "maxAqi": 16
+  },
+  "hamburg": {
+    "personality": "Maritime, wealthy, and practical. Hamburg feels like a serious German metro with strong infrastructure and a slightly cooler social tone.",
+    "fittingIn": "German still matters, but a broad employer base and international hiring make the first landing easier than in smaller German cities. Social integration can still feel reserved outside school and neighborhood routines.",
+    "honestTruth": {
+      "good": [
+        "Broad employer base across logistics, maritime, media, aviation, and services.",
+        "High park and water access for a large city.",
+        "Good childcare benchmark versus Munich-level salaries and housing pressure.",
+        "Cultural depth, harbour atmosphere, and a rich urban social offer give the city a livelier everyday quality than most German peers."
+      ],
+      "bad": [
+        "Housing still lands in premium territory in the best family districts.",
+        "Safety is more mixed than the calmer Munich or Austrian options.",
+        "Grey weather and a cooler social style can wear on households expecting a softer landing.",
+        "Buying in top family districts requires capital commitment that renting rarely bridges in a reasonable horizon."
+      ]
+    },
+    "utilities": "EUR478-688 including utilities, internet, and phones.",
+    "stateAid": "Kindergeld and Elterngeld are the core family levers, while nursery pricing still depends heavily on municipality and provider.",
+    "fifteenMinute": "Yes in many core districts.",
+    "moveHereIf": "You want a broad German job market with strong no-car potential and can absorb premium housing.",
+    "stayAwayIf": "You want Munich-level safety or the most sociable newcomer environment.",
+    "bikeLanes": "7/10 for bike and stroller comfort.",
+    "personalTax": "Roughly 32%-40% effective for middle-income families.",
+    "waterQuality": "Tap water is safe and generally good; filtration is usually taste-led rather than necessary.",
+    "dining": "About EUR74-102 equivalent for a family meal with drinks.",
+    "extremeWeather": "Storms, heavy rain, and wet grey stretches matter more than heat or chronic drought stress.",
+    "maxAqi": 13
+  },
+  "munich": {
+    "personality": "Prosperous, green, and exacting. Munich is one of the strongest family cities in Europe if your income can absorb the housing premium.",
+    "fittingIn": "German matters, but international employers and the citys large professional ecosystem make first landing easier than the stereotype suggests. The real barrier is price, not basic functionality.",
+    "honestTruth": {
+      "good": [
+        "Very high day-to-day safety for a major metro.",
+        "Clear salary upside and job-market breadth.",
+        "Strong parks, lakes access, and specialist healthcare confidence.",
+        "Dense international employer base reduces German-language pressure at entry compared with smaller German cities."
+      ],
+      "bad": [
+        "Housing cost is severe both for renting and buying.",
+        "Childcare market benchmarks are far above the smaller German and Austrian cities.",
+        "The best family experience often requires neighborhoods that are themselves part of the affordability problem.",
+        "Dual-income households can still feel squeezed once childcare and quality family housing are stacked at full market rate."
+      ]
+    },
+    "utilities": "EUR506-728 including utilities, internet, and phones.",
+    "stateAid": "Kindergeld and Elterngeld are the core family levers, while nursery pricing still depends heavily on municipality and provider.",
+    "fifteenMinute": "Yes in selected neighborhoods, not citywide by default.",
+    "moveHereIf": "You can actually monetize the salary upside and want one of the safest, strongest all-round big-city family platforms in Europe.",
+    "stayAwayIf": "You are rent-sensitive or expect a cheap path into ownership.",
+    "bikeLanes": "7/10 for bike and stroller comfort.",
+    "personalTax": "Roughly 32%-40% effective for middle-income families.",
+    "waterQuality": "Tap water is safe and generally good; filtration is usually taste-led rather than necessary.",
+    "dining": "About EUR78-108 equivalent for a family meal with drinks.",
+    "extremeWeather": "Heatwaves are rising but still manageable; the bigger resilience story is strong green space rather than chronic air burden.",
+    "maxAqi": 11
+  },
+  "malaga": {
+    "personality": "Sunny, social, and easier on the nervous system than many northern metros. Malaga offers climate pull and decent everyday ease, but not a high-income engine.",
+    "fittingIn": "Spanish still matters for full integration, even though the city is comfortable with international residents and remote workers. Social life is easier in public space than in more reserved northern cities.",
+    "honestTruth": {
+      "good": [
+        "Strong climate and outdoor-living upside.",
+        "Low transport burn and good family safety compared with many similarly popular coastal cities.",
+        "Better air and daily weather resilience than the Po Valley or Bucharest-style tradeoffs.",
+        "Growing tech and international employer presence is making the city a more credible remote-work base year-round."
+      ],
+      "bad": [
+        "Preschool benchmark is high relative to the local wage base.",
+        "The job market is improving, but salary upside is still weaker than in Germany or Edinburgh.",
+        "Housing no longer feels cheap once expat and tourism demand are priced in.",
+        "Summer heat intensity is rising, and urban heat-island effects reduce outdoor comfort during the longest work months."
+      ]
+    },
+    "utilities": "EUR357-513 including utilities, internet, and phones.",
+    "stateAid": "Value comes more from public healthcare, schooling, and lower daily transport burn than from a flat city baby allowance.",
+    "fifteenMinute": "Yes in many central and inner-family districts.",
+    "moveHereIf": "You want sun, lower transport friction, and a gentler day-to-day pace more than you want northern-European salary upside.",
+    "stayAwayIf": "You need the strongest childcare value, a very deep employer base, or low-expat housing pressure.",
+    "bikeLanes": "6/10 for bike and stroller comfort.",
+    "personalTax": "Roughly 25%-33% effective for middle-income families, depending on deductions.",
+    "waterQuality": "Tap water is safe, though some households still filter for taste depending on neighborhood and hardness.",
+    "dining": "About EUR55-76 equivalent for a family meal with drinks.",
+    "extremeWeather": "Heatwaves and drought stress matter more than cold or flood exposure, though the city still stays resilient by broader southern-European standards.",
+    "maxAqi": 35.57
+  },
+  "bristol": {
+    "personality": "Creative, educated, and green-leaning. Bristol has strong quality-of-life signals, but the household cost stack is harsher than the vibe suggests.",
+    "fittingIn": "Language is not the issue here; the real integration filters are housing access, school catchment, and whether the job package can actually support the city.",
+    "honestTruth": {
+      "good": [
+        "Strong employer base across tech, aerospace, health, and education.",
+        "Good green-city feel for a UK regional metro.",
+        "Language friction is minimal compared with the continental roster.",
+        "Creative, green, and university-anchored civic culture gives the city disproportionate quality relative to its size."
+      ],
+      "bad": [
+        "Childcare benchmark is among the harshest in the expansion wave.",
+        "Transport is workable but not truly low-friction for all districts.",
+        "Housing pressure and childcare can erase much of the salary upside.",
+        "NHS primary care access lags behind many continental peers, adding private health top-ups as a practical household cost."
+      ]
+    },
+    "utilities": "EUR490-705 including utilities, internet, and phones.",
+    "stateAid": "Working-family childcare support and tax-free childcare matter more than any flat municipal nursery tariff.",
+    "fifteenMinute": "Partial rather than citywide yes.",
+    "moveHereIf": "You have a strong UK income path and want an educated, green, English-speaking city outside London.",
+    "stayAwayIf": "You need childcare value or truly seamless public transport to do the heavy lifting for family life.",
+    "bikeLanes": "6/10 for bike and stroller comfort.",
+    "personalTax": "Roughly 26%-34% effective for middle-income families before pension choices.",
+    "waterQuality": "Tap water is safe, though taste and hardness vary enough that filters are preference-led in many homes.",
+    "dining": "About EUR76-105 equivalent for a family meal with drinks.",
+    "extremeWeather": "Rain, storm events, and damp rather than extreme heat define the resilience profile.",
+    "maxAqi": 47.44
+  },
+  "edinburgh": {
+    "personality": "Historic, polished, and institution-rich. Edinburgh feels unusually high-quality for a city its size, but it is not a cheap route into that quality.",
+    "fittingIn": "Language removes the first barrier, but the real filters are housing competition and school catchment. The city is welcoming enough, though not especially cheap or casual about logistics.",
+    "honestTruth": {
+      "good": [
+        "Strong day-to-day safety for a UK city.",
+        "Excellent public realm, architecture, and cultural depth.",
+        "Good employer base across finance, public sector, education, and tech.",
+        "NHS hospital network keeps clinical confidence higher than most UK peers despite known access speed friction."
+      ],
+      "bad": [
+        "Childcare is still very expensive even before inflation psychology is added.",
+        "Housing is tight enough that the city can feel more exclusive than it first appears.",
+        "Weather and winter light are real quality-of-life costs for some households.",
+        "Tourism and festival-season crowding make the center periodically far more stressful than the rest-of-year rhythm would suggest."
+      ]
+    },
+    "utilities": "EUR500-719 including utilities, internet, and phones.",
+    "stateAid": "Working-family childcare support and tax-free childcare matter more than any flat municipal nursery tariff.",
+    "fifteenMinute": "Yes in selected inner districts.",
+    "moveHereIf": "You want a safe, high-quality English-speaking city with strong institutions and can manage UK childcare costs.",
+    "stayAwayIf": "You need the cheapest budget path or dislike grey, windy winters.",
+    "bikeLanes": "6/10 for bike and stroller comfort.",
+    "personalTax": "Roughly 26%-34% effective for middle-income families before pension choices.",
+    "waterQuality": "Tap water is safe, though taste and hardness vary enough that filters are preference-led in many homes.",
+    "dining": "About EUR77-107 equivalent for a family meal with drinks.",
+    "extremeWeather": "Wind, rain, and low-light winters matter more than heat or drought, and they meaningfully shape family routine.",
+    "maxAqi": 9
+  },
+  "parma": {
+    "personality": "Food-rich, mid-size, and practical. Parma feels more refined than its size suggests, but it is still a provincial city rather than a deep expat platform.",
+    "fittingIn": "Italian matters quickly and the city rewards families who want a local routine more than a cosmopolitan landing pad. Integration happens through school and neighborhood habits.",
+    "honestTruth": {
+      "good": [
+        "Good ownership and rental value relative to Milan and Bologna.",
+        "Strong healthcare confidence for a city this size.",
+        "Food quality and daily urban comfort are tangible positives.",
+        "Food culture, local suppliers, and the university create an everyday living quality noticeably above comparably priced alternatives."
+      ],
+      "bad": [
+        "Air quality remains the structural drag.",
+        "Safety feels more mixed than the calmer Austrian or Munich options.",
+        "Career upside is acceptable but not especially deep for international households.",
+        "Career exit options are narrower than in Milan or Bologna, with the market heavily clustered around food, pharma, and local services."
+      ]
+    },
+    "utilities": "EUR441-634 including utilities, internet, and phones.",
+    "stateAid": "Assegno Unico and Bonus Nido are the main financial levers rather than a flat municipal sticker price.",
+    "fifteenMinute": "Yes in many central districts.",
+    "moveHereIf": "You want a calmer northern Italian city with strong hospitals and better value than Milan.",
+    "stayAwayIf": "You want clean air or the deepest multinational job market.",
+    "bikeLanes": "5/10 for bike and stroller comfort.",
+    "personalTax": "Roughly 32%-38% effective for middle-income families.",
+    "waterQuality": "Tap water is generally safe but often hard; filters are common for taste and limescale rather than necessity.",
+    "dining": "About EUR68-94 equivalent for a family meal with drinks.",
+    "extremeWeather": "Heatwaves and winter stagnation are the real climate stressors, with air quality being the main quality-of-life risk.",
+    "maxAqi": 62.31
+  },
+  "verona": {
+    "personality": "Historic, attractive, and more balanced than flashy. Verona gives a pleasant north-Italian urban life without needing Milan-level income.",
+    "fittingIn": "Italian matters quickly, and the city is easier to enter through neighborhood routine than through an international-work bubble. It is more local-first than expat-first.",
+    "honestTruth": {
+      "good": [
+        "Good everyday value relative to Milan and some larger northern-Italian peers.",
+        "Strong rail connectivity and attractive city fabric.",
+        "Preschool benchmark is manageable relative to many Western metros.",
+        "Brenner corridor rail links to Milan, Venice, and Austria make Verona one of the best-connected mid-size cities in this roster."
+      ],
+      "bad": [
+        "Air quality is still a clear drag.",
+        "The safety read in this build is still comparative rather than tied to a clean recovered city index capture.",
+        "Career upside is solid but not especially deep for international specialists.",
+        "Winter fog and PM2.5 pressure from Po Valley inversions keep full-year outdoor comfort below what the city's architecture would otherwise deliver."
+      ]
+    },
+    "utilities": "EUR466-669 including utilities, internet, and phones.",
+    "stateAid": "Assegno Unico and Bonus Nido are the main financial levers rather than a flat municipal sticker price.",
+    "fifteenMinute": "Yes in many central districts.",
+    "moveHereIf": "You want an attractive northern-Italian compromise with good rail links and more value than Milan.",
+    "stayAwayIf": "You want the cleanest air or the deepest international career market.",
+    "bikeLanes": "6/10 for bike and stroller comfort.",
+    "personalTax": "Roughly 32%-38% effective for middle-income families.",
+    "waterQuality": "Tap water is generally safe but often hard; filters are common for taste and limescale rather than necessity.",
+    "dining": "About EUR72-99 equivalent for a family meal with drinks.",
+    "extremeWeather": "Heat and winter air stagnation remain the main resilience concern; the city is otherwise relatively manageable in day-to-day climate stress.",
+    "maxAqi": 50
+  },
+  "bergamo": {
+    "personality": "Value-driven, industrious, and strategically placed. Bergamo offers real north-Italian convenience without asking Milan prices for every family decision.",
+    "fittingIn": "Italian matters quickly, and the city feels more local and workmanlike than cosmopolitan. It is easier if you want practical daily life more than an expat scene.",
+    "honestTruth": {
+      "good": [
+        "Very strong rental and ownership value relative to the wider Lombardy corridor.",
+        "Good access to Milan jobs without paying Milan housing prices.",
+        "Compact daily life in the lower city can be efficient for families."
+      ],
+      "bad": [
+        "Air remains a structural drag as part of the wider Lombardy basin.",
+        "Car dependence returns faster than in the strongest compact-city comparators.",
+        "The city is less socially or professionally international than Milan."
+      ]
+    },
+    "utilities": "EUR400-575 including utilities, internet, and phones.",
+    "stateAid": "Assegno Unico and Bonus Nido are the main financial levers rather than a flat municipal sticker price.",
+    "fifteenMinute": "Partial rather than citywide yes.",
+    "moveHereIf": "You want north-Italian access and value without paying Milan rent or ownership prices.",
+    "stayAwayIf": "You want very low car pressure or the cleanest air in the set.",
+    "bikeLanes": "5/10 for bike and stroller comfort.",
+    "personalTax": "Roughly 32%-38% effective for middle-income families.",
+    "waterQuality": "Tap water is generally safe but often hard; filters are common for taste and limescale rather than necessity.",
+    "dining": "About EUR62-85 equivalent for a family meal with drinks.",
+    "extremeWeather": "Heat and basin air stagnation are the main resilience risks, not extreme cold or severe water stress.",
+    "maxAqi": 20
+  },
+  "modena": {
+    "personality": "Grounded, food-serious, and industrially proud without being corporate. Modena does not need to advertise itself; daily life is quietly good.",
+    "fittingIn": "Italian matters and integration runs through neighborhood rhythm, school, and the table. The city is not built around a large expat entry layer but is not unwelcoming either.",
+    "honestTruth": {
+      "good": [
+        "Food quality and market culture are genuine everyday advantages over more anonymous northern cities.",
+        "Strong university hospital anchor and compact city logistics that stay manageable for infant-family routines.",
+        "Lower housing pressure than Bologna while staying inside the same SETA transit corridor."
+      ],
+      "bad": [
+        "Air quality is a persistent Po Valley drag shared with the rest of the Emilia plain.",
+        "Career upside is strong locally but narrower for specialized international roles than Milan.",
+        "Safety is more mixed than the calmer Alpine or German options."
+      ]
+    },
+    "utilities": "EUR466-669 including utilities, internet, and phones.",
+    "stateAid": "Assegno Unico and Bonus Nido are the main financial levers rather than a flat municipal sticker price.",
+    "fifteenMinute": "Yes in the historic core districts.",
+    "moveHereIf": "You want northern-Italian quality and a strong teaching hospital without Bologna rent pressure, and can accept the Po Valley air tradeoff.",
+    "stayAwayIf": "You need the cleanest air in the set or the broadest international career market.",
+    "bikeLanes": "6/10 for bike and stroller comfort.",
+    "personalTax": "Roughly 32%-38% effective for middle-income families.",
+    "waterQuality": "Tap water is generally safe but often hard; filters are common for taste and limescale rather than necessity.",
+    "dining": "About EUR72-99 equivalent for a family meal with drinks.",
+    "extremeWeather": "Po Valley heat and winter air stagnation remain the structural risks; flooding from the Secchia watershed is occasional but relevant.",
+    "maxAqi": 18
+  },
+  "torino": {
+    "personality": "Former automobile capital now reinventing itself: Politecnico startups, aerospace giants, a world-class Egyptian museum, and one of Italy's best aperitivo cultures coexist in a grid of arcaded Baroque boulevards.",
+    "fittingIn": "Italian matters more than in Milan's finance bubble, but the universities bring a broader mix and the tech sector is increasingly English-comfortable. Integration still runs through school and neighbourhood rather than a ready-made expat layer.",
+    "honestTruth": {
+      "good": [
+        "Politecnico di Torino (ranked #1 in Italy for engineering) and Università di Torino anchor a strong resident higher-education asset.",
+        "Rent well below Milan for a city with comparable cultural depth and university infrastructure.",
+        "Alps visible from the city and reachable by car in under an hour — skiing, hiking, and mountain air are weekend assets.",
+        "Rich cultural offer: Museo Egizio (world's largest Egyptian collection outside Cairo), National Cinema Museum, vibrant food and aperitivo scene."
+      ],
+      "bad": [
+        "PM2.5 is the worst in the Italian set — Po Valley combined with Alpine basin trapping gives Turin some of the most persistent air stagnation in northern Europe.",
+        "Safety index is lower than the Austrian and German alternatives, and some outer districts carry a less comfortable daily feel.",
+        "Automotive sector restructuring means the job market is in transition; Stellantis footprint has shrunk significantly.",
+        "GTT metro is limited to a single line; outer suburbs still depend heavily on buses, which are less reliable than the metro corridor suggests."
+      ]
+    },
+    "utilities": "EUR429-616 including utilities, internet, and phones.",
+    "stateAid": "Assegno Unico and Bonus Nido are the main financial levers rather than a flat municipal sticker price.",
+    "fifteenMinute": "Yes in core districts.",
+    "moveHereIf": "You want a large, culturally rich Italian city with strong universities and Alpine access at meaningful savings over Milan, and can manage the air quality tradeoff.",
+    "stayAwayIf": "Clean air is a non-negotiable or you need the top safety profile in the Italian set.",
+    "bikeLanes": "4/10 for bike and stroller comfort.",
+    "personalTax": "Roughly 32%-38% effective for middle-income families.",
+    "waterQuality": "Tap water is generally safe but often hard; filters are common for taste and limescale rather than necessity.",
+    "dining": "About EUR66-91 equivalent for a family meal with drinks.",
+    "extremeWeather": "Alpine föhn events can push temperatures sharply; summer thunderstorms are intense; winter fog and thermal inversions trap PM2.5 for days at a time, which is the dominant climate-quality-of-life stressor.",
+    "maxAqi": 24
+  },
+  "lucca": {
+    "personality": "Unhurried, proud of its walls, and quietly affluent. Lucca does tourism without surrendering its local identity — the Saturday market, the cycling families on the walls, and the Puccini opera season coexist with foreign visitors.",
+    "fittingIn": "Lucca is an Italian small-city experience. Italian is essential; the tourism sector brings English familiarity, and a small but growing remote-work community has settled inside and around the walls. Integration runs through schools and daily routine.",
+    "honestTruth": {
+      "good": [
+        "Significantly better air quality than any Po Valley city in the Italian set.",
+        "The intact Renaissance walls as a daily cycling and walking park — a genuine quality-of-life asset with no equivalent elsewhere in the roster.",
+        "Tuscan climate with mild winters and long autumns, plus easy weekend access to the Versilia coast and Apuan Alps.",
+        "Lower cost than Florence and Siena while sharing much of the cultural and gastronomic quality of Tuscany."
+      ],
+      "bad": [
+        "Job market is thin outside tourism, services, and manufacturing — remote work or a portable career is nearly essential for international households.",
+        "Public transit outside the city is insufficient for a car-free lifestyle; the rail line to Florence is slow and infrequent.",
+        "No major university in the city itself; children will need to relocate for higher education, and adult professional-network depth is limited.",
+        "The historic centre is increasingly subject to tourist-economy pricing pressure, which is gradually affecting rental and buying values for residents."
+      ]
+    },
+    "utilities": "EUR340-489 including utilities, internet, and phones.",
+    "stateAid": "Assegno Unico and Bonus Nido are the main financial levers rather than a flat municipal sticker price.",
+    "fifteenMinute": "Yes within the historic walls.",
+    "moveHereIf": "You want a genuinely liveable Tuscan city with clean air, a beautiful urban environment, and lower cost than Florence — and you have a portable income.",
+    "stayAwayIf": "You need deep local job market access, frequent inter-city public transit, or a large international professional community.",
+    "bikeLanes": "7/10 for bike and stroller comfort.",
+    "personalTax": "Roughly 32%-38% effective for middle-income families.",
+    "waterQuality": "Tap water is generally safe but often hard; filters are common for taste and limescale rather than necessity.",
+    "dining": "About EUR53-73 equivalent for a family meal with drinks.",
+    "extremeWeather": "Summer heatwaves in the Arno-Serchio plain are intensifying; the city's stone buildings retain heat. Winter is mild; flooding from the Serchio river is a known risk in the surrounding plain, though the historic centre on slightly higher ground is less exposed.",
+    "maxAqi": 14
+  },
+  "udine": {
+    "personality": "Quiet, practical, and local-first. Udine is a family-stability move more than a prestige or expat-network move.",
+    "fittingIn": "Italian matters quickly and the city does not carry a large international landing pad. Families integrate through school, neighborhood, and everyday routine rather than through a deep expat layer.",
+    "honestTruth": {
+      "good": [
+        "Very low ownership barrier by northern-Italy standards.",
+        "Calmer daily rhythm than the larger metros.",
+        "Good base if family steadiness matters more than brand-name urban life.",
+        "Northeast Italy location gives fast access to mountains, Slovenia, and the Adriatic — weekend escapes are a genuine daily-life asset."
+      ],
+      "bad": [
+        "Job-market depth is thinner than the larger northern Italian cities.",
+        "Car pressure returns faster once you leave the core.",
+        "The city has less social and service redundancy for international families.",
+        "The international community is thin enough that households slow to integrate in Italian risk real social isolation."
+      ]
+    },
+    "utilities": "EUR450-646 including utilities, internet, and phones.",
+    "stateAid": "Assegno Unico and Bonus Nido are the main financial levers rather than a flat municipal sticker price.",
+    "fifteenMinute": "Partial rather than full.",
+    "moveHereIf": "You want a low-burn northern Italian base and can accept a thinner job market.",
+    "stayAwayIf": "You need a large expat scene or a major multinational employer market.",
+    "bikeLanes": "5/10 for bike and stroller comfort.",
+    "personalTax": "Roughly 32%-38% effective for middle-income families.",
+    "waterQuality": "Tap water is generally safe but often hard; filters are common for taste and limescale rather than necessity.",
+    "dining": "About EUR69-96 equivalent for a family meal with drinks.",
+    "extremeWeather": "Heat and heavy rain matter more than deep winter; the broader risk profile is still manageable rather than severe.",
+    "maxAqi": 16
+  },
+  "padova": {
+    "personality": "Academic, practical, and less hyped than Bologna. Padua offers strong institutions, decent daily life, and better value than the biggest prestige cities.",
+    "fittingIn": "Italian matters and the city remains local-first, but the university environment makes it easier to settle than in a fully provincial market.",
+    "honestTruth": {
+      "good": [
+        "University and hospital depth are strong for the cost level.",
+        "Good rail connectivity to Venice and the wider northeast corridor.",
+        "Ownership is still reachable relative to many other service-rich cities.",
+        "The university-hospital complex gives clinical confidence materially above what a simple mid-tier Italian city normally provides."
+      ],
+      "bad": [
+        "Safety feels more mixed than the Austrian and Munich comparators.",
+        "The air profile is still a north-Italian tradeoff even without a fresh local PM2.5 capture in this wave.",
+        "The city is solid rather than exceptional on family public-realm polish.",
+        "Rent is rising faster than the local wage floor, gradually compressing the value premium that historically set the city apart."
+      ]
+    },
+    "utilities": "EUR449-645 including utilities, internet, and phones.",
+    "stateAid": "Assegno Unico and Bonus Nido are the main financial levers rather than a flat municipal sticker price.",
+    "fifteenMinute": "Yes in many central districts.",
+    "moveHereIf": "You want a strong university city with good rail access and better ownership value than the larger prestige metros.",
+    "stayAwayIf": "You want the cleanest air or a clearly top-tier safety feel.",
+    "bikeLanes": "6/10 for bike and stroller comfort.",
+    "personalTax": "Roughly 32%-38% effective for middle-income families.",
+    "waterQuality": "Tap water is generally safe but often hard; filters are common for taste and limescale rather than necessity.",
+    "dining": "About EUR69-96 equivalent for a family meal with drinks.",
+    "extremeWeather": "Heat and wider basin-air issues matter more than cold or mountain weather stress.",
+    "maxAqi": 19
+  },
+  "trento": {
+    "personality": "Orderly, alpine-adjacent, and unusually family-practical by Italian standards. Trento trades scale for calm and competence.",
+    "fittingIn": "Italian is still essential, but the city is easier to read and navigate than many larger Italian systems. Social life is local-first rather than expat-first.",
+    "honestTruth": {
+      "good": [
+        "Very low childcare benchmark in the current market snapshot.",
+        "Strong climate and green-space profile relative to the rest of Italy.",
+        "Compact and manageable without a car in the core."
+      ],
+      "bad": [
+        "The job market is smaller and more specialized.",
+        "Buying is not especially cheap for a city of this size.",
+        "The city is less cosmopolitan and service-rich than the larger metros."
+      ]
+    },
+    "utilities": "EUR444-638 including utilities, internet, and phones.",
+    "stateAid": "Assegno Unico and Bonus Nido are the main financial levers rather than a flat municipal sticker price.",
+    "fifteenMinute": "Yes in most core districts.",
+    "moveHereIf": "You want a calmer, greener Italian city with unusually low childcare pressure and real alpine access.",
+    "stayAwayIf": "You need a broad multinational job market or cheap buying by small-city standards.",
+    "bikeLanes": "7/10 for bike and stroller comfort.",
+    "personalTax": "Roughly 32%-38% effective for middle-income families.",
+    "waterQuality": "Tap water is generally safe but often hard; filters are common for taste and limescale rather than necessity.",
+    "dining": "About EUR69-95 equivalent for a family meal with drinks.",
+    "extremeWeather": "Snow and mountain-weather swings matter more than chronic air or heat stress, leaving the city comparatively resilient for Italy.",
+    "maxAqi": 13
+  },
+  "sanLazzaro": {
+    "personality": "Quiet, residential, and family-first. San Lazzaro trades urban scene for calm streets, good schools, and materially lower rent — and many families with infants make exactly that call.",
+    "fittingIn": "Fully local by character. Integration happens through school pickup, the Saturday market, and neighborhood routine rather than through an expat network.",
+    "honestTruth": {
+      "good": [
+        "Materially cheaper than central Bologna with the same TPER metropolitan transit access.",
+        "Among the calmest and most stroller-friendly living environments in the Emilia-Romagna roster.",
+        "Good local schools and green streets suit a family with an infant looking for low daily friction."
+      ],
+      "bad": [
+        "Very limited own-city depth — cultural, career, and service variety depends entirely on Bologna access.",
+        "Air quality is the same Po Valley drag as the rest of Emilia-Romagna.",
+        "Almost no international expat footprint, which can feel isolating if Italian is not yet established."
+      ]
+    },
+    "utilities": "EUR389-559 including utilities, internet, and phones.",
+    "stateAid": "Assegno Unico and Bonus Nido are the main financial levers rather than a flat municipal sticker price.",
+    "fifteenMinute": "Partial — the centro is walkable but wider services require a bus or car trip to Bologna.",
+    "moveHereIf": "You want the lowest-cost Bologna-access option in the roster, calm streets for an infant, and can build social life through schools and neighborhood rather than an expat scene.",
+    "stayAwayIf": "You want your own city's scale of cultural and career depth, or need an international expat landing pad.",
+    "bikeLanes": "5/10 for bike and stroller comfort.",
+    "personalTax": "Roughly 32%-38% effective for middle-income families.",
+    "waterQuality": "Tap water is generally safe but often hard; filters are common for taste and limescale rather than necessity.",
+    "dining": "About EUR60-83 equivalent for a family meal with drinks.",
+    "extremeWeather": "Same Po Valley heat and air-stagnation risk as Bologna; the hills provide slightly better drainage but the climate profile is effectively identical.",
+    "maxAqi": 20
+  },
+  "imola": {
+    "personality": "Small, self-sufficient, and proud of its racing identity. Imola does not try to be Bologna but draws cultural oxygen from the Autodromo, from Emilia food culture, and from a compact, neighbourhood-rich urban fabric.",
+    "fittingIn": "Italian is essential. There is no expat infrastructure. Integration happens through schools, local markets, and neighbourhood routines in a city where most daily life happens in Italian and at a distinctly local pace.",
+    "honestTruth": {
+      "good": [
+        "Rent is meaningfully cheaper than Bologna while maintaining access to Bologna's services by road or bus.",
+        "Autodromo Enzo e Dino Ferrari (Formula 1 Emilia-Romagna Grand Prix) gives the city a cultural and economic identity well above its size.",
+        "Emilia-Romagna food and wine quality — local producers, weekly markets, restaurant culture — is the same as in Bologna, at lower prices.",
+        "Calmer daily rhythm and safer streets than the Bologna core."
+      ],
+      "bad": [
+        "Own-city job market is very thin outside manufacturing and local services — Bologna dependence is high for career households.",
+        "Po Valley air quality is the same structural drag as the wider Emilia-Romagna plain.",
+        "No major university; children will need to relocate for higher education.",
+        "Public transit to Bologna is slow enough that car ownership is practically essential for career-active households."
+      ]
+    },
+    "utilities": "EUR394-567 including utilities, internet, and phones.",
+    "stateAid": "Assegno Unico and Bonus Nido are the main financial levers rather than a flat municipal sticker price.",
+    "fifteenMinute": "Partial — core is walkable, wider routines require a car.",
+    "moveHereIf": "You want the cheapest Bologna-orbit option in the Italian set with calmer streets, and you can build social life through schools and local networks while accepting limited own-city career depth.",
+    "stayAwayIf": "You need direct local job market depth, clean air, or an international community to land in.",
+    "bikeLanes": "5/10 for bike and stroller comfort.",
+    "personalTax": "Roughly 32%-38% effective for middle-income families.",
+    "waterQuality": "Tap water is generally safe but often hard; filters are common for taste and limescale rather than necessity.",
+    "dining": "About EUR61-84 equivalent for a family meal with drinks.",
+    "extremeWeather": "Po Valley heat and inversion risk identical to Bologna. Periodic flooding risk from the Santerno river. Winter fog is common. Air quality and summer heat are the dominant residential quality-of-life stressors.",
+    "maxAqi": 21
+  },
+  "urbino": {
+    "personality": "A living Renaissance masterpiece where the university is the city. Urbino has barely changed in five centuries — it is a place of extraordinary beauty, intellectual heritage, and deliberate smallness.",
+    "fittingIn": "Italian is essential. The university brings international students and some academic staff, but the permanent community is deeply local. Integration is through school, neighbourhood, and the university calendar.",
+    "honestTruth": {
+      "good": [
+        "The cleanest air in the Italian set by a wide margin — Apennine hilltop location at 415m puts Urbino entirely outside the Po Valley inversion zone.",
+        "Lowest cost of living in the Italian roster; purchasing power for remote-income households is exceptional.",
+        "UNESCO World Heritage city — Palazzo Ducale, the birthplace of Raphael, and a perfectly preserved Renaissance urban fabric are the daily backdrop.",
+        "Exceptionally safe small-town environment with a strong university community that keeps the city intellectually alive."
+      ],
+      "bad": [
+        "Smallest job market in the set by a wide margin — practically all paid employment is university-related or in local services; remote work is near-mandatory for international households.",
+        "Car is essential; the hilltop location means virtually no cycling for transport, and inter-city transit is infrequent.",
+        "Specialist healthcare requires Pesaro (50km) or Ancona (90km); the local hospital covers general family care only.",
+        "Very small social pool for international adults outside the university year; summers see students depart and the city becomes significantly quieter."
+      ]
+    },
+    "utilities": "EUR286-411 including utilities, internet, and phones.",
+    "stateAid": "Assegno Unico and Bonus Nido are the main financial levers rather than a flat municipal sticker price.",
+    "fifteenMinute": "Within the historic centre only.",
+    "moveHereIf": "You want the cleanest air in Italy, the lowest cost, and an extraordinary historical setting — and you have a fully portable income and are genuinely drawn to small-city Italian life.",
+    "stayAwayIf": "You need local job market depth, reliable public transit, specialist healthcare nearby, or a large social pool outside term-time.",
+    "bikeLanes": "1/10 for bike and stroller comfort.",
+    "personalTax": "Roughly 32%-38% effective for middle-income families.",
+    "waterQuality": "Tap water is generally safe but often hard; filters are common for taste and limescale rather than necessity.",
+    "dining": "About EUR44-61 equivalent for a family meal with drinks.",
+    "extremeWeather": "Snow is possible given the 415m hilltop elevation — typically 2-4 snowfall events per winter. Summers are warm but meaningfully cooler than the Po Valley. No significant flooding risk. The climate is four-season mild without extreme events.",
+    "maxAqi": 10
+  }
+}

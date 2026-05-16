@@ -1,0 +1,8 @@
+{
+  "memories": {
+    "local_rigour_init_shim": {
+      "value": "This workspace cannot use the npm package named `rigour` directly because it exposes no bin entry, so `npx rigour init` fails under npm 11. A local file-based npm devDependency named `rigour-cli-shim` provides the `rigour` executable and unblocks Rigour MCP auto-initialization. Keep package.json, tools/rigour-cli/, and rigour.yml in place if Rigour tools are needed.",
+      "timestamp": "2026-04-17T09:29:26.565Z"
+    }
+  }
+}

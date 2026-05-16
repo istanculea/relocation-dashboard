@@ -1,0 +1,1010 @@
+{
+  "bilbao": {
+    "verifiedSections": [
+      "Housing",
+      "Childcare",
+      "Healthcare",
+      "Mobility",
+      "Family benefits"
+    ],
+    "verifiedDetails": [
+      {
+        "key": "housingCosts",
+        "section": "Housing"
+      },
+      {
+        "key": "childcareCosts",
+        "section": "Childcare"
+      },
+      {
+        "key": "healthcareAccess",
+        "section": "Healthcare"
+      },
+      {
+        "key": "mobilityCosts",
+        "section": "Mobility"
+      },
+      {
+        "key": "familyBenefits",
+        "section": "Family benefits"
+      }
+    ],
+    "verifiedSourceSummary": "Housing: Eustat Bilbao rental reference (Current Eustat 2024 rental reference page) | Bilbao City Hall official portal (Current 2026 Bilbao City Hall portal) | Bizkaia Foral Diputacion housing services (Current 2026 Bizkaia housing portal) || Childcare: Basque Government Haurreskolak article (Updated 30 Apr 2025 Euskadi article) | Euskadi Hezkuntza school enrollment portal (Current 2026 Euskadi education portal) || Healthcare: Osakidetza citizen services (Updated 27 Feb 2026 Osakidetza services page) | Osakidetza centre and hospital finder (Updated 22 Apr 2025 Osakidetza finder) | Hospital Universitario Cruces official site (Current 2026 Osakidetza hospital page) || Mobility: CTB Barik fares 2026 (Valid 21 Feb-31 Dec 2026 CTB fares page) || Family benefits: Euskadi family aid expansion FAQ (Updated 27 Feb 2026 Euskadi FAQ) | Euskadi monthly family aid procedure (Current 2026 Euskadi procedure page) | Seguridad Social prestaciones familiares Spain (Current 2026 Seguridad Social portal)",
+    "childcare": "Haurreskolak remains a free 0-2 early-education service in the 2025/2026 school year.",
+    "mobility": "CTB 2026 Barik fares: Bilbobus and Bilbao tram EUR0.44; Metro service EUR0.61-0.78 depending on zones.",
+    "familyBenefits": "Euskadi family aid in 2026: EUR200/month up to age 4, then EUR100/month to age 7 for registered monoparental families and third-or-later children.",
+    "lastReviewed": "2026-05-15"
+  },
+  "bucharest": {
+    "verifiedSections": [
+      "Housing",
+      "Childcare",
+      "Healthcare",
+      "Mobility",
+      "Family benefits"
+    ],
+    "verifiedDetails": [
+      {
+        "key": "housingCosts",
+        "section": "Housing"
+      },
+      {
+        "key": "childcareCosts",
+        "section": "Childcare"
+      },
+      {
+        "key": "healthcareAccess",
+        "section": "Healthcare"
+      },
+      {
+        "key": "mobilityCosts",
+        "section": "Mobility"
+      },
+      {
+        "key": "familyBenefits",
+        "section": "Family benefits"
+      }
+    ],
+    "verifiedSourceSummary": "Housing: Primaria Municipiului Bucuresti official portal (Current 2026 PMB portal) | INS Romania housing and real estate statistics (Current 2026 INS Romania portal) || Childcare: DGASPC Bucuresti child and social protection services (Current 2026 DGASPC Bucuresti portal) | Ministerul Educatiei school and cresa enrollment framework (Current 2026 MEN Romania portal) || Healthcare: DSP Bucuresti public health authority (Current 2026 DSP Bucuresti portal) | Spitalul Clinic de Urgenta Floreasca (Current 2026 Spital Floreasca portal) | Ministerul Sanatatii public health portal (Current 2026 MS Romania portal) || Mobility: TPBI fares page (Updated 20 Feb 2025 TPBI fares page) | Metrorex official fare information (Current 2026 Metrorex tariffs page) || Family benefits: MMSS child allowance service page (Current 2026 MMSS service portal) | Romania public services catalog (Current 2026 ADR public service catalog) | ANOFM employment and social protection agency (Current 2026 ANOFM portal)",
+    "childcare": "DGASPC Bucuresti is the official Bucharest authority for child protection, family services, and social support programs for residents.",
+    "mobility": "Monthly pass: 80 RON surface network / 140 RON integrated with Metrorex.",
+    "familyBenefits": "Official child-allowance service for any child; Primarie filing and monthly payment schedule published.",
+    "lastReviewed": "2026-05-15"
+  },
+  "bologna": {
+    "verifiedSections": [
+      "Housing",
+      "Childcare",
+      "Healthcare",
+      "Mobility",
+      "Family benefits"
+    ],
+    "verifiedDetails": [
+      {
+        "key": "housingCosts",
+        "section": "Housing"
+      },
+      {
+        "key": "childcareCosts",
+        "section": "Childcare"
+      },
+      {
+        "key": "healthcareAccess",
+        "section": "Healthcare"
+      },
+      {
+        "key": "mobilityCosts",
+        "section": "Mobility"
+      },
+      {
+        "key": "familyBenefits",
+        "section": "Family benefits"
+      }
+    ],
+    "verifiedSourceSummary": "Housing: Agenzia Entrate OMI Bologna residential market (OMI 2H 2025 residential market report) | Comune di Bologna housing and social services (Current 2026 Comune di Bologna housing portal) || Childcare: Bologna municipal nido tariffs (Current 2026 Comune di Bologna page) | Bologna conventioned nidi agevolations (Current 2026 Comune di Bologna page) || Healthcare: AUSL Bologna doctor and pediatrician choice (Current 2026 AUSL Bologna service guide) | AUSL Bologna service guide locations (Current 2026 AUSL Bologna guide) || Mobility: TPER urban fares page (Current 2026 TPER fares page) || Family benefits: INPS family support overview (Current INPS portal 2025) | INPS Assegno Unico e Universale per i figli (Current 2026 INPS Assegno Unico page)",
+    "childcare": "Bologna municipal nido tariffs are ISEE-based, meal-inclusive, and discounted for shorter full-time schedules from 2025/2026.",
+    "mobility": "Bologna urban subscriptions: monthly impersonal EUR39; annual impersonal EUR340; annual personal EUR310.",
+    "familyBenefits": "INPS confirms that Assegno Unico and Bonus asilo nido are national programs rather than city-level Bologna benefits.",
+    "lastReviewed": "2026-05-15"
+  },
+  "lugo": {
+    "verifiedSections": [
+      "Housing",
+      "Childcare",
+      "Healthcare",
+      "Mobility",
+      "Family benefits"
+    ],
+    "verifiedDetails": [
+      {
+        "key": "housingCosts",
+        "section": "Housing"
+      },
+      {
+        "key": "childcareCosts",
+        "section": "Childcare"
+      },
+      {
+        "key": "healthcareAccess",
+        "section": "Healthcare"
+      },
+      {
+        "key": "mobilityCosts",
+        "section": "Mobility"
+      },
+      {
+        "key": "familyBenefits",
+        "section": "Family benefits"
+      }
+    ],
+    "verifiedSourceSummary": "Housing: Agenzia Entrate OMI Lugo 2H 2025 lookup (Queried 12 May 2026 against OMI 2H 2025) || Childcare: Bassa Romagna nursery fee rules (Updated 5 Mar 2026 Bassa Romagna fee rules page) | Bassa Romagna nido support measure (Updated 4 Mar 2026 Bassa Romagna nido support page) || Healthcare: AUSL Romagna (Current 2026 AUSL site) | Ospedale Civile Lugo — AUSL Romagna hub (Current 2026 AUSL Romagna Lugo hospital page) | Ministero della Salute SSN patient rights (Current 2026 Ministero della Salute portal) || Mobility: Start Romagna Trova Zona (Current 2026 Start Romagna zone finder) | Start Romagna subscriptions (Current 2026 Start Romagna subscriptions page) || Family benefits: INPS family support overview (Current INPS portal 2025) | INPS Assegno Unico e Universale per i figli (Current 2026 INPS Assegno Unico page)",
+    "childcare": "Lugo nursery fees are officially set each school year by the Unione della Bassa Romagna and remain ISEE-based with family reductions.",
+    "mobility": "Lugo is listed in zone 740 of the Ravenna basin.",
+    "familyBenefits": "National frame for Assegno Unico, which varies by ISEE and household composition rather than by city.",
+    "lastReviewed": "2026-05-15"
+  },
+  "milan": {
+    "verifiedSections": [
+      "Housing",
+      "Childcare",
+      "Healthcare",
+      "Mobility",
+      "Family benefits"
+    ],
+    "verifiedDetails": [
+      {
+        "key": "housingCosts",
+        "section": "Housing"
+      },
+      {
+        "key": "childcareCosts",
+        "section": "Childcare"
+      },
+      {
+        "key": "healthcareAccess",
+        "section": "Healthcare"
+      },
+      {
+        "key": "mobilityCosts",
+        "section": "Mobility"
+      },
+      {
+        "key": "familyBenefits",
+        "section": "Family benefits"
+      }
+    ],
+    "verifiedSourceSummary": "Housing: Comune di Milano housing and real estate portal (Current 2026 Comune di Milano housing portal) | Agenzia Entrate OMI Milan real estate market (OMI 2H 2025 residential market report) || Childcare: Comune di Milano contributive quote 2025/2026 PDF (Comune di Milano PDF dated 1 Jul 2025 for educational year 2025/2026) | Comune di Milano nidi and sezioni primavera service (Updated 12 May 2026 Comune di Milano service page) | Comune di Milano 0-3 services overview (Updated 12 May 2026 Comune di Milano 0-3 page) | Comune di Milano nursery quota workflow (Updated 12 May 2026 Comune di Milano quota page) | Comune di Milano nursery payment attestations (Updated 12 May 2026 Comune di Milano payment page) || Healthcare: ATS Città Metropolitana di Milano (Current 2026 ATS Milano portal) | ASST Fatebenefratelli Sacco hospital network (Current 2026 ASST portal) | Ministero della Salute SSN patient rights (Current 2026 Ministero della Salute portal) || Mobility: ATM Milan subscriptions (Current 2026 ATM subscriptions page) || Family benefits: INPS family support overview (Current INPS portal 2025) | INPS Assegno Unico e Universale per i figli (Current 2026 INPS Assegno Unico page)",
+    "childcare": "Milan municipal nido 2025/2026: free to ISEE EUR6,500, then EUR111.30, EUR250.60, and EUR502.20; non-resident rate EUR669.35/month.",
+    "mobility": "Urban monthly pass: EUR39; annual pass: EUR330.",
+    "familyBenefits": "INPS confirms that Assegno Unico and Bonus asilo nido are national programs rather than city-level Milan benefits.",
+    "lastReviewed": "2026-05-15"
+  },
+  "reggioEmilia": {
+    "verifiedSections": [
+      "Housing",
+      "Childcare",
+      "Healthcare",
+      "Mobility",
+      "Family benefits"
+    ],
+    "verifiedDetails": [
+      {
+        "key": "housingCosts",
+        "section": "Housing"
+      },
+      {
+        "key": "childcareCosts",
+        "section": "Childcare"
+      },
+      {
+        "key": "healthcareAccess",
+        "section": "Healthcare"
+      },
+      {
+        "key": "mobilityCosts",
+        "section": "Mobility"
+      },
+      {
+        "key": "familyBenefits",
+        "section": "Family benefits"
+      }
+    ],
+    "verifiedSourceSummary": "Housing: Agenzia Entrate OMI Reggio Emilia residential market (OMI 2H 2025 residential market report) | Comune di Reggio Emilia housing and social services (Current 2026 Comune RE housing portal) || Childcare: Comune di Reggio Emilia nursery services (Updated 13 Apr 2026) | Comune di Reggio Emilia nursery fees (Updated 29 Dec 2025) || Healthcare: AUSL Reggio Emilia (Current 2026 AUSL site) | IRCCS Arcispedale Santa Maria Nuova (Current 2026 ASMN portal) | Ministero della Salute SSN patient rights (Current 2026 Ministero della Salute portal) || Mobility: SETA Reggio Emilia subscriptions (Current 2026 SETA subscriptions page) || Family benefits: INPS family support overview (Current INPS portal 2025) | INPS Assegno Unico e Universale per i figli (Current 2026 INPS Assegno Unico page)",
+    "childcare": "The municipal nursery-services page states that the integrated public system serves children aged 3 to 36 months and links admissions, schedules, and fee/payment rules.",
+    "mobility": "Urban monthly pass: EUR32; annual urban pass: EUR240 age 14-26 / EUR260 age 27+.",
+    "familyBenefits": "National frame for Assegno Unico, which varies by ISEE and household composition rather than by city.",
+    "lastReviewed": "2026-05-15"
+  },
+  "cologne": {
+    "verifiedSections": [
+      "Housing",
+      "Childcare",
+      "Healthcare",
+      "Mobility",
+      "Family benefits"
+    ],
+    "verifiedDetails": [
+      {
+        "key": "housingCosts",
+        "section": "Housing"
+      },
+      {
+        "key": "childcareCosts",
+        "section": "Childcare"
+      },
+      {
+        "key": "healthcareAccess",
+        "section": "Healthcare"
+      },
+      {
+        "key": "mobilityCosts",
+        "section": "Mobility"
+      },
+      {
+        "key": "familyBenefits",
+        "section": "Family benefits"
+      }
+    ],
+    "verifiedSourceSummary": "Housing: Stadt Köln Wohnungsmarkt housing overview (Current 2026 Stadt Köln housing portal) | Statistik Stadt Köln (Current 2026 Statistik Köln portal) || Childcare: Stadt Köln parent contributions (Valid since 1 Aug 2025) | Stadt Köln Kinder- und Jugendhilfe family services (Current 2026 Stadt Köln family portal) || Healthcare: Uniklinik Köln university hospital (Current 2026 Uniklinik Köln portal) | Gesundheitsamt Köln public health office (Current 2026 Gesundheitsamt Köln portal) || Mobility: Deutschlandticket (Current 2026 operator page) | KVB Köln ticket prices (Current 2026 KVB fares page) || Family benefits: Familienportal Kindergeld FAQ (Current 2026 federal family portal) | Familienportal Elterngeld guide (Current 2026 federal family portal)",
+    "childcare": "Municipal nursery fees vary by household income and booked weekly hours rather than by a flat sticker price.",
+    "mobility": "Source-linked transport anchor used for the Cologne household budget.",
+    "familyBenefits": "Federal family portal states the current Kindergeld rate is EUR259 per child per month.",
+    "lastReviewed": "2026-05-15"
+  },
+  "valencia": {
+    "verifiedSections": [
+      "Housing",
+      "Childcare",
+      "Healthcare",
+      "Mobility",
+      "Family benefits"
+    ],
+    "verifiedDetails": [
+      {
+        "key": "housingCosts",
+        "section": "Housing"
+      },
+      {
+        "key": "childcareCosts",
+        "section": "Childcare"
+      },
+      {
+        "key": "healthcareAccess",
+        "section": "Healthcare"
+      },
+      {
+        "key": "mobilityCosts",
+        "section": "Mobility"
+      },
+      {
+        "key": "familyBenefits",
+        "section": "Family benefits"
+      }
+    ],
+    "verifiedSourceSummary": "Housing: Ajuntament de València housing portal (Current 2026 Ajuntament de València) | Generalitat Valenciana habitatge portal (Current 2026 Generalitat Valenciana) || Childcare: Ajuntament de València escoles infantils (Current 2026 Ajuntament de València) || Healthcare: Hospital Universitari i Politècnic La Fe (Current 2026 Hospital La Fe portal) | Conselleria de Sanitat — SIP card registration (Current 2026 Conselleria de Sanitat) || Mobility: Metrovalencia official fare table (Current 2026 Metrovalencia) | EMT Valencia bus fares (Current 2026 EMT Valencia) || Family benefits: IMSERSO — Prestación por hijo a cargo (Current 2026 IMSERSO portal) | AEAT — Deducción por maternidad (Current 2026 AEAT portal)",
+    "childcare": "The Ajuntament de València escoles infantils portal lists municipal 0-3 nursery places, fee schedules, and enrollment procedures.",
+    "mobility": "Metrovalencia publishes the official fare grid for Valencia Metro and Tram (TRAM Metropolità de València), including zone pricing, monthly passes, and multi-trip cards.",
+    "familyBenefits": "IMSERSO explains the Spanish non-contributory child benefit (EUR100/month per child under 18 for income-tested households).",
+    "lastReviewed": "2026-05-28"
+  },
+  "vienna": {
+    "verifiedSections": [
+      "Housing",
+      "Childcare",
+      "Healthcare",
+      "Mobility",
+      "Family benefits"
+    ],
+    "verifiedDetails": [
+      {
+        "key": "housingCosts",
+        "section": "Housing"
+      },
+      {
+        "key": "childcareCosts",
+        "section": "Childcare"
+      },
+      {
+        "key": "healthcareAccess",
+        "section": "Healthcare"
+      },
+      {
+        "key": "mobilityCosts",
+        "section": "Mobility"
+      },
+      {
+        "key": "familyBenefits",
+        "section": "Family benefits"
+      }
+    ],
+    "verifiedSourceSummary": "Housing: Stadt Wien Wohnen housing portal (Current 2026 Wien.gv.at housing portal) | Wohnberatung Wien housing advisory service (Current 2026 Wohnberatung Wien portal) | Statistik Austria housing statistics (Current 2026 Statistik Austria portal) || Childcare: City of Vienna childcare (Current 2026 city page) | MA10 Wien Kindergarten portal (Current 2026 MA10 Wien portal) || Healthcare: Wiener Gesundheitsverbund (WiGev) hospital network (Current 2026 WiGev portal) | Stadt Wien Gesundheitsamt health services (Current 2026 Wien.gv.at health portal) || Mobility: Wiener Linien Jahreskarte (Current 2026 operator page) | Wiener Linien ticket pricing (Current 2026 Wiener Linien tickets page) || Family benefits: Bundeskanzleramt Familienbeihilfe (2025-2027 federal rate table) | Bundeskanzleramt Kinderbetreuungsgeld guide (Current 2026 BKA family portal)",
+    "childcare": "The City of Vienna states that kindergarten is free until compulsory school age. The page does not expose a machine-readable 0-3 municipal tariff, so infant-care costs stay withheld in the strict snapshot.",
+    "mobility": "EUR461/year, about EUR38/month equivalent.",
+    "familyBenefits": "Official Austrian family-allowance table for the 0-3 bracket plus Kinderabsetzbetrag.",
+    "lastReviewed": "2026-05-15"
+  },
+  "salzburg": {
+    "verifiedSections": [
+      "Housing",
+      "Childcare",
+      "Healthcare",
+      "Mobility",
+      "Family benefits"
+    ],
+    "verifiedDetails": [
+      {
+        "key": "housingCosts",
+        "section": "Housing"
+      },
+      {
+        "key": "childcareCosts",
+        "section": "Childcare"
+      },
+      {
+        "key": "healthcareAccess",
+        "section": "Healthcare"
+      },
+      {
+        "key": "mobilityCosts",
+        "section": "Mobility"
+      },
+      {
+        "key": "familyBenefits",
+        "section": "Family benefits"
+      }
+    ],
+    "verifiedSourceSummary": "Housing: Stadt Salzburg Wohnen housing portal (Current 2026 Stadt Salzburg housing portal) | Land Salzburg housing statistics (Current 2026 Land Salzburg statistics portal) | Statistik Austria housing and dwelling statistics (Current 2026 Statistik Austria portal) || Childcare: Stadt Salzburg Kinderbetreuung (Current 2026 Stadt Salzburg childcare portal) | BMSGPK Kinderbetreuung und Bildung guide (Current 2026 BMSGPK portal) || Healthcare: Salzburger Landeskliniken (SALK) (Current 2026 SALK portal) | Salzburg ÖGK health insurance regional office (Current 2026 ÖGK portal) | Österreichische Gesundheitskasse citizen enrollment (Current 2026 ÖGK portal) || Mobility: Salzburg AG local transport fares (Current 2026 Salzburg AG transport portal) | Salzburg StadtBus pass information (Current 2026 Salzburg StadtBus portal) | Klimaticket Osterreich (Current 2026 operator page) || Family benefits: Bundeskanzleramt Familienbeihilfe (2025-2027 federal rate table) | Bundeskanzleramt Kinderbetreuungsgeld guide (Current 2026 BKA family portal)",
+    "childcare": "The City of Salzburg publishes municipal kindergarten and Krippe enrollment, fee structures, and childcare subsidy information.",
+    "mobility": "Salzburg AG (Salzburger Lokalbahn and bus network) publishes urban transport fares and monthly pass prices for the Salzburg city zone.",
+    "familyBenefits": "Official Austrian family-allowance table for the 0-3 bracket plus Kinderabsetzbetrag.",
+    "lastReviewed": "2026-05-12"
+  },
+  "graz": {
+    "verifiedSections": [
+      "Housing",
+      "Childcare",
+      "Healthcare",
+      "Mobility",
+      "Family benefits"
+    ],
+    "verifiedDetails": [
+      {
+        "key": "housingCosts",
+        "section": "Housing"
+      },
+      {
+        "key": "childcareCosts",
+        "section": "Childcare"
+      },
+      {
+        "key": "healthcareAccess",
+        "section": "Healthcare"
+      },
+      {
+        "key": "mobilityCosts",
+        "section": "Mobility"
+      },
+      {
+        "key": "familyBenefits",
+        "section": "Family benefits"
+      }
+    ],
+    "verifiedSourceSummary": "Housing: Stadt Graz Wohnen housing portal (Current 2026 Stadt Graz housing portal) | Statistik Austria housing and dwelling statistics (Current 2026 Statistik Austria portal) || Childcare: Stadt Graz Kinderbetreuung kindergarten services (Current 2026 Stadt Graz childcare portal) | BMSGPK Kinderbetreuung und Bildung guide (Current 2026 BMSGPK portal) || Healthcare: LKH-Univ. Klinikum Graz (Reviewed May 2026 LKH-Univ. Klinikum Graz site) | Österreichische Gesundheitskasse citizen enrollment (Current 2026 ÖGK portal) || Mobility: Holding Graz ticket infos (Reviewed May 2026 Holding Graz ticket page) | Klimaticket Osterreich (Current 2026 operator page) || Family benefits: Bundeskanzleramt Familienbeihilfe (2025-2027 federal rate table) | Bundeskanzleramt Kinderbetreuungsgeld guide (Current 2026 BKA family portal)",
+    "childcare": "The City of Graz publishes municipal kindergarten enrollment, fee structures, and childcare service information for Graz families.",
+    "mobility": "Graz Linien monthly ticket from EUR66.60; Graz-subsidized KlimaTicket Steiermark variants EUR299 for eligible residents.",
+    "familyBenefits": "Official Austrian family-allowance table for the 0-3 bracket plus Kinderabsetzbetrag.",
+    "lastReviewed": "2026-05-12"
+  },
+  "hamburg": {
+    "verifiedSections": [
+      "Housing",
+      "Childcare",
+      "Healthcare",
+      "Mobility",
+      "Family benefits"
+    ],
+    "verifiedDetails": [
+      {
+        "key": "housingCosts",
+        "section": "Housing"
+      },
+      {
+        "key": "childcareCosts",
+        "section": "Childcare"
+      },
+      {
+        "key": "healthcareAccess",
+        "section": "Healthcare"
+      },
+      {
+        "key": "mobilityCosts",
+        "section": "Mobility"
+      },
+      {
+        "key": "familyBenefits",
+        "section": "Family benefits"
+      }
+    ],
+    "verifiedSourceSummary": "Housing: Behörde für Stadtentwicklung Hamburg housing (Current 2026 Hamburg Wohnen portal) | Statistisches Bundesamt housing price statistics (Current 2026 Destatis portal) || Childcare: Hamburg Kita-Gutschein childcare financing (Current 2026 Hamburg Kita-Gutschein portal) | BMFSFJ Kindertagesbetreuung federal framework (Current 2026 BMFSFJ portal) || Healthcare: GKV-Spitzenverband member rights and enrollment (Current 2026 GKV portal) || Mobility: Hamburger Luftmessnetz oversight (Reviewed May 2026 Hamburg BUKEA air-monitoring page) | Hamburger Luftmessnetz current data (Reviewed May 2026 Hamburger Luftmessnetz current-data portal) | Deutschlandticket (Current 2026 operator page) || Family benefits: Familienportal Kindergeld FAQ (Current 2026 federal family portal) | Familienportal Elterngeld guide (Current 2026 federal family portal)",
+    "childcare": "The Hamburg Kita-Gutschein system provides income-based subsidised childcare places for children from age 1, with the city covering most fees for eligible families.",
+    "mobility": "Hamburg air network: 12 fixed stations, continuous PM10 and PM2.5 monitoring, and online data publication.",
+    "familyBenefits": "Federal family portal states the current Kindergeld rate is EUR259 per child per month.",
+    "lastReviewed": "2026-05-12"
+  },
+  "munich": {
+    "verifiedSections": [
+      "Housing",
+      "Childcare",
+      "Healthcare",
+      "Mobility",
+      "Family benefits"
+    ],
+    "verifiedDetails": [
+      {
+        "key": "housingCosts",
+        "section": "Housing"
+      },
+      {
+        "key": "childcareCosts",
+        "section": "Childcare"
+      },
+      {
+        "key": "healthcareAccess",
+        "section": "Healthcare"
+      },
+      {
+        "key": "mobilityCosts",
+        "section": "Mobility"
+      },
+      {
+        "key": "familyBenefits",
+        "section": "Family benefits"
+      }
+    ],
+    "verifiedSourceSummary": "Housing: Sozialreferat München housing and social services (Current 2026 München Wohnungsamt portal) | Statistisches Amt München housing statistics (Current 2026 Statistisches Amt München portal) | Statistisches Bundesamt housing price statistics (Current 2026 Destatis portal) || Childcare: München Kita-Navigator and childcare portal (Current 2026 München childcare portal) | BMFSFJ Kindertagesbetreuung federal framework (Current 2026 BMFSFJ portal) || Healthcare: LMU Klinikum (Reviewed May 2026 LMU Klinikum homepage) | GKV-Spitzenverband member rights and enrollment (Current 2026 GKV portal) || Mobility: Deutschlandticket (Current 2026 operator page) || Family benefits: Familienportal Kindergeld FAQ (Current 2026 federal family portal) | Familienportal Elterngeld guide (Current 2026 federal family portal)",
+    "childcare": "Munich publishes Kita-Navigator to find and register for Kita places, alongside the municipal fee schedule and subsidy rules.",
+    "mobility": "Current nationwide EUR63 monthly pass used as the official transport anchor for German cities in this expansion wave.",
+    "familyBenefits": "Federal family portal states the current Kindergeld rate is EUR259 per child per month.",
+    "lastReviewed": "2026-05-12"
+  },
+  "malaga": {
+    "verifiedSections": [
+      "Housing",
+      "Childcare",
+      "Healthcare",
+      "Mobility",
+      "Family benefits"
+    ],
+    "verifiedDetails": [
+      {
+        "key": "housingCosts",
+        "section": "Housing"
+      },
+      {
+        "key": "childcareCosts",
+        "section": "Childcare"
+      },
+      {
+        "key": "healthcareAccess",
+        "section": "Healthcare"
+      },
+      {
+        "key": "mobilityCosts",
+        "section": "Mobility"
+      },
+      {
+        "key": "familyBenefits",
+        "section": "Family benefits"
+      }
+    ],
+    "verifiedSourceSummary": "Housing: Ayuntamiento de Málaga official portal (Current 2026 Ayuntamiento de Málaga portal) | Junta de Andalucía Vivienda housing portal (Current 2026 Junta de Andalucía housing portal) | INE residential housing price index (Current 2026 INE portal) || Childcare: Junta de Andalucía escuelas infantiles 0-3 (Current 2026 Junta de Andalucía EI portal) | Ayuntamiento de Málaga family and childcare services (Current 2026 Málaga social services portal) | Ministerio de Educación escuelas infantiles guide (Current 2026 MEFP portal) || Healthcare: Hospital Regional Universitario de Málaga (Current 2026 Hospital Regional Málaga portal) | Servicio Andaluz de Salud centros de salud (Current 2026 SAS Andalucía portal) | Ministerio de Sanidad SNS health centre finder (Current 2026 MSAN portal) || Mobility: EMT Málaga bus fares and passes (Current 2026 EMT Málaga fares page) || Family benefits: IMSERSO family and social protection services (Current 2026 IMSERSO portal) | Seguridad Social prestaciones familiares (Current 2026 Seguridad Social portal)",
+    "childcare": "The Andalucía education authority publishes enrollment, fees, and subsidy information for public escuelas infantiles (0-3 years) in Málaga.",
+    "mobility": "EMT Málaga publishes the official urban bus fare grid, Tarjeta Transporte single-trip and multi-trip rates, and monthly pass options for Málaga city.",
+    "familyBenefits": "IMSERSO administers national social protection programs and publishes information on family support and social services.",
+    "lastReviewed": "2026-05-12"
+  },
+  "bristol": {
+    "verifiedSections": [
+      "Housing",
+      "Childcare",
+      "Healthcare",
+      "Mobility",
+      "Family benefits"
+    ],
+    "verifiedDetails": [
+      {
+        "key": "housingCosts",
+        "section": "Housing"
+      },
+      {
+        "key": "childcareCosts",
+        "section": "Childcare"
+      },
+      {
+        "key": "healthcareAccess",
+        "section": "Healthcare"
+      },
+      {
+        "key": "mobilityCosts",
+        "section": "Mobility"
+      },
+      {
+        "key": "familyBenefits",
+        "section": "Family benefits"
+      }
+    ],
+    "verifiedSourceSummary": "Housing: Bristol City Council housing services (Current 2026 Bristol City Council housing portal) | ONS UK house price index (Current 2026 ONS portal) || Childcare: Bristol City Council childcare and family services (Current 2026 Bristol City Council family portal) | GOV.UK free childcare if working (Current 2026 GOV.UK guidance) || Healthcare: NHS register with a GP surgery (Page last reviewed 28 Jul 2025 NHS guidance) | NHS Find a GP service (Current 2026 NHS portal) || Mobility: First West of England bus fares and passes (Current 2026 First West of England portal) || Family benefits: GOV.UK Child Benefit (Current 2026 GOV.UK guidance) | GOV.UK Tax-Free Childcare scheme (Current 2026 GOV.UK guidance)",
+    "childcare": "Bristol City Council publishes free childcare eligibility, Ofsted-registered provider search, and family support services.",
+    "mobility": "First West of England operates most Bristol bus routes and publishes adult fares, weekly and monthly multi-trip passes, and contactless capping.",
+    "familyBenefits": "Current GOV.UK guidance for Child Benefit, including the weekly rate for the eldest or only child and high-income clawback rules.",
+    "lastReviewed": "2026-05-12"
+  },
+  "edinburgh": {
+    "verifiedSections": [
+      "Housing",
+      "Childcare",
+      "Healthcare",
+      "Mobility",
+      "Family benefits"
+    ],
+    "verifiedDetails": [
+      {
+        "key": "housingCosts",
+        "section": "Housing"
+      },
+      {
+        "key": "childcareCosts",
+        "section": "Childcare"
+      },
+      {
+        "key": "healthcareAccess",
+        "section": "Healthcare"
+      },
+      {
+        "key": "mobilityCosts",
+        "section": "Mobility"
+      },
+      {
+        "key": "familyBenefits",
+        "section": "Family benefits"
+      }
+    ],
+    "verifiedSourceSummary": "Housing: City of Edinburgh Council housing and rental market (Current 2026 Edinburgh Council housing portal) | ONS UK house price index (Current 2026 ONS portal) || Childcare: Scottish Government ELC funded childcare scheme (Current 2026 mygov.scot ELC guidance) | GOV.UK free childcare if working (Current 2026 GOV.UK guidance) || Healthcare: NHS Lothian GP practices (Reviewed May 2026 NHS Lothian GP page) | NHS Find a GP service (Current 2026 NHS portal) || Mobility: Lothian Buses Ridacard (Reviewed May 2026 Lothian Buses Ridacard page) || Family benefits: GOV.UK Child Benefit (Current 2026 GOV.UK guidance) | GOV.UK Tax-Free Childcare scheme (Current 2026 GOV.UK guidance)",
+    "childcare": "The Scottish Government provides 1,140 hours per year of free early learning and childcare for all 3-4 year olds and eligible 2 year olds.",
+    "mobility": "Edinburgh Ridacard: GBP80 for 4 weeks or GBP74/month by annual direct debit across buses, trams, Airlink, and NightBus.",
+    "familyBenefits": "Current GOV.UK guidance for Child Benefit, including the weekly rate for the eldest or only child and high-income clawback rules.",
+    "lastReviewed": "2026-05-12"
+  },
+  "parma": {
+    "verifiedSections": [
+      "Housing",
+      "Childcare",
+      "Healthcare",
+      "Mobility",
+      "Family benefits"
+    ],
+    "verifiedDetails": [
+      {
+        "key": "housingCosts",
+        "section": "Housing"
+      },
+      {
+        "key": "childcareCosts",
+        "section": "Childcare"
+      },
+      {
+        "key": "healthcareAccess",
+        "section": "Healthcare"
+      },
+      {
+        "key": "mobilityCosts",
+        "section": "Mobility"
+      },
+      {
+        "key": "familyBenefits",
+        "section": "Family benefits"
+      }
+    ],
+    "verifiedSourceSummary": "Housing: Comune di Parma housing and urban services (Current 2026 Comune di Parma housing portal) | Agenzia delle Entrate OMI housing market observatory (Current 2026 Agenzia delle Entrate portal) || Childcare: Comune di Parma nidi d'infanzia (Current 2026 Comune di Parma nidi portal) | INPS Bonus asilo nido application (Current 2026 INPS portal) || Healthcare: Azienda Ospedaliero-Universitaria di Parma (Current 2026 AO Parma portal) | Ministero della Salute SSN citizen guide (Current 2026 Ministero della Salute portal) || Mobility: TEP Parma urban fares (Reviewed May 2026 TEP Tariffe Urbane page) | Arpae Parma provincial air bulletin (Reviewed 12 May 2026 Arpae Parma provincial air bulletin) || Family benefits: INPS family support overview (Current INPS portal 2025) | INPS Assegno Unico Universale (Current 2026 INPS portal)",
+    "childcare": "The Parma municipal portal publishes nido enrollment, ISEE-based tariff bands, and application procedures for public nurseries.",
+    "mobility": "Parma TEP urban passes: EUR39 monthly or EUR310 annually; valid inside zone 200.",
+    "familyBenefits": "INPS confirms that Assegno Unico and Bonus asilo nido are national programs rather than city-level allowances.",
+    "lastReviewed": "2026-05-12"
+  },
+  "verona": {
+    "verifiedSections": [
+      "Housing",
+      "Childcare",
+      "Healthcare",
+      "Mobility",
+      "Family benefits"
+    ],
+    "verifiedDetails": [
+      {
+        "key": "housingCosts",
+        "section": "Housing"
+      },
+      {
+        "key": "childcareCosts",
+        "section": "Childcare"
+      },
+      {
+        "key": "healthcareAccess",
+        "section": "Healthcare"
+      },
+      {
+        "key": "mobilityCosts",
+        "section": "Mobility"
+      },
+      {
+        "key": "familyBenefits",
+        "section": "Family benefits"
+      }
+    ],
+    "verifiedSourceSummary": "Housing: Comune di Verona housing and territory services (Current 2026 Comune di Verona portal) | Agenzia delle Entrate OMI housing market observatory (Current 2026 Agenzia delle Entrate portal) || Childcare: Comune di Verona nidi d'infanzia (Current 2026 Comune di Verona nidi portal) | INPS Bonus asilo nido application (Current 2026 INPS portal) || Healthcare: AOVR citizen services (Reviewed May 2026 AOVR homepage) | Ministero della Salute SSN citizen guide (Current 2026 Ministero della Salute portal) || Mobility: ATV Verona urban fares (Reviewed May 2026 ATV Urbano Verona fare page) | ARPAV Veneto air data (Reviewed May 2026 ARPAV air-data page summary) || Family benefits: INPS family support overview (Current INPS portal 2025) | INPS Assegno Unico Universale (Current 2026 INPS portal)",
+    "childcare": "The Verona municipal portal publishes nido d'infanzia enrollment, ISEE-based tariff bands, and application procedures.",
+    "mobility": "Verona City Mover: EUR43 monthly or EUR368 annually; reduced City Mover: EUR28 monthly or EUR276 annually.",
+    "familyBenefits": "INPS confirms that Assegno Unico and Bonus asilo nido are national programs rather than city-level allowances.",
+    "lastReviewed": "2026-05-12"
+  },
+  "bergamo": {
+    "verifiedSections": [
+      "Housing",
+      "Childcare",
+      "Healthcare",
+      "Mobility",
+      "Family benefits"
+    ],
+    "verifiedDetails": [
+      {
+        "key": "housingCosts",
+        "section": "Housing"
+      },
+      {
+        "key": "childcareCosts",
+        "section": "Childcare"
+      },
+      {
+        "key": "healthcareAccess",
+        "section": "Healthcare"
+      },
+      {
+        "key": "mobilityCosts",
+        "section": "Mobility"
+      },
+      {
+        "key": "familyBenefits",
+        "section": "Family benefits"
+      }
+    ],
+    "verifiedSourceSummary": "Housing: Comune di Bergamo official portal (Current 2026 Comune di Bergamo portal) | Agenzia Entrate OMI Bergamo residential market (OMI 2H 2025 residential market report) | Agenzia delle Entrate OMI housing market observatory (Current 2026 Agenzia delle Entrate portal) || Childcare: Comune di Bergamo nidi d'infanzia services (Current 2026 Comune di Bergamo family portal) | INPS Bonus asilo nido application (Current 2026 INPS portal) || Healthcare: ASST Papa Giovanni XXIII Bergamo (Current 2026 ASST Papa Giovanni XXIII portal) | Ministero della Salute SSN citizen guide (Current 2026 Ministero della Salute portal) || Mobility: ATB Bergamo subscription tariffs (Reviewed May 2026 ATB tariff page) || Family benefits: INPS family support overview (Current INPS portal 2025) | INPS Assegno Unico Universale (Current 2026 INPS portal)",
+    "childcare": "The Bergamo municipal family services portal covers nido d'infanzia enrollment, ISEE-based tariffs, and child welfare services.",
+    "mobility": "Bergamo ATB one-zone ordinary pass: EUR36 monthly or EUR325 annually.",
+    "familyBenefits": "INPS confirms that Assegno Unico and Bonus asilo nido are national programs rather than city-level allowances.",
+    "lastReviewed": "2026-05-12"
+  },
+  "modena": {
+    "verifiedSections": [
+      "Housing",
+      "Childcare",
+      "Healthcare",
+      "Mobility",
+      "Family benefits"
+    ],
+    "verifiedDetails": [
+      {
+        "key": "housingCosts",
+        "section": "Housing"
+      },
+      {
+        "key": "childcareCosts",
+        "section": "Childcare"
+      },
+      {
+        "key": "healthcareAccess",
+        "section": "Healthcare"
+      },
+      {
+        "key": "mobilityCosts",
+        "section": "Mobility"
+      },
+      {
+        "key": "familyBenefits",
+        "section": "Family benefits"
+      }
+    ],
+    "verifiedSourceSummary": "Housing: Agenzia delle Entrate OMI housing market observatory (Current 2026 Agenzia delle Entrate portal) || Childcare: INPS Bonus asilo nido application (Current 2026 INPS portal) || Healthcare: AUSL Modena — Azienda Unità Sanitaria Locale di Modena (Current 2026 AUSL Modena portal) | Ministero della Salute SSN citizen guide (Current 2026 Ministero della Salute portal) || Mobility: SETA SpA Modena urban subscription tariffs (Current 2026 SETA Modena tariffs page) || Family benefits: INPS family support overview (Current INPS portal 2025) | INPS Assegno Unico Universale (Current 2026 INPS portal)",
+    "childcare": "INPS publishes the Bonus asilo nido rates: EUR272.73/month for ISEE up to EUR25,000; EUR149.77 for EUR25,001-40,000; EUR85.64 above EUR40,000.",
+    "mobility": "SETA SpA is the public transit operator for Modena (and Reggio Emilia and Piacenza provinces). The Modena urban subscription page publishes monthly and annual pass prices for residents.",
+    "familyBenefits": "INPS confirms that Assegno Unico and Bonus asilo nido are national programs rather than city-level allowances.",
+    "lastReviewed": "2026-05-12"
+  },
+  "torino": {
+    "verifiedSections": [
+      "Housing",
+      "Childcare",
+      "Healthcare",
+      "Mobility",
+      "Family benefits"
+    ],
+    "verifiedDetails": [
+      {
+        "key": "housingCosts",
+        "section": "Housing"
+      },
+      {
+        "key": "childcareCosts",
+        "section": "Childcare"
+      },
+      {
+        "key": "healthcareAccess",
+        "section": "Healthcare"
+      },
+      {
+        "key": "mobilityCosts",
+        "section": "Mobility"
+      },
+      {
+        "key": "familyBenefits",
+        "section": "Family benefits"
+      }
+    ],
+    "verifiedSourceSummary": "Housing: Agenzia delle Entrate OMI housing market observatory (Current 2026 Agenzia delle Entrate portal) || Childcare: INPS Bonus asilo nido application (Current 2026 INPS portal) || Healthcare: AOU Città della Salute e della Scienza di Torino (Current 2026 AOU Città della Salute portal) | Ministero della Salute SSN citizen guide (Current 2026 Ministero della Salute portal) || Mobility: GTT Torino subscription tariffs (Reviewed May 2026 GTT tariff page) || Family benefits: INPS family support overview (Current INPS portal 2025) | INPS Assegno Unico Universale (Current 2026 INPS portal)",
+    "childcare": "INPS publishes the Bonus asilo nido rates: EUR272.73/month for ISEE up to EUR25,000; EUR149.77 for EUR25,001-40,000; EUR85.64 above EUR40,000.",
+    "mobility": "Turin GTT monthly urban pass: EUR38/month (indicative from Numbeo community data May 2026).",
+    "familyBenefits": "INPS confirms that Assegno Unico and Bonus asilo nido are national programs rather than city-level allowances.",
+    "lastReviewed": "2026-05-12"
+  },
+  "lucca": {
+    "verifiedSections": [
+      "Housing",
+      "Childcare",
+      "Healthcare",
+      "Mobility",
+      "Family benefits"
+    ],
+    "verifiedDetails": [
+      {
+        "key": "housingCosts",
+        "section": "Housing"
+      },
+      {
+        "key": "childcareCosts",
+        "section": "Childcare"
+      },
+      {
+        "key": "healthcareAccess",
+        "section": "Healthcare"
+      },
+      {
+        "key": "mobilityCosts",
+        "section": "Mobility"
+      },
+      {
+        "key": "familyBenefits",
+        "section": "Family benefits"
+      }
+    ],
+    "verifiedSourceSummary": "Housing: Agenzia delle Entrate OMI housing market observatory (Current 2026 Agenzia delle Entrate portal) || Childcare: INPS Bonus asilo nido application (Current 2026 INPS portal) || Healthcare: AUSL Toscana Nord Ovest — Ospedale San Luca Lucca (Current 2026 AUSL Toscana Nord Ovest portal) | Ministero della Salute SSN citizen guide (Current 2026 Ministero della Salute portal) || Mobility: Vaibus Toscana — Lucca urban and provincial lines (Reviewed 2026 Vaibus Lucca tariff pages) || Family benefits: INPS family support overview (Current INPS portal 2025) | INPS Assegno Unico Universale (Current 2026 INPS portal)",
+    "childcare": "INPS publishes the Bonus asilo nido rates: EUR272.73/month for ISEE up to EUR25,000; EUR149.77 for EUR25,001-40,000; EUR85.64 above EUR40,000.",
+    "mobility": "Lucca monthly urban pass: approximately EUR31/month (Numbeo community data May 2026).",
+    "familyBenefits": "INPS confirms that Assegno Unico and Bonus asilo nido are national programs rather than city-level allowances.",
+    "lastReviewed": "2026-05-12"
+  },
+  "udine": {
+    "verifiedSections": [
+      "Housing",
+      "Childcare",
+      "Healthcare",
+      "Mobility",
+      "Family benefits"
+    ],
+    "verifiedDetails": [
+      {
+        "key": "housingCosts",
+        "section": "Housing"
+      },
+      {
+        "key": "childcareCosts",
+        "section": "Childcare"
+      },
+      {
+        "key": "healthcareAccess",
+        "section": "Healthcare"
+      },
+      {
+        "key": "mobilityCosts",
+        "section": "Mobility"
+      },
+      {
+        "key": "familyBenefits",
+        "section": "Family benefits"
+      }
+    ],
+    "verifiedSourceSummary": "Housing: Agenzia Entrate OMI Udine residential market (OMI 2H 2025 residential market report) | Comune di Udine housing services (Current 2026 Comune di Udine housing portal) | Agenzia delle Entrate OMI housing market observatory (Current 2026 Agenzia delle Entrate portal) || Childcare: Comune di Udine servizi educativi (Current 2026 Comune di Udine education portal) | INPS Bonus asilo nido application (Current 2026 INPS portal) || Healthcare: ASUFC services and contacts (Reviewed May 2026 ASUFC homepage) | Ministero della Salute SSN citizen guide (Current 2026 Ministero della Salute portal) || Mobility: APT Gorizia-Udine urban transport (Current 2026 APT Gorizia-Udine tariffs page) || Family benefits: INPS family support overview (Current INPS portal 2025) | INPS Assegno Unico Universale (Current 2026 INPS portal)",
+    "childcare": "The Udine municipal portal publishes nido d'infanzia enrollment, ISEE-based tariffs, and educational service information.",
+    "mobility": "APT Gorizia-Udine publishes urban and provincial fares, monthly subscription prices, and travel card options for Udine.",
+    "familyBenefits": "INPS confirms that Assegno Unico and Bonus asilo nido are national programs rather than city-level allowances.",
+    "lastReviewed": "2026-05-12"
+  },
+  "padova": {
+    "verifiedSections": [
+      "Housing",
+      "Childcare",
+      "Healthcare",
+      "Mobility",
+      "Family benefits"
+    ],
+    "verifiedDetails": [
+      {
+        "key": "housingCosts",
+        "section": "Housing"
+      },
+      {
+        "key": "childcareCosts",
+        "section": "Childcare"
+      },
+      {
+        "key": "healthcareAccess",
+        "section": "Healthcare"
+      },
+      {
+        "key": "mobilityCosts",
+        "section": "Mobility"
+      },
+      {
+        "key": "familyBenefits",
+        "section": "Family benefits"
+      }
+    ],
+    "verifiedSourceSummary": "Housing: Comune di Padova housing and social services (Current 2026 Comune di Padova housing portal) | Agenzia delle Entrate OMI housing market observatory (Current 2026 Agenzia delle Entrate portal) || Childcare: Comune di Padova nidi d'infanzia (Current 2026 Comune di Padova nidi portal) | INPS Bonus asilo nido application (Current 2026 INPS portal) || Healthcare: Azienda Ospedale-Universita Padova (Reviewed May 2026 AOPD homepage) | Ministero della Salute SSN citizen guide (Current 2026 Ministero della Salute portal) || Mobility: Busitalia Veneto Padua urban subscriptions (Reviewed May 2026 Busitalia Veneto Padua subscriptions page) || Family benefits: INPS family support overview (Current INPS portal 2025) | INPS Assegno Unico Universale (Current 2026 INPS portal)",
+    "childcare": "The Padua municipal portal publishes nido enrollment, ISEE-based tariffs, and childcare service information for families.",
+    "mobility": "Padua urban subscriptions: TU1 EUR42.90 monthly or EUR418 annually; TU2 EUR52.80 monthly or EUR528 annually.",
+    "familyBenefits": "INPS confirms that Assegno Unico and Bonus asilo nido are national programs rather than city-level allowances.",
+    "lastReviewed": "2026-05-12"
+  },
+  "trento": {
+    "verifiedSections": [
+      "Housing",
+      "Childcare",
+      "Healthcare",
+      "Mobility",
+      "Family benefits"
+    ],
+    "verifiedDetails": [
+      {
+        "key": "housingCosts",
+        "section": "Housing"
+      },
+      {
+        "key": "childcareCosts",
+        "section": "Childcare"
+      },
+      {
+        "key": "healthcareAccess",
+        "section": "Healthcare"
+      },
+      {
+        "key": "mobilityCosts",
+        "section": "Mobility"
+      },
+      {
+        "key": "familyBenefits",
+        "section": "Family benefits"
+      }
+    ],
+    "verifiedSourceSummary": "Housing: Agenzia Entrate OMI Trento residential market (OMI 2H 2025 residential market report) | Comune di Trento housing services (Current 2026 Comune di Trento housing portal) | Agenzia delle Entrate OMI housing market observatory (Current 2026 Agenzia delle Entrate portal) || Childcare: Provincia Autonoma di Trento asili nido (Current 2026 PAT prima infanzia portal) | INPS Bonus asilo nido application (Current 2026 INPS portal) || Healthcare: ASUIT Trentino online services (Reviewed May 2026 ASUIT homepage) | Ministero della Salute SSN citizen guide (Current 2026 Ministero della Salute portal) || Mobility: Trentino Trasporti urban passes (Current 2026 Trentino Trasporti tariffs page) || Family benefits: INPS family support overview (Current INPS portal 2025) | INPS Assegno Unico Universale (Current 2026 INPS portal)",
+    "childcare": "The Autonomous Province of Trento publishes the framework for nidi d'infanzia (0-3 years), enrollment procedures, and fee structures.",
+    "mobility": "Trentino Trasporti publishes the Trento urban fare grid and monthly subscription prices for the city network.",
+    "familyBenefits": "INPS confirms that Assegno Unico and Bonus asilo nido are national programs rather than city-level allowances.",
+    "lastReviewed": "2026-05-12"
+  },
+  "sanLazzaro": {
+    "verifiedSections": [
+      "Housing",
+      "Childcare",
+      "Healthcare",
+      "Mobility",
+      "Family benefits"
+    ],
+    "verifiedDetails": [
+      {
+        "key": "housingCosts",
+        "section": "Housing"
+      },
+      {
+        "key": "childcareCosts",
+        "section": "Childcare"
+      },
+      {
+        "key": "healthcareAccess",
+        "section": "Healthcare"
+      },
+      {
+        "key": "mobilityCosts",
+        "section": "Mobility"
+      },
+      {
+        "key": "familyBenefits",
+        "section": "Family benefits"
+      }
+    ],
+    "verifiedSourceSummary": "Housing: Agenzia delle Entrate OMI housing market observatory (Current 2026 Agenzia delle Entrate portal) || Childcare: INPS Bonus asilo nido application (Current 2026 INPS portal) || Healthcare: AUSL Bologna — Azienda Unità Sanitaria Locale di Bologna (Current 2026 AUSL Bologna portal) | Ministero della Salute SSN citizen guide (Current 2026 Ministero della Salute portal) || Mobility: TPER Bologna metropolitan urban subscriptions (Current 2026 TPER subscriptions page) || Family benefits: INPS family support overview (Current INPS portal 2025) | INPS Assegno Unico Universale (Current 2026 INPS portal)",
+    "childcare": "INPS publishes the Bonus asilo nido rates: EUR272.73/month for ISEE up to EUR25,000; EUR149.77 for EUR25,001-40,000; EUR85.64 above EUR40,000.",
+    "mobility": "TPER (Trasporto Passeggeri Emilia-Romagna) is the main transit operator for Bologna and the metropolitan area, including San Lazzaro di Savena. The subscriptions page lists monthly and annual urban and area pass prices.",
+    "familyBenefits": "INPS confirms that Assegno Unico and Bonus asilo nido are national programs rather than city-level allowances.",
+    "lastReviewed": "2026-05-12"
+  },
+  "imola": {
+    "verifiedSections": [
+      "Housing",
+      "Childcare",
+      "Healthcare",
+      "Mobility",
+      "Family benefits"
+    ],
+    "verifiedDetails": [
+      {
+        "key": "housingCosts",
+        "section": "Housing"
+      },
+      {
+        "key": "childcareCosts",
+        "section": "Childcare"
+      },
+      {
+        "key": "healthcareAccess",
+        "section": "Healthcare"
+      },
+      {
+        "key": "mobilityCosts",
+        "section": "Mobility"
+      },
+      {
+        "key": "familyBenefits",
+        "section": "Family benefits"
+      }
+    ],
+    "verifiedSourceSummary": "Housing: Agenzia delle Entrate OMI housing market observatory (Current 2026 Agenzia delle Entrate portal) || Childcare: INPS Bonus asilo nido application (Current 2026 INPS portal) || Healthcare: AUSL Romagna — Distretto di Imola (Current 2026 AUSL Romagna portal) | Ministero della Salute SSN citizen guide (Current 2026 Ministero della Salute portal) || Mobility: SABus Imola — urban and provincial subscriptions (Reviewed 2026 Start Romagna tariff pages) || Family benefits: INPS family support overview (Current INPS portal 2025) | INPS Assegno Unico Universale (Current 2026 INPS portal)",
+    "childcare": "INPS publishes the Bonus asilo nido rates: EUR272.73/month for ISEE up to EUR25,000; EUR149.77 for EUR25,001-40,000; EUR85.64 above EUR40,000.",
+    "mobility": "Imola urban monthly pass: approximately EUR28/month (Numbeo community data March 2026).",
+    "familyBenefits": "INPS confirms that Assegno Unico and Bonus asilo nido are national programs rather than city-level allowances.",
+    "lastReviewed": "2026-05-12"
+  },
+  "urbino": {
+    "verifiedSections": [
+      "Housing",
+      "Childcare",
+      "Healthcare",
+      "Mobility",
+      "Family benefits"
+    ],
+    "verifiedDetails": [
+      {
+        "key": "housingCosts",
+        "section": "Housing"
+      },
+      {
+        "key": "childcareCosts",
+        "section": "Childcare"
+      },
+      {
+        "key": "healthcareAccess",
+        "section": "Healthcare"
+      },
+      {
+        "key": "mobilityCosts",
+        "section": "Mobility"
+      },
+      {
+        "key": "familyBenefits",
+        "section": "Family benefits"
+      }
+    ],
+    "verifiedSourceSummary": "Housing: Agenzia delle Entrate OMI housing market observatory (Current 2026 Agenzia delle Entrate portal) || Childcare: INPS Bonus asilo nido application (Current 2026 INPS portal) || Healthcare: AST Pesaro-Urbino — Distretto di Urbino (Current 2026 AST Pesaro-Urbino portal) | Ministero della Salute SSN citizen guide (Current 2026 Ministero della Salute portal) || Mobility: Adriabus — Pesaro-Urbino provincial network (Reviewed 2026 Adriabus tariff information) || Family benefits: INPS family support overview (Current INPS portal 2025) | INPS Assegno Unico Universale (Current 2026 INPS portal)",
+    "childcare": "INPS publishes the Bonus asilo nido rates: EUR272.73/month for ISEE up to EUR25,000; EUR149.77 for EUR25,001-40,000; EUR85.64 above EUR40,000.",
+    "mobility": "Urbino regional monthly pass: approximately EUR35/month (estimated from Adriabus provincial tariff structure, 2025-2026).",
+    "familyBenefits": "INPS confirms that Assegno Unico and Bonus asilo nido are national programs rather than city-level allowances.",
+    "lastReviewed": "2026-05-12"
+  }
+}

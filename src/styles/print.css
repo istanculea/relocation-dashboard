@@ -1,0 +1,378 @@
+/**
+ * print.css — src/styles/
+ *
+ * Dedicated print-layout stylesheet for the Relocation Dashboard.
+ *
+ * Activated via window.print() from the "Save as PDF" button.
+ * Works in tandem with the isPrinting flag in App.jsx which expands
+ * all <details> elements and sets .app-shell--printing on the root.
+ *
+ * Strategy:
+ * - Hide all interactive controls (filters, sliders, buttons, trays).
+ * - Force all collapsed accordions / details open.
+ * - Reset backgrounds to white / black ink for legibility.
+ * - Insert page breaks so each city section starts on a fresh page.
+ * - Preserve tables, pillar bars, and the radar chart polygon layout.
+ *
+ * Import in src/main.jsx (or src/App.jsx) after the other style imports:
+ *   import './styles/print.css';
+ */
+
+/* ── Print page setup ──────────────────────────────────────────────────────── */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 18mm 14mm 18mm 14mm;
+  }
+
+  /* ── Reset body ──────────────────────────────────────────────────────────── */
+  body {
+    background: #ffffff !important;
+    color: #0a0a0a !important;
+    font-size: 11pt !important;
+    line-height: 1.45 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* ── Hide interactive / non-content elements ─────────────────────────────── */
+  .hero__actions,
+  .hero__quicklinks,
+  .export-actions,
+  .toggle,
+  .toggle--secondary,
+  .comparison-tray,
+  .simulation-engine,
+  .pin-toggle,
+  .shortlist-card-wrap .pin-toggle,
+  .threshold-sliders,
+  .filter-bar,
+  .filter-pills,
+  .search-bar,
+  .sort-bar,
+  nav,
+  button:not(.print-keep),
+  input[type="range"],
+  input[type="number"],
+  input[type="search"],
+  select,
+  .hero__hint small,
+  .expansion-pipeline-panel,
+  .verification-policy-panel,
+  .benchmark-methodology-panel,
+  .data-quality-overview,
+  .financing-panel .fin-controls,
+  .financing-panel .fin-presets,
+  .financing-panel .fin-bar,
+  .financing-panel .fin-disclaimer,
+  [aria-label="Jump to section"],
+  .no-print {
+    display: none !important;
+  }
+
+  /* ── Remove shadows, borders, and translucent panels ────────────────────── */
+  .panel,
+  .card,
+  .brief-card,
+  .city-card,
+  .explorer-panel,
+  [class*="-panel"],
+  [class*="-card"] {
+    background: #ffffff !important;
+    box-shadow: none !important;
+    border: 0.5pt solid #cccccc !important;
+    border-radius: 0 !important;
+  }
+
+  /* ── App shell padding ───────────────────────────────────────────────────── */
+  .app-shell {
+    padding: 0 !important;
+  }
+
+  .dashboard,
+  .brief-stack {
+    display: block !important;
+  }
+
+  /* ── Expand all <details> elements ──────────────────────────────────────── */
+  details,
+  details[open] {
+    display: block !important;
+  }
+
+  details > summary {
+    display: list-item !important;
+    font-weight: 600;
+    margin-bottom: 4pt;
+  }
+
+  /* ── Typography adjustments ─────────────────────────────────────────────── */
+  h1 { font-size: 18pt !important; margin: 0 0 6pt !important; }
+  h2 { font-size: 15pt !important; margin: 8pt 0 4pt !important; }
+  h3 { font-size: 13pt !important; margin: 6pt 0 3pt !important; }
+  h4 { font-size: 11pt !important; margin: 4pt 0 2pt !important; }
+
+  .hero__eyebrow {
+    font-size: 9pt !important;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── Tables ─────────────────────────────────────────────────────────────── */
+  table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    font-size: 9pt !important;
+    page-break-inside: auto;
+  }
+
+  thead { display: table-header-group; }
+  tfoot { display: table-footer-group; }
+
+  tr {
+    page-break-inside: avoid;
+  }
+
+  th, td {
+    border: 0.5pt solid #bbb !important;
+    padding: 3pt 5pt !important;
+    background: transparent !important;
+    color: #0a0a0a !important;
+  }
+
+  th {
+    background: #f0f0f0 !important;
+    font-weight: 600;
+  }
+
+  /* Alternate row tinting */
+  tbody tr:nth-child(even) td {
+    background: #f9f9f9 !important;
+  }
+
+  /* ── Score bars (pillar bars, budget bars) ───────────────────────────────── */
+  .score-bar,
+  .pillar-bar,
+  .tray-bar,
+  .carfree-score-bar,
+  .climate-bar__fill {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* ── Color badges / status chips ────────────────────────────────────────── */
+  [class*="badge"],
+  [class*="chip"],
+  [class*="status-"],
+  .audit-badge,
+  .verified-badge {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    border: 0.5pt solid currentColor !important;
+  }
+
+  /* ── Radar chart: preserve SVG ───────────────────────────────────────────── */
+  .radar-chart-svg {
+    max-width: 320pt !important;
+    height: auto !important;
+    page-break-inside: avoid;
+  }
+
+  /* ── Climate timeline: stack vertically ─────────────────────────────────── */
+  .climate-timeline__row {
+    display: block !important;
+    margin-bottom: 8pt;
+  }
+
+  .climate-timeline__bars {
+    display: flex !important;
+    flex-wrap: nowrap;
+    gap: 1pt;
+  }
+
+  .climate-bar {
+    flex: 1;
+  }
+
+  /* ── Comparison tray: print as a flat table instead ─────────────────────── */
+  /* (The tray is hidden above; use the regular scorecard table for print) */
+
+  /* ── DataSanityPanel ─────────────────────────────────────────────────────── */
+  .sanity-panel {
+    page-break-inside: avoid;
+  }
+
+  .sanity-gauge__fill,
+  .status--verified,
+  .status--mixed,
+  .status--modeled {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Show the audit notes inline (not in a <details> since those are forced open) */
+  .sanity-notes {
+    border-left: 1pt solid #999 !important;
+    font-style: italic;
+    font-size: 9pt;
+  }
+
+  /* ── FinancingEnginePanel: print summary only ─────────────────────────────── */
+  .financing-panel {
+    page-break-inside: avoid;
+  }
+
+  .fin-results {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 4pt !important;
+  }
+
+  .fin-stat {
+    border: 0.5pt solid #bbb !important;
+    padding: 4pt 6pt !important;
+  }
+
+  .fin-badge {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* ── Dilemma matrix ──────────────────────────────────────────────────────── */
+  .dilemma-matrix {
+    page-break-before: always;
+  }
+
+  .dilemma-header {
+    display: flex !important;
+    gap: 12pt;
+  }
+
+  .dilemma-pillars {
+    display: grid !important;
+    grid-template-columns: 1fr auto 1fr !important;
+  }
+
+  /* ── Page break rules ────────────────────────────────────────────────────── */
+
+  /* Each major section starts on a new page */
+  .strategic-balance-panel,
+  #sec-shortlist,
+  .shortlist-section,
+  .verified-snapshot-section,
+  .explorer-page,
+  .dilemma-matrix,
+  .simulation-engine-printable {
+    page-break-before: always;
+  }
+
+  /* City dossier cards — each one on its own page */
+  .city-dossier,
+  .brief-card + .brief-card,
+  .city-card + .city-card {
+    page-break-before: always;
+  }
+
+  /* Prevent breaks inside a pillar row or a pros/cons block */
+  .pillar-row,
+  .dilemma-pillar-row,
+  .dilemma-list,
+  .dilemma-narrative,
+  .carfree-cell,
+  .threshold-slider-row {
+    page-break-inside: avoid;
+  }
+
+  /* ── Links: show URL in print ────────────────────────────────────────────── */
+  a[href]::after {
+    content: ' (' attr(href) ')';
+    font-size: 8pt;
+    color: #555;
+    word-break: break-all;
+  }
+
+  /* Suppress URL expansion for internal/hash links and icon buttons */
+  a[href^="#"]::after,
+  a[href^="javascript"]::after,
+  button::after {
+    content: '' !important;
+  }
+
+  /* ── Suppress background gradients on hero ───────────────────────────────── */
+  .hero {
+    background: #ffffff !important;
+    border-bottom: 1pt solid #cccccc !important;
+    padding-bottom: 8pt !important;
+    margin-bottom: 12pt !important;
+  }
+
+  .hero__summary {
+    font-size: 9.5pt !important;
+    max-width: 100% !important;
+  }
+
+  /* ── Score value chips: keep colour ─────────────────────────────────────── */
+  .score-chip,
+  .pillar-chip,
+  .aqi--excellent,
+  .aqi--good,
+  .aqi--moderate,
+  .aqi--elevated,
+  .aqi--poor,
+  .tray-cell--best,
+  .tray-cell--worst,
+  .dilemma-pillar__a--win,
+  .dilemma-pillar__b--win {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* ── Compare hint: hide on print ─────────────────────────────────────────── */
+  .compare-hint {
+    display: none !important;
+  }
+
+  /* ── Engine accordions: show open, hide dot ─────────────────────────────── */
+  .engine-accordion {
+    border: none !important;
+    padding: 0 !important;
+  }
+
+  .engine-active-dot {
+    display: none !important;
+  }
+
+  /* ── Radar empty state: hide (nothing to print) ──────────────────────────── */
+  .radar-chart-figure--empty {
+    display: none !important;
+  }
+
+  /* ── Sanity notes details: always show full text ─────────────────────────── */
+  .sanity-notes-details > .sanity-notes {
+    display: block !important;
+  }
+
+  .sanity-notes-summary {
+    display: none !important;
+  }
+
+  /* ── Footer ─────────────────────────────────────────────────────────────── */
+  .print-footer {
+    display: block !important;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    font-size: 8pt;
+    color: #888;
+    text-align: center;
+    border-top: 0.5pt solid #ddd;
+    padding-top: 3pt;
+  }
+}
+
+/* ── Screen-only: hide print footer ─────────────────────────────────────────── */
+@media screen {
+  .print-footer {
+    display: none;
+  }
+}

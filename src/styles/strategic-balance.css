@@ -1,0 +1,195 @@
+.strategic-balance-topbar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+}
+
+/* Legacy 3-city layout — kept for compatibility, overridden by --compact */
+.strategic-balance-summary {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.strategic-balance-matrix {
+  min-width: 980px;
+}
+
+/* ── Compact all-city heatmap ─────────────────────────────────── */
+.strategic-balance-matrix--compact {
+  min-width: unset;
+  border-collapse: collapse;
+}
+
+.matrix-pillar-col {
+  position: sticky;
+  left: 0;
+  z-index: 3;
+  min-width: 172px;
+  max-width: 172px;
+  padding: 7px 12px;
+  background: var(--bg);
+  border-right: 1px solid rgba(31, 42, 46, 0.1);
+  font-size: 0.8rem;
+  line-height: 1.35;
+  white-space: normal;
+}
+
+.matrix-pillar-col strong {
+  display: block;
+  font-weight: 600;
+}
+
+.matrix-city-col {
+  min-width: 72px;
+  max-width: 88px;
+  padding: 6px 4px;
+  text-align: center;
+  vertical-align: bottom;
+  border-bottom: 1px solid rgba(31, 42, 46, 0.06);
+}
+
+.matrix-city-col--selected {
+  background: rgba(47, 127, 98, 0.07);
+}
+
+.matrix-city-col--dim {
+  opacity: 0.4;
+}
+
+.matrix-city-label {
+  display: grid;
+  gap: 2px;
+}
+
+.matrix-city-label strong {
+  font-size: 0.74rem;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 84px;
+  display: block;
+}
+
+.matrix-city-label span {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--green);
+}
+
+.matrix-city-col--selected .matrix-city-label strong {
+  color: var(--green);
+}
+
+/* Compact score cells */
+.matrix-cell {
+  text-align: center;
+  padding: 6px 3px;
+  font-size: 0.79rem;
+  font-weight: 700;
+  min-width: 72px;
+  transition: opacity 180ms ease;
+}
+
+.matrix-cell--strong {
+  background: rgba(47, 127, 98, 0.17);
+  color: var(--badge-green);
+}
+
+.matrix-cell--good {
+  background: rgba(55, 106, 146, 0.12);
+  color: var(--badge-blue);
+}
+
+.matrix-cell--mixed {
+  background: rgba(191, 142, 55, 0.14);
+  color: var(--badge-amber);
+}
+
+.matrix-cell--drag {
+  background: rgba(166, 77, 55, 0.12);
+  color: var(--badge-rose);
+}
+
+.matrix-cell--selected {
+  outline: 2px solid rgba(47, 127, 98, 0.38);
+  outline-offset: -2px;
+}
+
+.matrix-cell--dim {
+  opacity: 0.35;
+}
+
+.matrix-cell--total {
+  background: rgba(31, 42, 46, 0.04);
+  font-size: 0.83rem;
+  border-top: 2px solid rgba(31, 42, 46, 0.1);
+}
+
+.matrix-cell--total strong {
+  font-size: 0.83rem;
+}
+
+/* Legacy detailed card (kept for upgrade path) */
+.matrix-category-cell {
+  min-width: 260px;
+}
+
+.matrix-category-cell strong {
+  display: block;
+}
+
+.balance-score-card {
+  display: grid;
+  gap: 6px;
+}
+
+.balance-score-card strong {
+  font-size: 1.05rem;
+}
+
+.balance-score-card small {
+  color: var(--muted);
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+.balance-score-card--total {
+  align-content: center;
+}
+
+.balance-score-badge {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  padding: 4px 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(31, 42, 46, 0.1);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.balance-score-badge--strong {
+  background: rgba(47, 127, 98, 0.14);
+  color: var(--badge-green);
+}
+
+.balance-score-badge--good {
+  background: rgba(55, 106, 146, 0.12);
+  color: var(--badge-blue);
+}
+
+.balance-score-badge--mixed {
+  background: rgba(191, 142, 55, 0.14);
+  color: var(--badge-amber);
+}
+
+.balance-score-badge--drag {
+  background: rgba(166, 77, 55, 0.12);
+  color: var(--badge-rose);
+}
+
+.expansion-pipeline-table td:last-child {
+  min-width: 360px;
+}

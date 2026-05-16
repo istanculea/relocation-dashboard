@@ -1,0 +1,2825 @@
+{
+  "cities": [
+    {
+      "key": "salzburg",
+      "city": "Salzburg",
+      "country": "Austria",
+      "tagline": "Very safe Alpine option with strong family calm and clean air, but purchase prices are steep for its size.",
+      "scores": {
+        "housing": 6.05,
+        "environment": 8.72,
+        "childcare": 8.2,
+        "safety": 7.95,
+        "healthcare": 8.4,
+        "weighted": 7.62
+      },
+      "housing": {
+        "rentSafe2Bed": "EUR1,373-1,612",
+        "buyCentre": "EUR7,700/sqm",
+        "buyOutside": "EUR5,668/sqm",
+        "buyerTaxes": "Austria uses 3.5% transfer tax plus 1.1% land registry and legal/notary costs.",
+        "annualTax": "Property tax is low; building charges and reserve funds matter more than the tax bill itself.",
+        "areas": [
+          "Aigen",
+          "Nonntal"
+        ]
+      },
+      "childcare": {
+        "nurseryNet": "Current market benchmark points to about EUR397/month for private full-day preschool. Public and Land-level pricing still varies by provider and family circumstances, so this remains a market cross-check rather than a strict city tariff.",
+        "schoolStart": "Formal school starts at 6.",
+        "schoolQuality": "Public schools are strong enough that private is usually optional unless you need bilingual continuity."
+      },
+      "basket": {
+        "formula": "EUR16-22",
+        "diapers": "EUR10-15",
+        "organicFruit": "EUR2.4-3.9/kg",
+        "organicVeg": "EUR2.7-4.5/kg",
+        "meat": "EUR12-27/kg",
+        "ecoCleaner": "EUR3.2-5.4",
+        "organicClothing": "EUR9-16",
+        "availability": "High"
+      },
+      "health": {
+        "registration": "Public coverage onboarding is usually straightforward once residence and work status are in place.",
+        "waits": "Primary and pediatric access are generally good by EU standards, with specialist waits still variable by provider.",
+        "privateCover": "About EUR90-160/month for faster specialist access and private rooms.",
+        "hospitals": [
+          "Uniklinikum Salzburg",
+          "Landeskrankenhaus Salzburg"
+        ]
+      },
+      "support": {
+        "childBenefit": "Familienbeihilfe starts at EUR138.40/month for ages 0-3, plus EUR70.90/month Kinderabsetzbetrag.",
+        "safety": "Safety index 79.5; day-to-day violent risk stays lower than the larger rougher metros."
+      },
+      "mobility": {
+        "pass": "EUR75/month benchmark monthly pass",
+        "oneWay": "EUR2.40 benchmark one-way fare",
+        "carNeed": "Low",
+        "bikeLanes": "Protected lanes are strongest in the flatter core; beyond it the network stays usable but less continuous.",
+        "pm25": 9,
+        "airQualityIndex": 85.23,
+        "pollutionIndex": 23.66,
+        "parkScore": 84,
+        "transitSummary": "Buses, trolleybuses, and regional rail keep central districts workable without a car."
+      },
+      "budgets": {
+        "oneParent": {
+          "min": 2706,
+          "midpoint": 3110,
+          "comfortable": 3670
+        },
+        "bothWorking": {
+          "min": 2961,
+          "midpoint": 3365,
+          "comfortable": 4004
+        },
+        "twoKids": {
+          "min": 3590,
+          "midpoint": 4127,
+          "comfortable": 4952
+        },
+        "oneIncTwoKids": {
+          "min": 3193,
+          "midpoint": 3670,
+          "comfortable": 4404
+        }
+      }
+    },
+    {
+      "key": "graz",
+      "city": "Graz",
+      "country": "Austria",
+      "tagline": "Strong value-for-calm Austrian city with good university depth, though the job market is still smaller than Vienna or Munich.",
+      "scores": {
+        "housing": 7.95,
+        "environment": 7.5,
+        "childcare": 7.6,
+        "safety": 7.25,
+        "healthcare": 8.4,
+        "weighted": 7.83
+      },
+      "housing": {
+        "rentSafe2Bed": "EUR773-908",
+        "buyCentre": "EUR5,203/sqm",
+        "buyOutside": "EUR2,865/sqm",
+        "buyerTaxes": "Austria uses 3.5% transfer tax plus 1.1% land registry and legal/notary costs.",
+        "annualTax": "Property tax is low; building charges and reserve funds matter more than the tax bill itself.",
+        "areas": [
+          "Geidorf",
+          "St. Peter"
+        ]
+      },
+      "childcare": {
+        "nurseryNet": "Current market benchmark points to about EUR468/month for private full-day preschool. Public and Land-level pricing still varies by provider and family circumstances, so this remains a market cross-check rather than a strict city tariff.",
+        "schoolStart": "Formal school starts at 6.",
+        "schoolQuality": "Public schools are strong enough that private is usually optional unless you need bilingual continuity."
+      },
+      "basket": {
+        "formula": "EUR16-22",
+        "diapers": "EUR10-15",
+        "organicFruit": "EUR2.4-3.9/kg",
+        "organicVeg": "EUR2.7-4.5/kg",
+        "meat": "EUR12-27/kg",
+        "ecoCleaner": "EUR3.2-5.4",
+        "organicClothing": "EUR9-16",
+        "availability": "High"
+      },
+      "health": {
+        "registration": "Public coverage onboarding is usually straightforward once residence and work status are in place.",
+        "waits": "Primary and pediatric access are generally good by EU standards, with specialist waits still variable by provider.",
+        "privateCover": "About EUR90-160/month for faster specialist access and private rooms.",
+        "hospitals": [
+          "LKH-Universitatsklinikum Graz",
+          "Univ. Kinderklinik Graz"
+        ]
+      },
+      "support": {
+        "childBenefit": "Familienbeihilfe starts at EUR138.40/month for ages 0-3, plus EUR70.90/month Kinderabsetzbetrag.",
+        "safety": "Safety index 72.52; day-to-day violent risk stays lower than the larger rougher metros."
+      },
+      "mobility": {
+        "pass": "EUR65/month benchmark monthly pass",
+        "oneWay": "EUR3.20 benchmark one-way fare",
+        "carNeed": "Low",
+        "bikeLanes": "Cycling is strong in the flatter districts and still usable citywide by Austrian secondary-city standards.",
+        "pm25": 16,
+        "airQualityIndex": null,
+        "pollutionIndex": null,
+        "parkScore": 78,
+        "transitSummary": "Trams and buses keep inner-district family life car-light, with rail access covering regional trips well enough."
+      },
+      "budgets": {
+        "oneParent": {
+          "min": 2046,
+          "midpoint": 2352,
+          "comfortable": 2775
+        },
+        "bothWorking": {
+          "min": 2318,
+          "midpoint": 2634,
+          "comfortable": 3134
+        },
+        "twoKids": {
+          "min": 2867,
+          "midpoint": 3295,
+          "comfortable": 3954
+        },
+        "oneIncTwoKids": {
+          "min": 2420,
+          "midpoint": 2782,
+          "comfortable": 3338
+        }
+      }
+    },
+    {
+      "key": "hamburg",
+      "city": "Hamburg",
+      "country": "Germany",
+      "tagline": "Broad employer base and workable car-light life, but safety and housing feel more mixed than Munich.",
+      "scores": {
+        "housing": 6.45,
+        "environment": 7.57,
+        "childcare": 7.2,
+        "safety": 5.92,
+        "healthcare": 8.2,
+        "weighted": 7.07
+      },
+      "housing": {
+        "rentSafe2Bed": "EUR1,247-1,464",
+        "buyCentre": "EUR8,316/sqm",
+        "buyOutside": "EUR4,465/sqm",
+        "buyerTaxes": "Transfer tax varies by Land, plus roughly 1.5%-2% in notary and land-registry costs.",
+        "annualTax": "Grundsteuer and building charges typically matter more than the headline tax label alone.",
+        "areas": [
+          "Winterhude",
+          "Eppendorf"
+        ]
+      },
+      "childcare": {
+        "nurseryNet": "Current market benchmark points to about EUR422/month for private full-day preschool. Public and municipal pricing still varies by provider and hours booked, so this remains a market cross-check rather than a city tariff.",
+        "schoolStart": "Formal school starts at 6.",
+        "schoolQuality": "Public schools are solid, but catchment and language support still matter more than a citywide average."
+      },
+      "basket": {
+        "formula": "EUR16-22",
+        "diapers": "EUR10-15",
+        "organicFruit": "EUR2.4-3.9/kg",
+        "organicVeg": "EUR2.7-4.5/kg",
+        "meat": "EUR12-27/kg",
+        "ecoCleaner": "EUR3.2-5.4",
+        "organicClothing": "EUR9-16",
+        "availability": "High"
+      },
+      "health": {
+        "registration": "You usually register smoothly once residence and insurance are in place, but the best-known pediatric practices can have closed lists.",
+        "waits": "Routine care is stronger than in the UK or Ireland, with the real friction often being doctor availability rather than hospital quality.",
+        "privateCover": "About EUR80-150/month for supplemental cover.",
+        "hospitals": [
+          "Universitatsklinikum Hamburg-Eppendorf",
+          "Altonaer Kinderkrankenhaus"
+        ]
+      },
+      "support": {
+        "childBenefit": "Kindergeld is EUR259/month per child.",
+        "safety": "Safety index 59.18; day-to-day violent risk stays lower than the larger rougher metros."
+      },
+      "mobility": {
+        "pass": "Deutschlandticket EUR63/month",
+        "oneWay": "EUR3.90 benchmark one-way fare",
+        "carNeed": "Low",
+        "bikeLanes": "Cycling is good in many districts, but larger roads and weather keep it below the most seamless Dutch-style benchmark.",
+        "pm25": 13,
+        "airQualityIndex": null,
+        "pollutionIndex": null,
+        "parkScore": 79,
+        "transitSummary": "Dense S-Bahn, U-Bahn, bus, and regional rail coverage keep most family routines workable without a car."
+      },
+      "budgets": {
+        "oneParent": {
+          "min": 2420,
+          "midpoint": 2782,
+          "comfortable": 3283
+        },
+        "bothWorking": {
+          "min": 2676,
+          "midpoint": 3041,
+          "comfortable": 3619
+        },
+        "twoKids": {
+          "min": 3274,
+          "midpoint": 3763,
+          "comfortable": 4516
+        },
+        "oneIncTwoKids": {
+          "min": 2865,
+          "midpoint": 3293,
+          "comfortable": 3952
+        }
+      }
+    },
+    {
+      "key": "munich",
+      "city": "Munich",
+      "country": "Germany",
+      "tagline": "Clear salary upside and very high safety, but housing cost is the main structural drag.",
+      "scores": {
+        "housing": 4.95,
+        "environment": 8.13,
+        "childcare": 6.93,
+        "safety": 7.83,
+        "healthcare": 8.2,
+        "weighted": 6.85
+      },
+      "housing": {
+        "rentSafe2Bed": "EUR1,571-1,844",
+        "buyCentre": "EUR10,904/sqm",
+        "buyOutside": "EUR7,454/sqm",
+        "buyerTaxes": "Transfer tax varies by Land, plus roughly 1.5%-2% in notary and land-registry costs.",
+        "annualTax": "Grundsteuer and building charges typically matter more than the headline tax label alone.",
+        "areas": [
+          "Neuhausen",
+          "Sendling"
+        ]
+      },
+      "childcare": {
+        "nurseryNet": "Current market benchmark points to about EUR806/month for private full-day preschool. Public and municipal pricing still varies by provider and hours booked, so this remains a market cross-check rather than a city tariff.",
+        "schoolStart": "Formal school starts at 6.",
+        "schoolQuality": "Public schools are solid, but catchment and language support still matter more than a citywide average."
+      },
+      "basket": {
+        "formula": "EUR16-22",
+        "diapers": "EUR10-15",
+        "organicFruit": "EUR2.4-3.9/kg",
+        "organicVeg": "EUR2.7-4.5/kg",
+        "meat": "EUR12-27/kg",
+        "ecoCleaner": "EUR3.2-5.4",
+        "organicClothing": "EUR9-16",
+        "availability": "High"
+      },
+      "health": {
+        "registration": "You usually register smoothly once residence and insurance are in place, but the best-known pediatric practices can have closed lists.",
+        "waits": "Routine care is stronger than in the UK or Ireland, with the real friction often being doctor availability rather than hospital quality.",
+        "privateCover": "About EUR80-150/month for supplemental cover.",
+        "hospitals": [
+          "LMU Klinikum",
+          "Dr. von Haunersches Kinderspital"
+        ]
+      },
+      "support": {
+        "childBenefit": "Kindergeld is EUR259/month per child.",
+        "safety": "Safety index 78.28; day-to-day violent risk stays lower than the larger rougher metros."
+      },
+      "mobility": {
+        "pass": "Deutschlandticket EUR63/month",
+        "oneWay": "EUR4.10 benchmark one-way fare",
+        "carNeed": "Low",
+        "bikeLanes": "Cycling is strong in flatter corridors, but family comfort still drops once housing pushes you further from the best core districts.",
+        "pm25": 11,
+        "airQualityIndex": null,
+        "pollutionIndex": null,
+        "parkScore": 81,
+        "transitSummary": "U-Bahn, S-Bahn, trams, and regional rail make car-light living viable if the family can secure the right district."
+      },
+      "budgets": {
+        "oneParent": {
+          "min": 2856,
+          "midpoint": 3283,
+          "comfortable": 3874
+        },
+        "bothWorking": {
+          "min": 3282,
+          "midpoint": 3730,
+          "comfortable": 4439
+        },
+        "twoKids": {
+          "min": 4098,
+          "midpoint": 4710,
+          "comfortable": 5652
+        },
+        "oneIncTwoKids": {
+          "min": 3392,
+          "midpoint": 3899,
+          "comfortable": 4679
+        }
+      }
+    },
+    {
+      "key": "malaga",
+      "city": "Malaga",
+      "country": "Spain",
+      "tagline": "Sun, milder climate, and improving urban life appeal, but wages and childcare value are weaker than the postcard suggests.",
+      "scores": {
+        "housing": 7.2,
+        "environment": 7.92,
+        "childcare": 7.23,
+        "safety": 6.88,
+        "healthcare": 7.9,
+        "weighted": 7.39
+      },
+      "housing": {
+        "rentSafe2Bed": "EUR1,057-1,241",
+        "buyCentre": "EUR4,425/sqm",
+        "buyOutside": "EUR2,586/sqm",
+        "buyerTaxes": "Transfer-tax and legal costs vary by transaction type and buyer status, with notary and registry charges on top.",
+        "annualTax": "IBI and community fees matter more than the annual tax line alone.",
+        "areas": [
+          "El Limonar",
+          "Teatinos"
+        ]
+      },
+      "childcare": {
+        "nurseryNet": "Current market benchmark points to about EUR730/month for private full-day preschool. Escuela infantil pricing still varies by provider and route, so this remains a market cross-check rather than a city tariff.",
+        "schoolStart": "Formal school starts at 6.",
+        "schoolQuality": "Public and concertado routes are workable in the right districts, while private usually buys schedule or language flexibility."
+      },
+      "basket": {
+        "formula": "EUR15-20",
+        "diapers": "EUR9-14",
+        "organicFruit": "EUR2.1-3.5/kg",
+        "organicVeg": "EUR2.4-4.1/kg",
+        "meat": "EUR10-24/kg",
+        "ecoCleaner": "EUR3.0-5.0",
+        "organicClothing": "EUR8-15",
+        "availability": "Medium-high"
+      },
+      "health": {
+        "registration": "Public coverage onboarding is generally straightforward once residencia and paperwork are in place.",
+        "waits": "Routine public waits vary, but the baseline clinical quality is strong enough that many families only top up specific specialist needs.",
+        "privateCover": "About EUR90-150/month for faster specialist access and extra flexibility.",
+        "hospitals": [
+          "Hospital Regional Universitario de Malaga",
+          "Hospital Materno Infantil de Malaga"
+        ]
+      },
+      "support": {
+        "childBenefit": "No dedicated Malaga flat family-cash anchor is attached in this build; the city remains service-led rather than grant-led in the current strict layer.",
+        "safety": "Safety index 68.81; day-to-day violent risk stays lower than the larger rougher metros."
+      },
+      "mobility": {
+        "pass": "EUR24/month benchmark monthly pass",
+        "oneWay": "EUR1.40 benchmark one-way fare",
+        "carNeed": "Low",
+        "bikeLanes": "Cycling works in flatter corridors, but heat, hills, and road design still make the network less universal than the best northern peers.",
+        "pm25": 8,
+        "airQualityIndex": 75,
+        "pollutionIndex": 35.57,
+        "parkScore": 72,
+        "transitSummary": "Metro, buses, and Cercanias cover key corridors, though the city is still easier without a car only in the better-connected districts."
+      },
+      "budgets": {
+        "oneParent": {
+          "min": 1965,
+          "midpoint": 2259,
+          "comfortable": 2666
+        },
+        "bothWorking": {
+          "min": 2307,
+          "midpoint": 2622,
+          "comfortable": 3120
+        },
+        "twoKids": {
+          "min": 2948,
+          "midpoint": 3388,
+          "comfortable": 4066
+        },
+        "oneIncTwoKids": {
+          "min": 2351,
+          "midpoint": 2702,
+          "comfortable": 3242
+        }
+      }
+    },
+    {
+      "key": "bristol",
+      "city": "Bristol",
+      "country": "United Kingdom",
+      "tagline": "Strong employer base and green lifestyle pull, but childcare and housing costs eat the UKs salary upside.",
+      "scores": {
+        "housing": 5.7,
+        "environment": 7,
+        "childcare": 5.67,
+        "safety": 5.67,
+        "healthcare": 7.2,
+        "weighted": 6.15
+      },
+      "housing": {
+        "rentSafe2Bed": "EUR1,516-1,780",
+        "buyCentre": "EUR6,032/sqm",
+        "buyOutside": "EUR4,597/sqm",
+        "buyerTaxes": "Stamp duty varies by price and buyer status, with legal, survey, and service-charge costs sitting on top.",
+        "annualTax": "Council tax and any building service charges matter more than an annual property-tax frame in the continental sense.",
+        "areas": [
+          "Redland",
+          "Westbury-on-Trym"
+        ]
+      },
+      "childcare": {
+        "nurseryNet": "Current market benchmark points to about EUR2,062/month for private full-day preschool. The headline market rate still sits above the national support scheme, so this remains a blended benchmark rather than a net city tariff.",
+        "schoolStart": "Formal school starts at 5.",
+        "schoolQuality": "Public schools can be strong, but catchment choice matters more than a citywide average and private mainly buys predictability."
+      },
+      "basket": {
+        "formula": "EUR17-24",
+        "diapers": "EUR11-17",
+        "organicFruit": "EUR2.6-4.2/kg",
+        "organicVeg": "EUR2.9-4.9/kg",
+        "meat": "EUR13-29/kg",
+        "ecoCleaner": "EUR3.5-5.8",
+        "organicClothing": "EUR10-18",
+        "availability": "High"
+      },
+      "health": {
+        "registration": "NHS registration is straightforward once you are resident, but GP list capacity and appointment speed vary sharply by neighborhood.",
+        "waits": "Hospital quality is credible, but the real premium in UK cities is speed rather than basic clinical capability.",
+        "privateCover": "About EUR129-222/month equivalent for faster specialist access and employer-style top-up cover.",
+        "hospitals": [
+          "Bristol Royal Hospital for Children",
+          "Southmead Hospital"
+        ]
+      },
+      "support": {
+        "childBenefit": "Child Benefit is EUR31.65/week for the eldest or only child, subject to high-income clawback rules.",
+        "safety": "Safety index 56.71; day-to-day violent risk stays lower than the larger rougher metros."
+      },
+      "mobility": {
+        "pass": "EUR106/month benchmark monthly pass",
+        "oneWay": "EUR2.92 benchmark one-way fare",
+        "carNeed": "Low to medium",
+        "bikeLanes": "Cycling culture is visible, but hills and patchy protection still stop the network from feeling universally family-easy.",
+        "pm25": 13,
+        "airQualityIndex": 54.49,
+        "pollutionIndex": 47.44,
+        "parkScore": 74,
+        "transitSummary": "Buses and local rail keep some corridors workable, but day-to-day family life is still less frictionless than in Edinburgh or the best continental peers."
+      },
+      "budgets": {
+        "oneParent": {
+          "min": 3124,
+          "midpoint": 3591,
+          "comfortable": 4237
+        },
+        "bothWorking": {
+          "min": 4364,
+          "midpoint": 4959,
+          "comfortable": 5901
+        },
+        "twoKids": {
+          "min": 5822,
+          "midpoint": 6692,
+          "comfortable": 8030
+        },
+        "oneIncTwoKids": {
+          "min": 3725,
+          "midpoint": 4282,
+          "comfortable": 5138
+        }
+      }
+    },
+    {
+      "key": "edinburgh",
+      "city": "Edinburgh",
+      "country": "United Kingdom",
+      "tagline": "High-quality urban fabric and good safety, but childcare and rent pressure stay stubborn.",
+      "scores": {
+        "housing": 6.45,
+        "environment": 7.93,
+        "childcare": 5.7,
+        "safety": 6.95,
+        "healthcare": 7.2,
+        "weighted": 6.64
+      },
+      "housing": {
+        "rentSafe2Bed": "EUR1,360-1,596",
+        "buyCentre": "EUR5,829/sqm",
+        "buyOutside": "EUR4,179/sqm",
+        "buyerTaxes": "Stamp duty varies by price and buyer status, with legal, survey, and service-charge costs sitting on top.",
+        "annualTax": "Council tax and any building service charges matter more than an annual property-tax frame in the continental sense.",
+        "areas": [
+          "Stockbridge",
+          "Morningside"
+        ]
+      },
+      "childcare": {
+        "nurseryNet": "Current market benchmark points to about EUR1,522/month for private full-day preschool. The headline market rate still sits above the national support scheme, so this remains a blended benchmark rather than a net city tariff.",
+        "schoolStart": "Formal school starts at 5.",
+        "schoolQuality": "Public schools can be strong, but catchment choice matters more than a citywide average and private mainly buys predictability."
+      },
+      "basket": {
+        "formula": "EUR17-24",
+        "diapers": "EUR11-17",
+        "organicFruit": "EUR2.6-4.2/kg",
+        "organicVeg": "EUR2.9-4.9/kg",
+        "meat": "EUR13-29/kg",
+        "ecoCleaner": "EUR3.5-5.8",
+        "organicClothing": "EUR10-18",
+        "availability": "High"
+      },
+      "health": {
+        "registration": "NHS registration is straightforward once you are resident, but GP list capacity and appointment speed vary sharply by neighborhood.",
+        "waits": "Hospital quality is credible, but the real premium in UK cities is speed rather than basic clinical capability.",
+        "privateCover": "About EUR129-222/month equivalent for faster specialist access and employer-style top-up cover.",
+        "hospitals": [
+          "Royal Hospital for Children and Young People",
+          "Royal Infirmary of Edinburgh"
+        ]
+      },
+      "support": {
+        "childBenefit": "Child Benefit is EUR31.65/week for the eldest or only child, subject to high-income clawback rules.",
+        "safety": "Safety index 69.46; day-to-day violent risk stays lower than the larger rougher metros."
+      },
+      "mobility": {
+        "pass": "EUR85/month benchmark monthly pass",
+        "oneWay": "EUR2.57 benchmark one-way fare",
+        "carNeed": "Low",
+        "bikeLanes": "Cycling is better in selected corridors than across the full city; hills and winter weather still shape the real family experience.",
+        "pm25": 9,
+        "airQualityIndex": null,
+        "pollutionIndex": null,
+        "parkScore": 78,
+        "transitSummary": "Buses and the tram make central and inner-district life workable without a car, especially if the family pays for location."
+      },
+      "budgets": {
+        "oneParent": {
+          "min": 2903,
+          "midpoint": 3337,
+          "comfortable": 3938
+        },
+        "bothWorking": {
+          "min": 3824,
+          "midpoint": 4345,
+          "comfortable": 5171
+        },
+        "twoKids": {
+          "min": 5008,
+          "midpoint": 5756,
+          "comfortable": 6907
+        },
+        "oneIncTwoKids": {
+          "min": 3453,
+          "midpoint": 3969,
+          "comfortable": 4763
+        }
+      }
+    },
+    {
+      "key": "parma",
+      "city": "Parma",
+      "country": "Italy",
+      "tagline": "Strong food-and-healthcare value with lower rent than Milan, but air quality still caps the upside.",
+      "scores": {
+        "housing": 8.35,
+        "environment": 5.74,
+        "childcare": 6.67,
+        "safety": 5.32,
+        "healthcare": 7.9,
+        "weighted": 7.18
+      },
+      "housing": {
+        "rentSafe2Bed": "EUR803-942",
+        "buyCentre": "EUR3,060/sqm",
+        "buyOutside": "EUR2,079/sqm",
+        "buyerTaxes": "First-home resale purchases usually use 2% of cadastral value plus fixed mortgage and cadastral taxes.",
+        "annualTax": "Primary-home IMU is usually exempt, with TARI and condo charges still payable.",
+        "areas": [
+          "Cittadella",
+          "Molinetto"
+        ]
+      },
+      "childcare": {
+        "nurseryNet": "Current market benchmark points to about EUR575/month for private full-day preschool. Municipal and convenzionato fees still vary by ISEE and provider, so this stays a market cross-check in the expansion wave.",
+        "schoolStart": "Formal school starts at 6.",
+        "schoolQuality": "Public schools are solid and private is mostly about language continuity, not escaping a weak baseline."
+      },
+      "basket": {
+        "formula": "EUR15-20",
+        "diapers": "EUR9-14",
+        "organicFruit": "EUR2.1-3.5/kg",
+        "organicVeg": "EUR2.4-4.1/kg",
+        "meat": "EUR10-24/kg",
+        "ecoCleaner": "EUR3.0-5.0",
+        "organicClothing": "EUR8-15",
+        "availability": "Medium-high"
+      },
+      "health": {
+        "registration": "The SSN remains the main public-health path once residence paperwork is in place.",
+        "waits": "Routine public waits are still an Italian-system reality, but hospital quality is often better than the city size suggests.",
+        "privateCover": "About EUR90-160/month, or many families top up with pay-per-visit private care.",
+        "hospitals": [
+          "Azienda Ospedaliero-Universitaria di Parma",
+          "Ospedale dei Bambini Pietro Barilla"
+        ]
+      },
+      "support": {
+        "childBenefit": "Assegno Unico is national and ISEE-based; these cities do not add a flat local baby allowance in the current strict layer.",
+        "safety": "Safety index 53.2; day-to-day violent risk stays lower than the larger rougher metros."
+      },
+      "mobility": {
+        "pass": "EUR37/month benchmark monthly pass",
+        "oneWay": "EUR1.70 benchmark one-way fare",
+        "carNeed": "Low to medium",
+        "bikeLanes": "The compact fabric helps, but the network is not enough to erase car pull in outer-family routines.",
+        "pm25": 19,
+        "airQualityIndex": 35.42,
+        "pollutionIndex": 62.31,
+        "parkScore": 60,
+        "transitSummary": "The city stays walkable and bus-usable in central districts, though the wider pattern is still less seamless than the strongest car-light cities here."
+      },
+      "budgets": {
+        "oneParent": {
+          "min": 1897,
+          "midpoint": 2180,
+          "comfortable": 2572
+        },
+        "bothWorking": {
+          "min": 2155,
+          "midpoint": 2449,
+          "comfortable": 2914
+        },
+        "twoKids": {
+          "min": 2717,
+          "midpoint": 3123,
+          "comfortable": 3748
+        },
+        "oneIncTwoKids": {
+          "min": 2265,
+          "midpoint": 2603,
+          "comfortable": 3124
+        }
+      }
+    },
+    {
+      "key": "verona",
+      "city": "Verona",
+      "country": "Italy",
+      "tagline": "Attractive northern-Italy compromise with good rail access and better value than Milan, but the air and ownership math stay mixed.",
+      "scores": {
+        "housing": 8.35,
+        "environment": 6.47,
+        "childcare": 6.83,
+        "safety": 6.1,
+        "healthcare": 7.9,
+        "weighted": 7.39
+      },
+      "housing": {
+        "rentSafe2Bed": "EUR802-942",
+        "buyCentre": "EUR4,361/sqm",
+        "buyOutside": "EUR1,969/sqm",
+        "buyerTaxes": "First-home resale purchases usually use 2% of cadastral value plus fixed mortgage and cadastral taxes.",
+        "annualTax": "Primary-home IMU is usually exempt, with TARI and condo charges still payable.",
+        "areas": [
+          "Borgo Trento",
+          "Valdonega"
+        ]
+      },
+      "childcare": {
+        "nurseryNet": "Current market benchmark points to about EUR524/month for private full-day preschool. Municipal and convenzionato fees still vary by ISEE and provider, so this stays a market cross-check in the expansion wave.",
+        "schoolStart": "Formal school starts at 6.",
+        "schoolQuality": "Public schools are solid and private is mostly about language continuity, not escaping a weak baseline."
+      },
+      "basket": {
+        "formula": "EUR15-20",
+        "diapers": "EUR9-14",
+        "organicFruit": "EUR2.1-3.5/kg",
+        "organicVeg": "EUR2.4-4.1/kg",
+        "meat": "EUR10-24/kg",
+        "ecoCleaner": "EUR3.0-5.0",
+        "organicClothing": "EUR8-15",
+        "availability": "Medium-high"
+      },
+      "health": {
+        "registration": "The SSN remains the main public-health path once residence paperwork is in place.",
+        "waits": "Routine public waits are still an Italian-system reality, but hospital quality is often better than the city size suggests.",
+        "privateCover": "About EUR90-160/month, or many families top up with pay-per-visit private care.",
+        "hospitals": [
+          "Azienda Ospedaliera Universitaria Integrata Verona",
+          "Ospedale Borgo Trento"
+        ]
+      },
+      "support": {
+        "childBenefit": "Assegno Unico is national and ISEE-based; these cities do not add a flat local baby allowance in the current strict layer.",
+        "safety": "Modeled family safety read about 61/100 until a clean city crime index is reattached."
+      },
+      "mobility": {
+        "pass": "EUR42/month benchmark monthly pass",
+        "oneWay": "EUR1.80 benchmark one-way fare",
+        "carNeed": "Low to medium",
+        "bikeLanes": "The flatter parts of the city are cycle-friendly enough, but the network still does not fully displace the car outside the better-served districts.",
+        "pm25": 18,
+        "airQualityIndex": 50.96,
+        "pollutionIndex": 50,
+        "parkScore": 66,
+        "transitSummary": "Buses and strong intercity rail help, but everyday family convenience still depends on district choice more than in Bologna or Vienna."
+      },
+      "budgets": {
+        "oneParent": {
+          "min": 1932,
+          "midpoint": 2221,
+          "comfortable": 2621
+        },
+        "bothWorking": {
+          "min": 2172,
+          "midpoint": 2468,
+          "comfortable": 2937
+        },
+        "twoKids": {
+          "min": 2719,
+          "midpoint": 3125,
+          "comfortable": 3750
+        },
+        "oneIncTwoKids": {
+          "min": 2304,
+          "midpoint": 2648,
+          "comfortable": 3178
+        }
+      }
+    },
+    {
+      "key": "bergamo",
+      "city": "Bergamo",
+      "country": "Italy",
+      "tagline": "Very strong value near Milans job orbit, but the air and car pressure remain the tradeoff.",
+      "scores": {
+        "housing": 8.35,
+        "environment": 6,
+        "childcare": 6.7,
+        "safety": 6.06,
+        "healthcare": 7.9,
+        "weighted": 7.31
+      },
+      "housing": {
+        "rentSafe2Bed": "EUR611-717",
+        "buyCentre": "EUR3,065/sqm",
+        "buyOutside": "EUR2,164/sqm",
+        "buyerTaxes": "First-home resale purchases usually use 2% of cadastral value plus fixed mortgage and cadastral taxes.",
+        "annualTax": "Primary-home IMU is usually exempt, with TARI and condo charges still payable.",
+        "areas": [
+          "Longuelo",
+          "Valtesse"
+        ]
+      },
+      "childcare": {
+        "nurseryNet": "Current market benchmark points to about EUR517/month for private full-day preschool. Municipal and convenzionato fees still vary by ISEE and provider, so this stays a market cross-check in the expansion wave.",
+        "schoolStart": "Formal school starts at 6.",
+        "schoolQuality": "Public schools are solid and private is mostly about language continuity, not escaping a weak baseline."
+      },
+      "basket": {
+        "formula": "EUR15-20",
+        "diapers": "EUR9-14",
+        "organicFruit": "EUR2.1-3.5/kg",
+        "organicVeg": "EUR2.4-4.1/kg",
+        "meat": "EUR10-24/kg",
+        "ecoCleaner": "EUR3.0-5.0",
+        "organicClothing": "EUR8-15",
+        "availability": "Medium-high"
+      },
+      "health": {
+        "registration": "The SSN remains the main public-health path once residence paperwork is in place.",
+        "waits": "Routine public waits are still an Italian-system reality, but hospital quality is often better than the city size suggests.",
+        "privateCover": "About EUR90-160/month, or many families top up with pay-per-visit private care.",
+        "hospitals": [
+          "ASST Papa Giovanni XXIII"
+        ]
+      },
+      "support": {
+        "childBenefit": "Assegno Unico is national and ISEE-based; these cities do not add a flat local baby allowance in the current strict layer.",
+        "safety": "Safety index 60.65; day-to-day violent risk stays lower than the larger rougher metros."
+      },
+      "mobility": {
+        "pass": "EUR40/month benchmark monthly pass",
+        "oneWay": "EUR1.70 benchmark one-way fare",
+        "carNeed": "Medium",
+        "bikeLanes": "The lower city is workable, but the hill-city split and outer errands make the network feel less all-in than the strongest European comparators.",
+        "pm25": 20,
+        "airQualityIndex": null,
+        "pollutionIndex": null,
+        "parkScore": 62,
+        "transitSummary": "The compact lower city and regional rail help, but day-to-day family life still tips back toward a car faster than in Bologna or Vienna."
+      },
+      "budgets": {
+        "oneParent": {
+          "min": 1630,
+          "midpoint": 1873,
+          "comfortable": 2210
+        },
+        "bothWorking": {
+          "min": 1863,
+          "midpoint": 2117,
+          "comfortable": 2519
+        },
+        "twoKids": {
+          "min": 2356,
+          "midpoint": 2708,
+          "comfortable": 3250
+        },
+        "oneIncTwoKids": {
+          "min": 1949,
+          "midpoint": 2240,
+          "comfortable": 2688
+        }
+      }
+    },
+    {
+      "key": "modena",
+      "city": "Modena",
+      "country": "Italy",
+      "tagline": "Food-capital Emilia with motorsport heritage, strong university hospitals, and lower rent than Bologna — but safety is mixed and the Po Valley air drag is real.",
+      "scores": {
+        "housing": 8,
+        "environment": 6.37,
+        "childcare": 6.7,
+        "safety": 5.04,
+        "healthcare": 7.9,
+        "weighted": 7.11
+      },
+      "housing": {
+        "rentSafe2Bed": "EUR914-1,073",
+        "buyCentre": "EUR3,193/sqm",
+        "buyOutside": "EUR1,952/sqm",
+        "buyerTaxes": "First-home resale purchases usually use 2% of cadastral value plus fixed mortgage and cadastral taxes.",
+        "annualTax": "Primary-home IMU is usually exempt, with TARI and condo charges still payable.",
+        "areas": [
+          "Sacca",
+          "Madonnina"
+        ]
+      },
+      "childcare": {
+        "nurseryNet": "Current market benchmark points to about EUR513/month for private full-day preschool. Municipal and convenzionato fees still vary by ISEE and provider, so this stays a market cross-check in the expansion wave.",
+        "schoolStart": "Formal school starts at 6.",
+        "schoolQuality": "Public schools are solid and private is mostly about language continuity, not escaping a weak baseline."
+      },
+      "basket": {
+        "formula": "EUR15-20",
+        "diapers": "EUR9-14",
+        "organicFruit": "EUR2.1-3.5/kg",
+        "organicVeg": "EUR2.4-4.1/kg",
+        "meat": "EUR10-24/kg",
+        "ecoCleaner": "EUR3.0-5.0",
+        "organicClothing": "EUR8-15",
+        "availability": "Medium-high"
+      },
+      "health": {
+        "registration": "The SSN remains the main public-health path once residence paperwork is in place.",
+        "waits": "Routine public waits are still an Italian-system reality, but hospital quality is often better than the city size suggests.",
+        "privateCover": "About EUR90-160/month, or many families top up with pay-per-visit private care.",
+        "hospitals": [
+          "Azienda Ospedaliero-Universitaria di Modena (Policlinico)",
+          "Ospedale Civile di Baggiovara"
+        ]
+      },
+      "support": {
+        "childBenefit": "Assegno Unico is national and ISEE-based; these cities do not add a flat local baby allowance in the current strict layer.",
+        "safety": "Safety index 50.37; day-to-day violent risk stays lower than the larger rougher metros."
+      },
+      "mobility": {
+        "pass": "EUR35/month benchmark monthly pass",
+        "oneWay": "EUR2.00 benchmark one-way fare",
+        "carNeed": "Low to medium",
+        "bikeLanes": "The compact center and flat terrain make cycling genuinely practical, though the network outside the historic core thins out faster than in the best compact-city comparators.",
+        "pm25": 18,
+        "airQualityIndex": null,
+        "pollutionIndex": null,
+        "parkScore": 64,
+        "transitSummary": "SETA buses cover the center well; the pattern is similar to Reggio Emilia — car-light is possible for central living but errands outside pull car pressure back in."
+      },
+      "budgets": {
+        "oneParent": {
+          "min": 2031,
+          "midpoint": 2335,
+          "comfortable": 2755
+        },
+        "bothWorking": {
+          "min": 2264,
+          "midpoint": 2573,
+          "comfortable": 3062
+        },
+        "twoKids": {
+          "min": 2824,
+          "midpoint": 3246,
+          "comfortable": 3895
+        },
+        "oneIncTwoKids": {
+          "min": 2420,
+          "midpoint": 2782,
+          "comfortable": 3338
+        }
+      }
+    },
+    {
+      "key": "torino",
+      "city": "Turin",
+      "country": "Italy",
+      "tagline": "Piemonte's capital punches well above its price tag — Politecnico di Torino, Alps on three sides, and Paris-style arcaded boulevards — but Po Valley air is the sharpest tradeoff in the Italian set.",
+      "scores": {
+        "housing": 8.35,
+        "environment": 5.87,
+        "childcare": 6.53,
+        "safety": 4.69,
+        "healthcare": 7.9,
+        "weighted": 7.07
+      },
+      "housing": {
+        "rentSafe2Bed": "EUR685-805",
+        "buyCentre": "EUR4,003/sqm",
+        "buyOutside": "EUR1,967/sqm",
+        "buyerTaxes": "First-home resale purchases usually use 2% of cadastral value plus fixed mortgage and cadastral taxes.",
+        "annualTax": "Primary-home IMU is usually exempt, with TARI and condo charges still payable.",
+        "areas": [
+          "Crocetta",
+          "San Salvario"
+        ]
+      },
+      "childcare": {
+        "nurseryNet": "Current market benchmark points to about EUR619/month for private full-day preschool. Municipal and convenzionato fees still vary by ISEE and provider, so this stays a market cross-check in the expansion wave.",
+        "schoolStart": "Formal school starts at 6.",
+        "schoolQuality": "Public schools are solid and private is mostly about language continuity, not escaping a weak baseline."
+      },
+      "basket": {
+        "formula": "EUR15-20",
+        "diapers": "EUR9-14",
+        "organicFruit": "EUR2.1-3.5/kg",
+        "organicVeg": "EUR2.4-4.1/kg",
+        "meat": "EUR10-24/kg",
+        "ecoCleaner": "EUR3.0-5.0",
+        "organicClothing": "EUR8-15",
+        "availability": "Medium-high"
+      },
+      "health": {
+        "registration": "The SSN remains the main public-health path once residence paperwork is in place.",
+        "waits": "Routine public waits are still an Italian-system reality, but hospital quality is often better than the city size suggests.",
+        "privateCover": "About EUR90-160/month, or many families top up with pay-per-visit private care.",
+        "hospitals": [
+          "AOU Città della Salute e della Scienza di Torino (Molinette campus)",
+          "Ospedale Infantile Regina Margherita"
+        ]
+      },
+      "support": {
+        "childBenefit": "Assegno Unico is national and ISEE-based; these cities do not add a flat local baby allowance in the current strict layer.",
+        "safety": "Safety index 46.9; day-to-day violent risk stays lower than the larger rougher metros."
+      },
+      "mobility": {
+        "pass": "EUR38/month benchmark monthly pass",
+        "oneWay": "EUR1.90 benchmark one-way fare",
+        "carNeed": "Low to medium",
+        "bikeLanes": "The city is flat and the centre is manageable on a bike, but the dedicated cycling network is thinner than the best Italian peers and the larger road grid still favours the car outside the inner districts.",
+        "pm25": 24,
+        "airQualityIndex": null,
+        "pollutionIndex": null,
+        "parkScore": 65,
+        "transitSummary": "GTT metro Line 1 and an extensive bus and tram network make central Turin genuinely livable without a car; outer family districts are still reasonably served, though the metro corridor does not yet reach the full city."
+      },
+      "budgets": {
+        "oneParent": {
+          "min": 1771,
+          "midpoint": 2036,
+          "comfortable": 2402
+        },
+        "bothWorking": {
+          "min": 2047,
+          "midpoint": 2326,
+          "comfortable": 2768
+        },
+        "twoKids": {
+          "min": 2605,
+          "midpoint": 2994,
+          "comfortable": 3593
+        },
+        "oneIncTwoKids": {
+          "min": 2120,
+          "midpoint": 2437,
+          "comfortable": 2924
+        }
+      }
+    },
+    {
+      "key": "lucca",
+      "city": "Lucca",
+      "country": "Italy",
+      "tagline": "Tuscany's most liveable walled city — cleaner air than the Po Valley, a famous cycling ring, and strong family calm — but a thin job market and limited transit mean a car and remote-work income are near-essential.",
+      "scores": {
+        "housing": 8.35,
+        "environment": 7.33,
+        "childcare": 7.1,
+        "safety": 6.7,
+        "healthcare": 7.9,
+        "weighted": 7.62
+      },
+      "housing": {
+        "rentSafe2Bed": "EUR679-797",
+        "buyCentre": "EUR3,575/sqm",
+        "buyOutside": "EUR1,900/sqm",
+        "buyerTaxes": "First-home resale purchases usually use 2% of cadastral value plus fixed mortgage and cadastral taxes.",
+        "annualTax": "Primary-home IMU is usually exempt, with TARI and condo charges still payable.",
+        "areas": [
+          "Borgo Santa Maria",
+          "San Marco"
+        ]
+      },
+      "childcare": {
+        "nurseryNet": "Current market benchmark points to about EUR450/month for private full-day preschool. Municipal and convenzionato fees still vary by ISEE and provider, so this stays a market cross-check in the expansion wave.",
+        "schoolStart": "Formal school starts at 6.",
+        "schoolQuality": "Public schools are solid and private is mostly about language continuity, not escaping a weak baseline."
+      },
+      "basket": {
+        "formula": "EUR15-20",
+        "diapers": "EUR9-14",
+        "organicFruit": "EUR2.1-3.5/kg",
+        "organicVeg": "EUR2.4-4.1/kg",
+        "meat": "EUR10-24/kg",
+        "ecoCleaner": "EUR3.0-5.0",
+        "organicClothing": "EUR8-15",
+        "availability": "Medium-high"
+      },
+      "health": {
+        "registration": "The SSN remains the main public-health path once residence paperwork is in place.",
+        "waits": "Routine public waits are still an Italian-system reality, but hospital quality is often better than the city size suggests.",
+        "privateCover": "About EUR90-160/month, or many families top up with pay-per-visit private care.",
+        "hospitals": [
+          "Ospedale San Luca (Campo di Marte) — AUSL Toscana Nord Ovest"
+        ]
+      },
+      "support": {
+        "childBenefit": "Assegno Unico is national and ISEE-based; these cities do not add a flat local baby allowance in the current strict layer.",
+        "safety": "Safety index 67; day-to-day violent risk stays lower than the larger rougher metros."
+      },
+      "mobility": {
+        "pass": "EUR31/month benchmark monthly pass",
+        "oneWay": "EUR1.70 benchmark one-way fare",
+        "carNeed": "Low to medium",
+        "bikeLanes": "The 4.2km cycling circuit along the intact Renaissance walls is one of the most distinctive bike routes in Italy; the flat historic centre is easy on foot or by bike. Beyond the walls, the car quickly becomes necessary.",
+        "pm25": 14,
+        "airQualityIndex": null,
+        "pollutionIndex": null,
+        "parkScore": 72,
+        "transitSummary": "Within the historic walls Lucca is excellent on foot or cycle. Vaibus services connect to Pisa (30–45 min) and Lucca railway connects to Florence (90 min by regional rail); frequency outside peak hours is low, making a car essential for reliable daily flexibility."
+      },
+      "budgets": {
+        "oneParent": {
+          "min": 1569,
+          "midpoint": 1804,
+          "comfortable": 2129
+        },
+        "bothWorking": {
+          "min": 1766,
+          "midpoint": 2007,
+          "comfortable": 2388
+        },
+        "twoKids": {
+          "min": 2225,
+          "midpoint": 2558,
+          "comfortable": 3070
+        },
+        "oneIncTwoKids": {
+          "min": 1878,
+          "midpoint": 2159,
+          "comfortable": 2591
+        }
+      }
+    },
+    {
+      "key": "udine",
+      "city": "Udine",
+      "country": "Italy",
+      "tagline": "Low-burn northeastern Italy base with solid family calm, but job-market depth is thinner.",
+      "scores": {
+        "housing": 8.7,
+        "environment": 6.73,
+        "childcare": 7.07,
+        "safety": 6.33,
+        "healthcare": 7.9,
+        "weighted": 7.61
+      },
+      "housing": {
+        "rentSafe2Bed": "EUR629-739",
+        "buyCentre": "EUR2,044/sqm",
+        "buyOutside": "EUR1,422/sqm",
+        "buyerTaxes": "First-home resale purchases usually use 2% of cadastral value plus fixed mortgage and cadastral taxes.",
+        "annualTax": "Primary-home IMU is usually exempt, with TARI and condo charges still payable.",
+        "areas": [
+          "Rizzi",
+          "Chiavris"
+        ]
+      },
+      "childcare": {
+        "nurseryNet": "Current market benchmark points to about EUR518/month for private full-day preschool. Municipal and convenzionato fees still vary by ISEE and provider, so this stays a market cross-check in the expansion wave.",
+        "schoolStart": "Formal school starts at 6.",
+        "schoolQuality": "Public schools are solid and private is mostly about language continuity, not escaping a weak baseline."
+      },
+      "basket": {
+        "formula": "EUR15-20",
+        "diapers": "EUR9-14",
+        "organicFruit": "EUR2.1-3.5/kg",
+        "organicVeg": "EUR2.4-4.1/kg",
+        "meat": "EUR10-24/kg",
+        "ecoCleaner": "EUR3.0-5.0",
+        "organicClothing": "EUR8-15",
+        "availability": "Medium-high"
+      },
+      "health": {
+        "registration": "The SSN remains the main public-health path once residence paperwork is in place.",
+        "waits": "Routine public waits are still an Italian-system reality, but hospital quality is often better than the city size suggests.",
+        "privateCover": "About EUR90-160/month, or many families top up with pay-per-visit private care.",
+        "hospitals": [
+          "Ospedale Santa Maria della Misericordia"
+        ]
+      },
+      "support": {
+        "childBenefit": "Assegno Unico is national and ISEE-based; these cities do not add a flat local baby allowance in the current strict layer.",
+        "safety": "Safety index 63.29; day-to-day violent risk stays lower than the larger rougher metros."
+      },
+      "mobility": {
+        "pass": "EUR40/month benchmark monthly pass",
+        "oneWay": "EUR1.50 benchmark one-way fare",
+        "carNeed": "Low to medium",
+        "bikeLanes": "The compact core is cycle-friendly enough, but the wider pattern still becomes more car-shaped than the best no-car cities here.",
+        "pm25": 16,
+        "airQualityIndex": null,
+        "pollutionIndex": null,
+        "parkScore": 64,
+        "transitSummary": "The center is walkable and local buses are workable, though regional errands pull car pressure back in faster than in Bologna or Vienna."
+      },
+      "budgets": {
+        "oneParent": {
+          "min": 1733,
+          "midpoint": 1992,
+          "comfortable": 2351
+        },
+        "bothWorking": {
+          "min": 1968,
+          "midpoint": 2236,
+          "comfortable": 2661
+        },
+        "twoKids": {
+          "min": 2479,
+          "midpoint": 2849,
+          "comfortable": 3419
+        },
+        "oneIncTwoKids": {
+          "min": 2070,
+          "midpoint": 2379,
+          "comfortable": 2855
+        }
+      }
+    },
+    {
+      "key": "padova",
+      "city": "Padua",
+      "country": "Italy",
+      "tagline": "University city with solid services and good rail access, but family value is more mixed once air and housing are included.",
+      "scores": {
+        "housing": 8,
+        "environment": 6.23,
+        "childcare": 6.77,
+        "safety": 5.42,
+        "healthcare": 7.9,
+        "weighted": 7.16
+      },
+      "housing": {
+        "rentSafe2Bed": "EUR842-988",
+        "buyCentre": "EUR3,609/sqm",
+        "buyOutside": "EUR1,984/sqm",
+        "buyerTaxes": "First-home resale purchases usually use 2% of cadastral value plus fixed mortgage and cadastral taxes.",
+        "annualTax": "Primary-home IMU is usually exempt, with TARI and condo charges still payable.",
+        "areas": [
+          "Sacra Famiglia",
+          "Brentelle"
+        ]
+      },
+      "childcare": {
+        "nurseryNet": "Current market benchmark points to about EUR579/month for private full-day preschool. Municipal and convenzionato fees still vary by ISEE and provider, so this stays a market cross-check in the expansion wave.",
+        "schoolStart": "Formal school starts at 6.",
+        "schoolQuality": "Public schools are solid and private is mostly about language continuity, not escaping a weak baseline."
+      },
+      "basket": {
+        "formula": "EUR15-20",
+        "diapers": "EUR9-14",
+        "organicFruit": "EUR2.1-3.5/kg",
+        "organicVeg": "EUR2.4-4.1/kg",
+        "meat": "EUR10-24/kg",
+        "ecoCleaner": "EUR3.0-5.0",
+        "organicClothing": "EUR8-15",
+        "availability": "Medium-high"
+      },
+      "health": {
+        "registration": "The SSN remains the main public-health path once residence paperwork is in place.",
+        "waits": "Routine public waits are still an Italian-system reality, but hospital quality is often better than the city size suggests.",
+        "privateCover": "About EUR90-160/month, or many families top up with pay-per-visit private care.",
+        "hospitals": [
+          "Azienda Ospedale-Universita Padova"
+        ]
+      },
+      "support": {
+        "childBenefit": "Assegno Unico is national and ISEE-based; these cities do not add a flat local baby allowance in the current strict layer.",
+        "safety": "Safety index 54.22; day-to-day violent risk stays lower than the larger rougher metros."
+      },
+      "mobility": {
+        "pass": "EUR45/month benchmark monthly pass",
+        "oneWay": "EUR1.70 benchmark one-way fare",
+        "carNeed": "Low to medium",
+        "bikeLanes": "Cycling is credible in the flatter parts of the city, though the full network is still less stress-free than the benchmark northern peers.",
+        "pm25": 19,
+        "airQualityIndex": null,
+        "pollutionIndex": null,
+        "parkScore": 67,
+        "transitSummary": "Tram, buses, and strong rail links keep central-family life workable without a car, though outer routines still add friction."
+      },
+      "budgets": {
+        "oneParent": {
+          "min": 1956,
+          "midpoint": 2248,
+          "comfortable": 2653
+        },
+        "bothWorking": {
+          "min": 2222,
+          "midpoint": 2525,
+          "comfortable": 3005
+        },
+        "twoKids": {
+          "min": 2794,
+          "midpoint": 3212,
+          "comfortable": 3854
+        },
+        "oneIncTwoKids": {
+          "min": 2334,
+          "midpoint": 2683,
+          "comfortable": 3220
+        }
+      }
+    },
+    {
+      "key": "trento",
+      "city": "Trento",
+      "country": "Italy",
+      "tagline": "Alpine-adjacent quality of life with low childcare pressure, but the market is smaller and ownership is not cheap.",
+      "scores": {
+        "housing": 7.6,
+        "environment": 7.93,
+        "childcare": 7.97,
+        "safety": 6.41,
+        "healthcare": 7.9,
+        "weighted": 7.64
+      },
+      "housing": {
+        "rentSafe2Bed": "EUR844-991",
+        "buyCentre": "EUR3,873/sqm",
+        "buyOutside": "EUR2,704/sqm",
+        "buyerTaxes": "First-home resale purchases usually use 2% of cadastral value plus fixed mortgage and cadastral taxes.",
+        "annualTax": "Primary-home IMU is usually exempt, with TARI and condo charges still payable.",
+        "areas": [
+          "Bolghera",
+          "Povo"
+        ]
+      },
+      "childcare": {
+        "nurseryNet": "Current market benchmark points to about EUR150/month for private full-day preschool. Municipal and convenzionato fees still vary by ISEE and provider, so this stays a market cross-check in the expansion wave.",
+        "schoolStart": "Formal school starts at 6.",
+        "schoolQuality": "Public schools are solid and private is mostly about language continuity, not escaping a weak baseline."
+      },
+      "basket": {
+        "formula": "EUR15-20",
+        "diapers": "EUR9-14",
+        "organicFruit": "EUR2.1-3.5/kg",
+        "organicVeg": "EUR2.4-4.1/kg",
+        "meat": "EUR10-24/kg",
+        "ecoCleaner": "EUR3.0-5.0",
+        "organicClothing": "EUR8-15",
+        "availability": "Medium-high"
+      },
+      "health": {
+        "registration": "The SSN remains the main public-health path once residence paperwork is in place.",
+        "waits": "Routine public waits are still an Italian-system reality, but hospital quality is often better than the city size suggests.",
+        "privateCover": "About EUR90-160/month, or many families top up with pay-per-visit private care.",
+        "hospitals": [
+          "Ospedale Santa Chiara"
+        ]
+      },
+      "support": {
+        "childBenefit": "Assegno Unico is national and ISEE-based; these cities do not add a flat local baby allowance in the current strict layer.",
+        "safety": "Safety index 64.12; day-to-day violent risk stays lower than the larger rougher metros."
+      },
+      "mobility": {
+        "pass": "EUR35/month benchmark monthly pass",
+        "oneWay": "EUR1.20 benchmark one-way fare",
+        "carNeed": "Low",
+        "bikeLanes": "The compact core and strong everyday network make cycling plausible, though terrain still limits a truly universal experience.",
+        "pm25": 13,
+        "airQualityIndex": null,
+        "pollutionIndex": null,
+        "parkScore": 80,
+        "transitSummary": "Compact urban form and strong regional rail keep Trento unusually workable without a car for a small Italian city."
+      },
+      "budgets": {
+        "oneParent": {
+          "min": 1850,
+          "midpoint": 2127,
+          "comfortable": 2510
+        },
+        "bothWorking": {
+          "min": 1927,
+          "midpoint": 2190,
+          "comfortable": 2606
+        },
+        "twoKids": {
+          "min": 2314,
+          "midpoint": 2660,
+          "comfortable": 3192
+        },
+        "oneIncTwoKids": {
+          "min": 2192,
+          "midpoint": 2519,
+          "comfortable": 3023
+        }
+      }
+    },
+    {
+      "key": "sanLazzaro",
+      "city": "San Lazzaro di Savena",
+      "country": "Italy",
+      "tagline": "Quiet Bologna suburb with meaningfully lower rent than Bologna centre, the same TPER metropolitan transit access, and excellent infant-family calm — at the cost of limited own-city depth.",
+      "scores": {
+        "housing": 8.35,
+        "environment": 6.17,
+        "childcare": 6.97,
+        "safety": 6.8,
+        "healthcare": 7.9,
+        "weighted": 7.49
+      },
+      "housing": {
+        "rentSafe2Bed": "EUR792-930",
+        "buyCentre": "EUR2,900/sqm",
+        "buyOutside": "EUR2,500/sqm",
+        "buyerTaxes": "First-home resale purchases usually use 2% of cadastral value plus fixed mortgage and cadastral taxes.",
+        "annualTax": "Primary-home IMU is usually exempt, with TARI and condo charges still payable.",
+        "areas": [
+          "Centro",
+          "Idice"
+        ]
+      },
+      "childcare": {
+        "nurseryNet": "Current market benchmark points to about EUR350/month for private full-day preschool. Municipal and convenzionato fees still vary by ISEE and provider, so this stays a market cross-check in the expansion wave.",
+        "schoolStart": "Formal school starts at 6.",
+        "schoolQuality": "Public schools are solid and private is mostly about language continuity, not escaping a weak baseline."
+      },
+      "basket": {
+        "formula": "EUR15-20",
+        "diapers": "EUR9-14",
+        "organicFruit": "EUR2.1-3.5/kg",
+        "organicVeg": "EUR2.4-4.1/kg",
+        "meat": "EUR10-24/kg",
+        "ecoCleaner": "EUR3.0-5.0",
+        "organicClothing": "EUR8-15",
+        "availability": "Medium-high"
+      },
+      "health": {
+        "registration": "The SSN remains the main public-health path once residence paperwork is in place.",
+        "waits": "Routine public waits are still an Italian-system reality, but hospital quality is often better than the city size suggests.",
+        "privateCover": "About EUR90-160/month, or many families top up with pay-per-visit private care.",
+        "hospitals": [
+          "Access via AUSL Citta di Bologna; Ospedale Bellaria and Policlinico Sant'Orsola reachable within 20 minutes by transit or car."
+        ]
+      },
+      "support": {
+        "childBenefit": "Assegno Unico is national and ISEE-based; these cities do not add a flat local baby allowance in the current strict layer.",
+        "safety": "Modeled family safety read about 68/100 until a clean city crime index is reattached."
+      },
+      "mobility": {
+        "pass": "EUR39/month benchmark monthly pass",
+        "oneWay": "EUR2.30 benchmark one-way fare",
+        "carNeed": "Low to medium",
+        "bikeLanes": "Some cycling infrastructure is in place but the suburban road pattern limits the stroller-comfort network compared to the Bologna center.",
+        "pm25": 20,
+        "airQualityIndex": null,
+        "pollutionIndex": null,
+        "parkScore": 67,
+        "transitSummary": "TPER buses connect the comune to central Bologna reliably; the transit system is shared with the wider metropolitan area and handles daily commuting without a car, though a car adds convenience for wider errands."
+      },
+      "budgets": {
+        "oneParent": {
+          "min": 1750,
+          "midpoint": 2012,
+          "comfortable": 2374
+        },
+        "bothWorking": {
+          "min": 1914,
+          "midpoint": 2175,
+          "comfortable": 2588
+        },
+        "twoKids": {
+          "min": 2362,
+          "midpoint": 2715,
+          "comfortable": 3258
+        },
+        "oneIncTwoKids": {
+          "min": 2085,
+          "midpoint": 2396,
+          "comfortable": 2875
+        }
+      }
+    },
+    {
+      "key": "imola",
+      "city": "Imola",
+      "country": "Italy",
+      "tagline": "Bologna's quieter motorsport neighbour — meaningfully cheaper rent, calmer streets, and a strong Emilia-Romagna food and manufacturing base — at the cost of limited own-city depth and Po Valley air.",
+      "scores": {
+        "housing": 8.7,
+        "environment": 5.9,
+        "childcare": 6.73,
+        "safety": 6.2,
+        "healthcare": 7.9,
+        "weighted": 7.43
+      },
+      "housing": {
+        "rentSafe2Bed": "EUR641-753",
+        "buyCentre": "EUR2,500/sqm",
+        "buyOutside": "EUR1,775/sqm",
+        "buyerTaxes": "First-home resale purchases usually use 2% of cadastral value plus fixed mortgage and cadastral taxes.",
+        "annualTax": "Primary-home IMU is usually exempt, with TARI and condo charges still payable.",
+        "areas": [
+          "Centro Storico",
+          "Pedagna"
+        ]
+      },
+      "childcare": {
+        "nurseryNet": "Current market benchmark points to about EUR581/month for private full-day preschool. Municipal and convenzionato fees still vary by ISEE and provider, so this stays a market cross-check in the expansion wave.",
+        "schoolStart": "Formal school starts at 6.",
+        "schoolQuality": "Public schools are solid and private is mostly about language continuity, not escaping a weak baseline."
+      },
+      "basket": {
+        "formula": "EUR15-20",
+        "diapers": "EUR9-14",
+        "organicFruit": "EUR2.1-3.5/kg",
+        "organicVeg": "EUR2.4-4.1/kg",
+        "meat": "EUR10-24/kg",
+        "ecoCleaner": "EUR3.0-5.0",
+        "organicClothing": "EUR8-15",
+        "availability": "Medium-high"
+      },
+      "health": {
+        "registration": "The SSN remains the main public-health path once residence paperwork is in place.",
+        "waits": "Routine public waits are still an Italian-system reality, but hospital quality is often better than the city size suggests.",
+        "privateCover": "About EUR90-160/month, or many families top up with pay-per-visit private care.",
+        "hospitals": [
+          "Ospedale Nuovo di Imola — AUSL Romagna"
+        ]
+      },
+      "support": {
+        "childBenefit": "Assegno Unico is national and ISEE-based; these cities do not add a flat local baby allowance in the current strict layer.",
+        "safety": "Safety index 62; day-to-day violent risk stays lower than the larger rougher metros."
+      },
+      "mobility": {
+        "pass": "EUR28/month benchmark monthly pass",
+        "oneWay": "EUR1.35 benchmark one-way fare",
+        "carNeed": "Medium",
+        "bikeLanes": "Flat terrain makes cycling comfortable within the compact historic centre, but the broader Imola municipality and especially the Bologna commute route are car-dominated.",
+        "pm25": 21,
+        "airQualityIndex": null,
+        "pollutionIndex": null,
+        "parkScore": 58,
+        "transitSummary": "SABus routes connect Imola to Bologna, Faenza, and nearby towns; Trenitalia provides a Bologna rail link. For timely daily access to Bologna employment, a car remains more practical than the bus schedule allows."
+      },
+      "budgets": {
+        "oneParent": {
+          "min": 1651,
+          "midpoint": 1898,
+          "comfortable": 2240
+        },
+        "bothWorking": {
+          "min": 1903,
+          "midpoint": 2162,
+          "comfortable": 2573
+        },
+        "twoKids": {
+          "min": 2427,
+          "midpoint": 2790,
+          "comfortable": 3348
+        },
+        "oneIncTwoKids": {
+          "min": 1979,
+          "midpoint": 2275,
+          "comfortable": 2730
+        }
+      }
+    },
+    {
+      "key": "urbino",
+      "city": "Urbino",
+      "country": "Italy",
+      "tagline": "A UNESCO Renaissance hilltop city where the university outnumbers the permanent residents — exceptional air, safety, and historical setting — but the smallest and most car-dependent city in the entire roster.",
+      "scores": {
+        "housing": 8.7,
+        "environment": 7.73,
+        "childcare": 7.37,
+        "safety": 7.8,
+        "healthcare": 7.9,
+        "weighted": 7.98
+      },
+      "housing": {
+        "rentSafe2Bed": "EUR490-576",
+        "buyCentre": "EUR2,000/sqm",
+        "buyOutside": "EUR1,300/sqm",
+        "buyerTaxes": "First-home resale purchases usually use 2% of cadastral value plus fixed mortgage and cadastral taxes.",
+        "annualTax": "Primary-home IMU is usually exempt, with TARI and condo charges still payable.",
+        "areas": [
+          "Centro Storico",
+          "Ponte Armellina"
+        ]
+      },
+      "childcare": {
+        "nurseryNet": "Current market benchmark points to about EUR280/month for private full-day preschool. Municipal and convenzionato fees still vary by ISEE and provider, so this stays a market cross-check in the expansion wave.",
+        "schoolStart": "Formal school starts at 6.",
+        "schoolQuality": "Public schools are solid and private is mostly about language continuity, not escaping a weak baseline."
+      },
+      "basket": {
+        "formula": "EUR15-20",
+        "diapers": "EUR9-14",
+        "organicFruit": "EUR2.1-3.5/kg",
+        "organicVeg": "EUR2.4-4.1/kg",
+        "meat": "EUR10-24/kg",
+        "ecoCleaner": "EUR3.0-5.0",
+        "organicClothing": "EUR8-15",
+        "availability": "Medium-high"
+      },
+      "health": {
+        "registration": "The SSN remains the main public-health path once residence paperwork is in place.",
+        "waits": "Routine public waits are still an Italian-system reality, but hospital quality is often better than the city size suggests.",
+        "privateCover": "About EUR90-160/month, or many families top up with pay-per-visit private care.",
+        "hospitals": [
+          "Ospedale Santa Maria della Misericordia (Urbino) — AST Pesaro-Urbino"
+        ]
+      },
+      "support": {
+        "childBenefit": "Assegno Unico is national and ISEE-based; these cities do not add a flat local baby allowance in the current strict layer.",
+        "safety": "Safety index 78; day-to-day violent risk stays lower than the larger rougher metros."
+      },
+      "mobility": {
+        "pass": "EUR35/month benchmark monthly pass",
+        "oneWay": "EUR1.50 benchmark one-way fare",
+        "carNeed": "High",
+        "bikeLanes": "Urbino is built on a steep hill — cycling is effectively impractical for daily use. E-bikes are beginning to appear among students, but the gradient makes standard cycling a leisure activity rather than a transport choice.",
+        "pm25": 10,
+        "airQualityIndex": null,
+        "pollutionIndex": null,
+        "parkScore": 70,
+        "transitSummary": "Adriabus connects Urbino to Pesaro (45-50 min) and other Marche coastal cities; regional services are infrequent. A car is effectively essential for any routine that extends beyond the compact historic centre."
+      },
+      "budgets": {
+        "oneParent": {
+          "min": 1260,
+          "midpoint": 1448,
+          "comfortable": 1709
+        },
+        "bothWorking": {
+          "min": 1385,
+          "midpoint": 1574,
+          "comfortable": 1873
+        },
+        "twoKids": {
+          "min": 1724,
+          "midpoint": 1982,
+          "comfortable": 2378
+        },
+        "oneIncTwoKids": {
+          "min": 1507,
+          "midpoint": 1732,
+          "comfortable": 2078
+        }
+      }
+    }
+  ],
+  "budgetModels": {
+    "salzburg": {
+      "oneParent": {
+        "housing": 1537,
+        "childcare": 177,
+        "groceries": 543,
+        "transport": 79,
+        "healthcare": 130,
+        "utilitiesAndBuffer": 644
+      },
+      "bothWorking": {
+        "housing": 1537,
+        "childcare": 355,
+        "groceries": 586,
+        "transport": 143,
+        "healthcare": 140,
+        "utilitiesAndBuffer": 604
+      },
+      "twoKids": {
+        "housing": 1814,
+        "childcare": 604,
+        "groceries": 703,
+        "transport": 143,
+        "healthcare": 168,
+        "utilitiesAndBuffer": 695
+      },
+      "oneIncTwoKids": {
+        "housing": 1814,
+        "childcare": 248,
+        "groceries": 652,
+        "transport": 79,
+        "healthcare": 156,
+        "utilitiesAndBuffer": 721
+      }
+    },
+    "graz": {
+      "oneParent": {
+        "housing": 866,
+        "childcare": 193,
+        "groceries": 501,
+        "transport": 68,
+        "healthcare": 130,
+        "utilitiesAndBuffer": 594
+      },
+      "bothWorking": {
+        "housing": 866,
+        "childcare": 407,
+        "groceries": 541,
+        "transport": 123,
+        "healthcare": 140,
+        "utilitiesAndBuffer": 557
+      },
+      "twoKids": {
+        "housing": 1022,
+        "childcare": 692,
+        "groceries": 649,
+        "transport": 123,
+        "healthcare": 168,
+        "utilitiesAndBuffer": 641
+      },
+      "oneIncTwoKids": {
+        "housing": 1022,
+        "childcare": 270,
+        "groceries": 601,
+        "transport": 68,
+        "healthcare": 156,
+        "utilitiesAndBuffer": 665
+      }
+    },
+    "hamburg": {
+      "oneParent": {
+        "housing": 1396,
+        "childcare": 184,
+        "groceries": 475,
+        "transport": 59,
+        "healthcare": 140,
+        "utilitiesAndBuffer": 528
+      },
+      "bothWorking": {
+        "housing": 1396,
+        "childcare": 377,
+        "groceries": 513,
+        "transport": 112,
+        "healthcare": 150,
+        "utilitiesAndBuffer": 493
+      },
+      "twoKids": {
+        "housing": 1647,
+        "childcare": 641,
+        "groceries": 616,
+        "transport": 112,
+        "healthcare": 180,
+        "utilitiesAndBuffer": 567
+      },
+      "oneIncTwoKids": {
+        "housing": 1647,
+        "childcare": 258,
+        "groceries": 570,
+        "transport": 59,
+        "healthcare": 168,
+        "utilitiesAndBuffer": 591
+      }
+    },
+    "munich": {
+      "oneParent": {
+        "housing": 1759,
+        "childcare": 261,
+        "groceries": 502,
+        "transport": 63,
+        "healthcare": 140,
+        "utilitiesAndBuffer": 558
+      },
+      "bothWorking": {
+        "housing": 1759,
+        "childcare": 638,
+        "groceries": 542,
+        "transport": 120,
+        "healthcare": 150,
+        "utilitiesAndBuffer": 521
+      },
+      "twoKids": {
+        "housing": 2076,
+        "childcare": 1085,
+        "groceries": 650,
+        "transport": 120,
+        "healthcare": 180,
+        "utilitiesAndBuffer": 599
+      },
+      "oneIncTwoKids": {
+        "housing": 2076,
+        "childcare": 365,
+        "groceries": 602,
+        "transport": 63,
+        "healthcare": 168,
+        "utilitiesAndBuffer": 625
+      }
+    },
+    "malaga": {
+      "oneParent": {
+        "housing": 1183,
+        "childcare": 246,
+        "groceries": 328,
+        "transport": 24,
+        "healthcare": 110,
+        "utilitiesAndBuffer": 368
+      },
+      "bothWorking": {
+        "housing": 1183,
+        "childcare": 581,
+        "groceries": 354,
+        "transport": 43,
+        "healthcare": 120,
+        "utilitiesAndBuffer": 341
+      },
+      "twoKids": {
+        "housing": 1396,
+        "childcare": 988,
+        "groceries": 425,
+        "transport": 43,
+        "healthcare": 144,
+        "utilitiesAndBuffer": 392
+      },
+      "oneIncTwoKids": {
+        "housing": 1396,
+        "childcare": 344,
+        "groceries": 394,
+        "transport": 24,
+        "healthcare": 132,
+        "utilitiesAndBuffer": 412
+      }
+    },
+    "bristol": {
+      "oneParent": {
+        "housing": 1698,
+        "childcare": 429,
+        "groceries": 487,
+        "transport": 122,
+        "healthcare": 170,
+        "utilitiesAndBuffer": 685
+      },
+      "bothWorking": {
+        "housing": 1698,
+        "childcare": 1698,
+        "groceries": 526,
+        "transport": 208,
+        "healthcare": 180,
+        "utilitiesAndBuffer": 649
+      },
+      "twoKids": {
+        "housing": 2004,
+        "childcare": 2887,
+        "groceries": 631,
+        "transport": 208,
+        "healthcare": 216,
+        "utilitiesAndBuffer": 746
+      },
+      "oneIncTwoKids": {
+        "housing": 2004,
+        "childcare": 601,
+        "groceries": 584,
+        "transport": 122,
+        "healthcare": 204,
+        "utilitiesAndBuffer": 767
+      }
+    },
+    "edinburgh": {
+      "oneParent": {
+        "housing": 1522,
+        "childcare": 353,
+        "groceries": 496,
+        "transport": 98,
+        "healthcare": 170,
+        "utilitiesAndBuffer": 698
+      },
+      "bothWorking": {
+        "housing": 1522,
+        "childcare": 1278,
+        "groceries": 536,
+        "transport": 167,
+        "healthcare": 180,
+        "utilitiesAndBuffer": 662
+      },
+      "twoKids": {
+        "housing": 1796,
+        "childcare": 2173,
+        "groceries": 643,
+        "transport": 167,
+        "healthcare": 216,
+        "utilitiesAndBuffer": 761
+      },
+      "oneIncTwoKids": {
+        "housing": 1796,
+        "childcare": 494,
+        "groceries": 595,
+        "transport": 98,
+        "healthcare": 204,
+        "utilitiesAndBuffer": 782
+      }
+    },
+    "parma": {
+      "oneParent": {
+        "housing": 899,
+        "childcare": 248,
+        "groceries": 422,
+        "transport": 37,
+        "healthcare": 120,
+        "utilitiesAndBuffer": 454
+      },
+      "bothWorking": {
+        "housing": 899,
+        "childcare": 474,
+        "groceries": 456,
+        "transport": 68,
+        "healthcare": 130,
+        "utilitiesAndBuffer": 422
+      },
+      "twoKids": {
+        "housing": 1061,
+        "childcare": 806,
+        "groceries": 547,
+        "transport": 68,
+        "healthcare": 156,
+        "utilitiesAndBuffer": 485
+      },
+      "oneIncTwoKids": {
+        "housing": 1061,
+        "childcare": 347,
+        "groceries": 506,
+        "transport": 37,
+        "healthcare": 144,
+        "utilitiesAndBuffer": 508
+      }
+    },
+    "verona": {
+      "oneParent": {
+        "housing": 898,
+        "childcare": 236,
+        "groceries": 445,
+        "transport": 42,
+        "healthcare": 120,
+        "utilitiesAndBuffer": 480
+      },
+      "bothWorking": {
+        "housing": 898,
+        "childcare": 437,
+        "groceries": 481,
+        "transport": 77,
+        "healthcare": 130,
+        "utilitiesAndBuffer": 445
+      },
+      "twoKids": {
+        "housing": 1060,
+        "childcare": 743,
+        "groceries": 577,
+        "transport": 77,
+        "healthcare": 156,
+        "utilitiesAndBuffer": 512
+      },
+      "oneIncTwoKids": {
+        "housing": 1060,
+        "childcare": 330,
+        "groceries": 534,
+        "transport": 42,
+        "healthcare": 144,
+        "utilitiesAndBuffer": 538
+      }
+    },
+    "bergamo": {
+      "oneParent": {
+        "housing": 684,
+        "childcare": 234,
+        "groceries": 383,
+        "transport": 40,
+        "healthcare": 120,
+        "utilitiesAndBuffer": 412
+      },
+      "bothWorking": {
+        "housing": 684,
+        "childcare": 432,
+        "groceries": 414,
+        "transport": 74,
+        "healthcare": 130,
+        "utilitiesAndBuffer": 383
+      },
+      "twoKids": {
+        "housing": 807,
+        "childcare": 734,
+        "groceries": 497,
+        "transport": 74,
+        "healthcare": 156,
+        "utilitiesAndBuffer": 440
+      },
+      "oneIncTwoKids": {
+        "housing": 807,
+        "childcare": 328,
+        "groceries": 460,
+        "transport": 40,
+        "healthcare": 144,
+        "utilitiesAndBuffer": 461
+      }
+    },
+    "modena": {
+      "oneParent": {
+        "housing": 1023,
+        "childcare": 233,
+        "groceries": 445,
+        "transport": 35,
+        "healthcare": 120,
+        "utilitiesAndBuffer": 479
+      },
+      "bothWorking": {
+        "housing": 1023,
+        "childcare": 429,
+        "groceries": 481,
+        "transport": 65,
+        "healthcare": 130,
+        "utilitiesAndBuffer": 445
+      },
+      "twoKids": {
+        "housing": 1207,
+        "childcare": 729,
+        "groceries": 577,
+        "transport": 65,
+        "healthcare": 156,
+        "utilitiesAndBuffer": 512
+      },
+      "oneIncTwoKids": {
+        "housing": 1207,
+        "childcare": 326,
+        "groceries": 534,
+        "transport": 35,
+        "healthcare": 144,
+        "utilitiesAndBuffer": 536
+      }
+    },
+    "torino": {
+      "oneParent": {
+        "housing": 767,
+        "childcare": 259,
+        "groceries": 410,
+        "transport": 38,
+        "healthcare": 120,
+        "utilitiesAndBuffer": 442
+      },
+      "bothWorking": {
+        "housing": 767,
+        "childcare": 506,
+        "groceries": 443,
+        "transport": 70,
+        "healthcare": 130,
+        "utilitiesAndBuffer": 410
+      },
+      "twoKids": {
+        "housing": 905,
+        "childcare": 860,
+        "groceries": 532,
+        "transport": 70,
+        "healthcare": 156,
+        "utilitiesAndBuffer": 471
+      },
+      "oneIncTwoKids": {
+        "housing": 905,
+        "childcare": 363,
+        "groceries": 492,
+        "transport": 38,
+        "healthcare": 144,
+        "utilitiesAndBuffer": 495
+      }
+    },
+    "lucca": {
+      "oneParent": {
+        "housing": 760,
+        "childcare": 218,
+        "groceries": 325,
+        "transport": 31,
+        "healthcare": 120,
+        "utilitiesAndBuffer": 350
+      },
+      "bothWorking": {
+        "housing": 760,
+        "childcare": 384,
+        "groceries": 351,
+        "transport": 57,
+        "healthcare": 130,
+        "utilitiesAndBuffer": 325
+      },
+      "twoKids": {
+        "housing": 897,
+        "childcare": 653,
+        "groceries": 421,
+        "transport": 57,
+        "healthcare": 156,
+        "utilitiesAndBuffer": 374
+      },
+      "oneIncTwoKids": {
+        "housing": 897,
+        "childcare": 305,
+        "groceries": 390,
+        "transport": 31,
+        "healthcare": 144,
+        "utilitiesAndBuffer": 392
+      }
+    },
+    "udine": {
+      "oneParent": {
+        "housing": 705,
+        "childcare": 234,
+        "groceries": 430,
+        "transport": 40,
+        "healthcare": 120,
+        "utilitiesAndBuffer": 463
+      },
+      "bothWorking": {
+        "housing": 705,
+        "childcare": 433,
+        "groceries": 464,
+        "transport": 74,
+        "healthcare": 130,
+        "utilitiesAndBuffer": 430
+      },
+      "twoKids": {
+        "housing": 832,
+        "childcare": 736,
+        "groceries": 557,
+        "transport": 74,
+        "healthcare": 156,
+        "utilitiesAndBuffer": 494
+      },
+      "oneIncTwoKids": {
+        "housing": 832,
+        "childcare": 328,
+        "groceries": 516,
+        "transport": 40,
+        "healthcare": 144,
+        "utilitiesAndBuffer": 519
+      }
+    },
+    "padova": {
+      "oneParent": {
+        "housing": 943,
+        "childcare": 249,
+        "groceries": 429,
+        "transport": 45,
+        "healthcare": 120,
+        "utilitiesAndBuffer": 462
+      },
+      "bothWorking": {
+        "housing": 943,
+        "childcare": 477,
+        "groceries": 463,
+        "transport": 83,
+        "healthcare": 130,
+        "utilitiesAndBuffer": 429
+      },
+      "twoKids": {
+        "housing": 1113,
+        "childcare": 811,
+        "groceries": 556,
+        "transport": 83,
+        "healthcare": 156,
+        "utilitiesAndBuffer": 493
+      },
+      "oneIncTwoKids": {
+        "housing": 1113,
+        "childcare": 349,
+        "groceries": 515,
+        "transport": 45,
+        "healthcare": 144,
+        "utilitiesAndBuffer": 517
+      }
+    },
+    "trento": {
+      "oneParent": {
+        "housing": 945,
+        "childcare": 146,
+        "groceries": 424,
+        "transport": 35,
+        "healthcare": 120,
+        "utilitiesAndBuffer": 457
+      },
+      "bothWorking": {
+        "housing": 945,
+        "childcare": 168,
+        "groceries": 458,
+        "transport": 65,
+        "healthcare": 130,
+        "utilitiesAndBuffer": 424
+      },
+      "twoKids": {
+        "housing": 1115,
+        "childcare": 286,
+        "groceries": 550,
+        "transport": 65,
+        "healthcare": 156,
+        "utilitiesAndBuffer": 488
+      },
+      "oneIncTwoKids": {
+        "housing": 1115,
+        "childcare": 204,
+        "groceries": 509,
+        "transport": 35,
+        "healthcare": 144,
+        "utilitiesAndBuffer": 512
+      }
+    },
+    "sanLazzaro": {
+      "oneParent": {
+        "housing": 887,
+        "childcare": 194,
+        "groceries": 372,
+        "transport": 39,
+        "healthcare": 120,
+        "utilitiesAndBuffer": 400
+      },
+      "bothWorking": {
+        "housing": 887,
+        "childcare": 312,
+        "groceries": 402,
+        "transport": 72,
+        "healthcare": 130,
+        "utilitiesAndBuffer": 372
+      },
+      "twoKids": {
+        "housing": 1047,
+        "childcare": 530,
+        "groceries": 482,
+        "transport": 72,
+        "healthcare": 156,
+        "utilitiesAndBuffer": 428
+      },
+      "oneIncTwoKids": {
+        "housing": 1047,
+        "childcare": 272,
+        "groceries": 446,
+        "transport": 39,
+        "healthcare": 144,
+        "utilitiesAndBuffer": 448
+      }
+    },
+    "imola": {
+      "oneParent": {
+        "housing": 718,
+        "childcare": 249,
+        "groceries": 377,
+        "transport": 28,
+        "healthcare": 120,
+        "utilitiesAndBuffer": 406
+      },
+      "bothWorking": {
+        "housing": 718,
+        "childcare": 478,
+        "groceries": 407,
+        "transport": 52,
+        "healthcare": 130,
+        "utilitiesAndBuffer": 377
+      },
+      "twoKids": {
+        "housing": 847,
+        "childcare": 813,
+        "groceries": 488,
+        "transport": 52,
+        "healthcare": 156,
+        "utilitiesAndBuffer": 434
+      },
+      "oneIncTwoKids": {
+        "housing": 847,
+        "childcare": 349,
+        "groceries": 452,
+        "transport": 28,
+        "healthcare": 144,
+        "utilitiesAndBuffer": 455
+      }
+    },
+    "urbino": {
+      "oneParent": {
+        "housing": 549,
+        "childcare": 177,
+        "groceries": 273,
+        "transport": 35,
+        "healthcare": 120,
+        "utilitiesAndBuffer": 294
+      },
+      "bothWorking": {
+        "housing": 549,
+        "childcare": 262,
+        "groceries": 295,
+        "transport": 65,
+        "healthcare": 130,
+        "utilitiesAndBuffer": 273
+      },
+      "twoKids": {
+        "housing": 648,
+        "childcare": 445,
+        "groceries": 354,
+        "transport": 65,
+        "healthcare": 156,
+        "utilitiesAndBuffer": 314
+      },
+      "oneIncTwoKids": {
+        "housing": 648,
+        "childcare": 248,
+        "groceries": 328,
+        "transport": 35,
+        "healthcare": 144,
+        "utilitiesAndBuffer": 329
+      }
+    }
+  },
+  "auditMeta": {
+    "salzburg": {
+      "overall": "mixed",
+      "lastReviewed": "2026-05-12",
+      "notes": "Initial live expansion dossier: current benchmark housing, basket, childcare, safety, and mobility inputs are attached where recovered, while the deeper municipal source packet and any missing local air capture still remain outside the strict layer.",
+      "sections": {
+        "housingCosts": "verified",
+        "childcareCosts": "verified",
+        "basketCosts": "mixed",
+        "healthcareAccess": "verified",
+        "mobilityCosts": "verified",
+        "familyBenefits": "verified",
+        "budgetModel": "mixed"
+      }
+    },
+    "graz": {
+      "overall": "mixed",
+      "lastReviewed": "2026-05-12",
+      "notes": "Initial live expansion dossier: current benchmark housing, basket, childcare, safety, and mobility inputs are attached where recovered, while the deeper municipal source packet and any missing local air capture still remain outside the strict layer.",
+      "sections": {
+        "housingCosts": "verified",
+        "childcareCosts": "verified",
+        "basketCosts": "mixed",
+        "healthcareAccess": "verified",
+        "mobilityCosts": "verified",
+        "familyBenefits": "verified",
+        "budgetModel": "mixed"
+      }
+    },
+    "hamburg": {
+      "overall": "mixed",
+      "lastReviewed": "2026-05-12",
+      "notes": "Initial live expansion dossier: current benchmark housing, basket, childcare, safety, and mobility inputs are attached where recovered, while the deeper municipal source packet and any missing local air capture still remain outside the strict layer.",
+      "sections": {
+        "housingCosts": "verified",
+        "childcareCosts": "verified",
+        "basketCosts": "mixed",
+        "healthcareAccess": "verified",
+        "mobilityCosts": "verified",
+        "familyBenefits": "verified",
+        "budgetModel": "mixed"
+      }
+    },
+    "munich": {
+      "overall": "mixed",
+      "lastReviewed": "2026-05-12",
+      "notes": "Initial live expansion dossier: current benchmark housing, basket, childcare, safety, and mobility inputs are attached where recovered, while the deeper municipal source packet and any missing local air capture still remain outside the strict layer.",
+      "sections": {
+        "housingCosts": "verified",
+        "childcareCosts": "verified",
+        "basketCosts": "mixed",
+        "healthcareAccess": "verified",
+        "mobilityCosts": "verified",
+        "familyBenefits": "verified",
+        "budgetModel": "mixed"
+      }
+    },
+    "malaga": {
+      "overall": "mixed",
+      "lastReviewed": "2026-05-12",
+      "notes": "Initial live expansion dossier: current benchmark housing, basket, childcare, safety, and mobility inputs are attached where recovered, while the deeper municipal source packet and any missing local air capture still remain outside the strict layer.",
+      "sections": {
+        "housingCosts": "verified",
+        "childcareCosts": "verified",
+        "basketCosts": "mixed",
+        "healthcareAccess": "verified",
+        "mobilityCosts": "verified",
+        "familyBenefits": "verified",
+        "budgetModel": "mixed"
+      }
+    },
+    "bristol": {
+      "overall": "mixed",
+      "lastReviewed": "2026-05-12",
+      "notes": "Initial live expansion dossier: current benchmark housing, basket, childcare, safety, and mobility inputs are attached where recovered, while the deeper municipal source packet and any missing local air capture still remain outside the strict layer.",
+      "sections": {
+        "housingCosts": "verified",
+        "childcareCosts": "verified",
+        "basketCosts": "mixed",
+        "healthcareAccess": "verified",
+        "mobilityCosts": "verified",
+        "familyBenefits": "verified",
+        "budgetModel": "mixed"
+      }
+    },
+    "edinburgh": {
+      "overall": "mixed",
+      "lastReviewed": "2026-05-12",
+      "notes": "Initial live expansion dossier: current benchmark housing, basket, childcare, safety, and mobility inputs are attached where recovered, while the deeper municipal source packet and any missing local air capture still remain outside the strict layer.",
+      "sections": {
+        "housingCosts": "verified",
+        "childcareCosts": "verified",
+        "basketCosts": "mixed",
+        "healthcareAccess": "verified",
+        "mobilityCosts": "verified",
+        "familyBenefits": "verified",
+        "budgetModel": "mixed"
+      }
+    },
+    "parma": {
+      "overall": "mixed",
+      "lastReviewed": "2026-05-12",
+      "notes": "Initial live expansion dossier: current benchmark housing, basket, childcare, safety, and mobility inputs are attached where recovered, while the deeper municipal source packet and any missing local air capture still remain outside the strict layer.",
+      "sections": {
+        "housingCosts": "verified",
+        "childcareCosts": "verified",
+        "basketCosts": "mixed",
+        "healthcareAccess": "verified",
+        "mobilityCosts": "verified",
+        "familyBenefits": "verified",
+        "budgetModel": "mixed"
+      }
+    },
+    "verona": {
+      "overall": "mixed",
+      "lastReviewed": "2026-05-12",
+      "notes": "Initial live expansion dossier: current benchmark housing, basket, childcare, safety, and mobility inputs are attached where recovered, while the deeper municipal source packet and any missing local air capture still remain outside the strict layer.",
+      "sections": {
+        "housingCosts": "verified",
+        "childcareCosts": "verified",
+        "basketCosts": "mixed",
+        "healthcareAccess": "verified",
+        "mobilityCosts": "verified",
+        "familyBenefits": "verified",
+        "budgetModel": "mixed"
+      }
+    },
+    "bergamo": {
+      "overall": "mixed",
+      "lastReviewed": "2026-05-12",
+      "notes": "Initial live expansion dossier: current benchmark housing, basket, childcare, safety, and mobility inputs are attached where recovered, while the deeper municipal source packet and any missing local air capture still remain outside the strict layer.",
+      "sections": {
+        "housingCosts": "verified",
+        "childcareCosts": "verified",
+        "basketCosts": "mixed",
+        "healthcareAccess": "verified",
+        "mobilityCosts": "verified",
+        "familyBenefits": "verified",
+        "budgetModel": "mixed"
+      }
+    },
+    "modena": {
+      "overall": "mixed",
+      "lastReviewed": "2026-05-12",
+      "notes": "Initial live expansion dossier: current benchmark housing, basket, childcare, safety, and mobility inputs are attached where recovered, while the deeper municipal source packet and any missing local air capture still remain outside the strict layer.",
+      "sections": {
+        "housingCosts": "verified",
+        "childcareCosts": "verified",
+        "basketCosts": "mixed",
+        "healthcareAccess": "verified",
+        "mobilityCosts": "verified",
+        "familyBenefits": "verified",
+        "budgetModel": "mixed"
+      }
+    },
+    "torino": {
+      "overall": "mixed",
+      "lastReviewed": "2026-05-12",
+      "notes": "Initial live expansion dossier: current benchmark housing, basket, childcare, safety, and mobility inputs are attached where recovered, while the deeper municipal source packet and any missing local air capture still remain outside the strict layer.",
+      "sections": {
+        "housingCosts": "verified",
+        "childcareCosts": "verified",
+        "basketCosts": "mixed",
+        "healthcareAccess": "verified",
+        "mobilityCosts": "verified",
+        "familyBenefits": "verified",
+        "budgetModel": "mixed"
+      }
+    },
+    "lucca": {
+      "overall": "mixed",
+      "lastReviewed": "2026-05-12",
+      "notes": "Initial live expansion dossier: current benchmark housing, basket, childcare, safety, and mobility inputs are attached where recovered, while the deeper municipal source packet and any missing local air capture still remain outside the strict layer.",
+      "sections": {
+        "housingCosts": "verified",
+        "childcareCosts": "verified",
+        "basketCosts": "mixed",
+        "healthcareAccess": "verified",
+        "mobilityCosts": "verified",
+        "familyBenefits": "verified",
+        "budgetModel": "mixed"
+      }
+    },
+    "udine": {
+      "overall": "mixed",
+      "lastReviewed": "2026-05-12",
+      "notes": "Initial live expansion dossier: current benchmark housing, basket, childcare, safety, and mobility inputs are attached where recovered, while the deeper municipal source packet and any missing local air capture still remain outside the strict layer.",
+      "sections": {
+        "housingCosts": "verified",
+        "childcareCosts": "verified",
+        "basketCosts": "mixed",
+        "healthcareAccess": "verified",
+        "mobilityCosts": "verified",
+        "familyBenefits": "verified",
+        "budgetModel": "mixed"
+      }
+    },
+    "padova": {
+      "overall": "mixed",
+      "lastReviewed": "2026-05-12",
+      "notes": "Initial live expansion dossier: current benchmark housing, basket, childcare, safety, and mobility inputs are attached where recovered, while the deeper municipal source packet and any missing local air capture still remain outside the strict layer.",
+      "sections": {
+        "housingCosts": "verified",
+        "childcareCosts": "verified",
+        "basketCosts": "mixed",
+        "healthcareAccess": "verified",
+        "mobilityCosts": "verified",
+        "familyBenefits": "verified",
+        "budgetModel": "mixed"
+      }
+    },
+    "trento": {
+      "overall": "mixed",
+      "lastReviewed": "2026-05-12",
+      "notes": "Initial live expansion dossier: current benchmark housing, basket, childcare, safety, and mobility inputs are attached where recovered, while the deeper municipal source packet and any missing local air capture still remain outside the strict layer.",
+      "sections": {
+        "housingCosts": "verified",
+        "childcareCosts": "verified",
+        "basketCosts": "mixed",
+        "healthcareAccess": "verified",
+        "mobilityCosts": "verified",
+        "familyBenefits": "verified",
+        "budgetModel": "mixed"
+      }
+    },
+    "sanLazzaro": {
+      "overall": "mixed",
+      "lastReviewed": "2026-05-12",
+      "notes": "Initial live expansion dossier: current benchmark housing, basket, childcare, safety, and mobility inputs are attached where recovered, while the deeper municipal source packet and any missing local air capture still remain outside the strict layer.",
+      "sections": {
+        "housingCosts": "verified",
+        "childcareCosts": "verified",
+        "basketCosts": "mixed",
+        "healthcareAccess": "verified",
+        "mobilityCosts": "verified",
+        "familyBenefits": "verified",
+        "budgetModel": "mixed"
+      }
+    },
+    "imola": {
+      "overall": "mixed",
+      "lastReviewed": "2026-05-12",
+      "notes": "Initial live expansion dossier: current benchmark housing, basket, childcare, safety, and mobility inputs are attached where recovered, while the deeper municipal source packet and any missing local air capture still remain outside the strict layer.",
+      "sections": {
+        "housingCosts": "verified",
+        "childcareCosts": "verified",
+        "basketCosts": "mixed",
+        "healthcareAccess": "verified",
+        "mobilityCosts": "verified",
+        "familyBenefits": "verified",
+        "budgetModel": "mixed"
+      }
+    },
+    "urbino": {
+      "overall": "mixed",
+      "lastReviewed": "2026-05-12",
+      "notes": "Initial live expansion dossier: current benchmark housing, basket, childcare, safety, and mobility inputs are attached where recovered, while the deeper municipal source packet and any missing local air capture still remain outside the strict layer.",
+      "sections": {
+        "housingCosts": "verified",
+        "childcareCosts": "verified",
+        "basketCosts": "mixed",
+        "healthcareAccess": "verified",
+        "mobilityCosts": "verified",
+        "familyBenefits": "verified",
+        "budgetModel": "mixed"
+      }
+    }
+  },
+  "comparisonMeta": {
+    "salzburg": {
+      "reviewNote": "Initial live dossier built from last update 6 may 2026 benchmark data plus the current austria policy anchors already attached in the audit layer.",
+      "pros": [
+        "Clean air and low day-to-day safety stress.",
+        "Compact form makes stroller errands and school runs simple.",
+        "Austrian family support keeps early-years downside lower than the headline housing costs suggest.",
+        "Day access to alpine lakes and forests is a genuine everyday asset, not a marketing footnote."
+      ],
+      "cons": [
+        "Buying is expensive for a mid-size city.",
+        "Career depth is thinner than Munich, Hamburg, or Vienna.",
+        "Tourism pressure makes the core busier than the postcard calm implies.",
+        "Job-market depth at mid-to-senior level is thin enough that remote work or Vienna commuting defines the real career ceiling for many."
+      ]
+    },
+    "graz": {
+      "reviewNote": "Initial live dossier built from last update 4 may 2026 benchmark data plus the current austria policy anchors already attached in the audit layer.",
+      "pros": [
+        "Lower housing burn than Salzburg or Vienna without giving up Austrian family support.",
+        "Compact form and strong tram coverage keep daily logistics efficient.",
+        "University and engineering depth make the city more future-proof than its size suggests.",
+        "Austrian family benefits — Familienbeihilfe and free kindergarten access — provide a solid welfare floor regardless of city size."
+      ],
+      "cons": [
+        "The salary ceiling is still well below Munich or Hamburg.",
+        "The city can feel socially thin if you stay outside German too long.",
+        "Graz sits in a basin prone to winter temperature inversions, making it Austria's most PM2.5-challenged city despite recent improvements.",
+        "Buying pressure in the best family districts has risen faster than the salary base justifies, narrowing the historic value advantage."
+      ]
+    },
+    "hamburg": {
+      "reviewNote": "Initial live dossier built from last update 12 may 2026 benchmark data plus the current germany policy anchors already attached in the audit layer.",
+      "pros": [
+        "Broad employer base across logistics, maritime, media, aviation, and services.",
+        "High park and water access for a large city.",
+        "Good childcare benchmark versus Munich-level salaries and housing pressure.",
+        "Cultural depth, harbour atmosphere, and a rich urban social offer give the city a livelier everyday quality than most German peers."
+      ],
+      "cons": [
+        "Housing still lands in premium territory in the best family districts.",
+        "Safety is more mixed than the calmer Munich or Austrian options.",
+        "Grey weather and a cooler social style can wear on households expecting a softer landing.",
+        "Buying in top family districts requires capital commitment that renting rarely bridges in a reasonable horizon."
+      ]
+    },
+    "munich": {
+      "reviewNote": "Initial live dossier built from last update 9 may 2026 benchmark data plus the current germany policy anchors already attached in the audit layer.",
+      "pros": [
+        "Very high day-to-day safety for a major metro.",
+        "Clear salary upside and job-market breadth.",
+        "Strong parks, lakes access, and specialist healthcare confidence.",
+        "Dense international employer base reduces German-language pressure at entry compared with smaller German cities."
+      ],
+      "cons": [
+        "Housing cost is severe both for renting and buying.",
+        "Childcare market benchmarks are far above the smaller German and Austrian cities.",
+        "The best family experience often requires neighborhoods that are themselves part of the affordability problem.",
+        "Dual-income households can still feel squeezed once childcare and quality family housing are stacked at full market rate."
+      ]
+    },
+    "malaga": {
+      "reviewNote": "Initial live dossier built from last update 4 may 2026 benchmark data plus the current spain policy anchors already attached in the audit layer.",
+      "pros": [
+        "Strong climate and outdoor-living upside.",
+        "Low transport burn and good family safety compared with many similarly popular coastal cities.",
+        "Better air and daily weather resilience than the Po Valley or Bucharest-style tradeoffs.",
+        "Growing tech and international employer presence is making the city a more credible remote-work base year-round."
+      ],
+      "cons": [
+        "Preschool benchmark is high relative to the local wage base.",
+        "The job market is improving, but salary upside is still weaker than in Germany or Edinburgh.",
+        "Housing no longer feels cheap once expat and tourism demand are priced in.",
+        "Summer heat intensity is rising, and urban heat-island effects reduce outdoor comfort during the longest work months."
+      ]
+    },
+    "bristol": {
+      "reviewNote": "Initial live dossier built from last update 4 may 2026 benchmark data plus the current uk policy anchors already attached in the audit layer.",
+      "pros": [
+        "Strong employer base across tech, aerospace, health, and education.",
+        "Good green-city feel for a UK regional metro.",
+        "Language friction is minimal compared with the continental roster.",
+        "Creative, green, and university-anchored civic culture gives the city disproportionate quality relative to its size."
+      ],
+      "cons": [
+        "Childcare benchmark is among the harshest in the expansion wave.",
+        "Transport is workable but not truly low-friction for all districts.",
+        "Housing pressure and childcare can erase much of the salary upside.",
+        "NHS primary care access lags behind many continental peers, adding private health top-ups as a practical household cost."
+      ]
+    },
+    "edinburgh": {
+      "reviewNote": "Initial live dossier built from last update 4 may 2026 benchmark data plus the current uk policy anchors already attached in the audit layer.",
+      "pros": [
+        "Strong day-to-day safety for a UK city.",
+        "Excellent public realm, architecture, and cultural depth.",
+        "Good employer base across finance, public sector, education, and tech.",
+        "NHS hospital network keeps clinical confidence higher than most UK peers despite known access speed friction."
+      ],
+      "cons": [
+        "Childcare is still very expensive even before inflation psychology is added.",
+        "Housing is tight enough that the city can feel more exclusive than it first appears.",
+        "Weather and winter light are real quality-of-life costs for some households.",
+        "Tourism and festival-season crowding make the center periodically far more stressful than the rest-of-year rhythm would suggest."
+      ]
+    },
+    "parma": {
+      "reviewNote": "Initial live dossier built from last update 4 may 2026 benchmark data plus the current italy policy anchors already attached in the audit layer.",
+      "pros": [
+        "Good ownership and rental value relative to Milan and Bologna.",
+        "Strong healthcare confidence for a city this size.",
+        "Food quality and daily urban comfort are tangible positives.",
+        "Food culture, local suppliers, and the university create an everyday living quality noticeably above comparably priced alternatives."
+      ],
+      "cons": [
+        "Air quality remains the structural drag.",
+        "Safety feels more mixed than the calmer Austrian or Munich options.",
+        "Career upside is acceptable but not especially deep for international households.",
+        "Career exit options are narrower than in Milan or Bologna, with the market heavily clustered around food, pharma, and local services."
+      ]
+    },
+    "verona": {
+      "reviewNote": "Initial live dossier built from last update 11 may 2026 benchmark data plus the current italy policy anchors already attached in the audit layer.",
+      "pros": [
+        "Good everyday value relative to Milan and some larger northern-Italian peers.",
+        "Strong rail connectivity and attractive city fabric.",
+        "Preschool benchmark is manageable relative to many Western metros.",
+        "Brenner corridor rail links to Milan, Venice, and Austria make Verona one of the best-connected mid-size cities in this roster."
+      ],
+      "cons": [
+        "Air quality is still a clear drag.",
+        "The safety read in this build is still comparative rather than tied to a clean recovered city index capture.",
+        "Career upside is solid but not especially deep for international specialists.",
+        "Winter fog and PM2.5 pressure from Po Valley inversions keep full-year outdoor comfort below what the city's architecture would otherwise deliver."
+      ]
+    },
+    "bergamo": {
+      "reviewNote": "Initial live dossier built from last update 11 may 2026 benchmark data plus the current italy policy anchors already attached in the audit layer.",
+      "pros": [
+        "Very strong rental and ownership value relative to the wider Lombardy corridor.",
+        "Good access to Milan jobs without paying Milan housing prices.",
+        "Compact daily life in the lower city can be efficient for families."
+      ],
+      "cons": [
+        "Air remains a structural drag as part of the wider Lombardy basin.",
+        "Car dependence returns faster than in the strongest compact-city comparators.",
+        "The city is less socially or professionally international than Milan."
+      ]
+    },
+    "modena": {
+      "reviewNote": "Initial live dossier built from last update 4 may 2026 benchmark data plus the current italy policy anchors already attached in the audit layer.",
+      "pros": [
+        "Food quality and market culture are genuine everyday advantages over more anonymous northern cities.",
+        "Strong university hospital anchor and compact city logistics that stay manageable for infant-family routines.",
+        "Lower housing pressure than Bologna while staying inside the same SETA transit corridor."
+      ],
+      "cons": [
+        "Air quality is a persistent Po Valley drag shared with the rest of the Emilia plain.",
+        "Career upside is strong locally but narrower for specialized international roles than Milan.",
+        "Safety is more mixed than the calmer Alpine or German options."
+      ]
+    },
+    "torino": {
+      "reviewNote": "Initial live dossier built from last update may 2026 benchmark data plus the current italy policy anchors already attached in the audit layer.",
+      "pros": [
+        "Politecnico di Torino (ranked #1 in Italy for engineering) and Università di Torino anchor a strong resident higher-education asset.",
+        "Rent well below Milan for a city with comparable cultural depth and university infrastructure.",
+        "Alps visible from the city and reachable by car in under an hour — skiing, hiking, and mountain air are weekend assets.",
+        "Rich cultural offer: Museo Egizio (world's largest Egyptian collection outside Cairo), National Cinema Museum, vibrant food and aperitivo scene."
+      ],
+      "cons": [
+        "PM2.5 is the worst in the Italian set — Po Valley combined with Alpine basin trapping gives Turin some of the most persistent air stagnation in northern Europe.",
+        "Safety index is lower than the Austrian and German alternatives, and some outer districts carry a less comfortable daily feel.",
+        "Automotive sector restructuring means the job market is in transition; Stellantis footprint has shrunk significantly.",
+        "GTT metro is limited to a single line; outer suburbs still depend heavily on buses, which are less reliable than the metro corridor suggests."
+      ]
+    },
+    "lucca": {
+      "reviewNote": "Initial live dossier built from last update may 2026 (low contributor count; treat as indicative) benchmark data plus the current italy policy anchors already attached in the audit layer.",
+      "pros": [
+        "Significantly better air quality than any Po Valley city in the Italian set.",
+        "The intact Renaissance walls as a daily cycling and walking park — a genuine quality-of-life asset with no equivalent elsewhere in the roster.",
+        "Tuscan climate with mild winters and long autumns, plus easy weekend access to the Versilia coast and Apuan Alps.",
+        "Lower cost than Florence and Siena while sharing much of the cultural and gastronomic quality of Tuscany."
+      ],
+      "cons": [
+        "Job market is thin outside tourism, services, and manufacturing — remote work or a portable career is nearly essential for international households.",
+        "Public transit outside the city is insufficient for a car-free lifestyle; the rail line to Florence is slow and infrequent.",
+        "No major university in the city itself; children will need to relocate for higher education, and adult professional-network depth is limited.",
+        "The historic centre is increasingly subject to tourist-economy pricing pressure, which is gradually affecting rental and buying values for residents."
+      ]
+    },
+    "udine": {
+      "reviewNote": "Initial live dossier built from last update 4 may 2026 benchmark data plus the current italy policy anchors already attached in the audit layer.",
+      "pros": [
+        "Very low ownership barrier by northern-Italy standards.",
+        "Calmer daily rhythm than the larger metros.",
+        "Good base if family steadiness matters more than brand-name urban life.",
+        "Northeast Italy location gives fast access to mountains, Slovenia, and the Adriatic — weekend escapes are a genuine daily-life asset."
+      ],
+      "cons": [
+        "Job-market depth is thinner than the larger northern Italian cities.",
+        "Car pressure returns faster once you leave the core.",
+        "The city has less social and service redundancy for international families.",
+        "The international community is thin enough that households slow to integrate in Italian risk real social isolation."
+      ]
+    },
+    "padova": {
+      "reviewNote": "Initial live dossier built from last update 11 may 2026 benchmark data plus the current italy policy anchors already attached in the audit layer.",
+      "pros": [
+        "University and hospital depth are strong for the cost level.",
+        "Good rail connectivity to Venice and the wider northeast corridor.",
+        "Ownership is still reachable relative to many other service-rich cities.",
+        "The university-hospital complex gives clinical confidence materially above what a simple mid-tier Italian city normally provides."
+      ],
+      "cons": [
+        "Safety feels more mixed than the Austrian and Munich comparators.",
+        "The air profile is still a north-Italian tradeoff even without a fresh local PM2.5 capture in this wave.",
+        "The city is solid rather than exceptional on family public-realm polish.",
+        "Rent is rising faster than the local wage floor, gradually compressing the value premium that historically set the city apart."
+      ]
+    },
+    "trento": {
+      "reviewNote": "Initial live dossier built from last update 4 may 2026 benchmark data plus the current italy policy anchors already attached in the audit layer.",
+      "pros": [
+        "Very low childcare benchmark in the current market snapshot.",
+        "Strong climate and green-space profile relative to the rest of Italy.",
+        "Compact and manageable without a car in the core."
+      ],
+      "cons": [
+        "The job market is smaller and more specialized.",
+        "Buying is not especially cheap for a city of this size.",
+        "The city is less cosmopolitan and service-rich than the larger metros."
+      ]
+    },
+    "sanLazzaro": {
+      "reviewNote": "Initial live dossier built from bologna metro proxy benchmark, may 2026 benchmark data plus the current italy policy anchors already attached in the audit layer.",
+      "pros": [
+        "Materially cheaper than central Bologna with the same TPER metropolitan transit access.",
+        "Among the calmest and most stroller-friendly living environments in the Emilia-Romagna roster.",
+        "Good local schools and green streets suit a family with an infant looking for low daily friction."
+      ],
+      "cons": [
+        "Very limited own-city depth — cultural, career, and service variety depends entirely on Bologna access.",
+        "Air quality is the same Po Valley drag as the rest of Emilia-Romagna.",
+        "Almost no international expat footprint, which can feel isolating if Italian is not yet established."
+      ]
+    },
+    "imola": {
+      "reviewNote": "Initial live dossier built from last update march 2026 (very low contributor count; bologna metro used as secondary reference for missing data points) benchmark data plus the current italy policy anchors already attached in the audit layer.",
+      "pros": [
+        "Rent is meaningfully cheaper than Bologna while maintaining access to Bologna's services by road or bus.",
+        "Autodromo Enzo e Dino Ferrari (Formula 1 Emilia-Romagna Grand Prix) gives the city a cultural and economic identity well above its size.",
+        "Emilia-Romagna food and wine quality — local producers, weekly markets, restaurant culture — is the same as in Bologna, at lower prices.",
+        "Calmer daily rhythm and safer streets than the Bologna core."
+      ],
+      "cons": [
+        "Own-city job market is very thin outside manufacturing and local services — Bologna dependence is high for career households.",
+        "Po Valley air quality is the same structural drag as the wider Emilia-Romagna plain.",
+        "No major university; children will need to relocate for higher education.",
+        "Public transit to Bologna is slow enough that car ownership is practically essential for career-active households."
+      ]
+    },
+    "urbino": {
+      "reviewNote": "Initial live dossier built from regional estimate based on marche provincial data and university of urbino context, 2025-2026 (no numbeo data available for urbino) benchmark data plus the current italy policy anchors already attached in the audit layer.",
+      "pros": [
+        "The cleanest air in the Italian set by a wide margin — Apennine hilltop location at 415m puts Urbino entirely outside the Po Valley inversion zone.",
+        "Lowest cost of living in the Italian roster; purchasing power for remote-income households is exceptional.",
+        "UNESCO World Heritage city — Palazzo Ducale, the birthplace of Raphael, and a perfectly preserved Renaissance urban fabric are the daily backdrop.",
+        "Exceptionally safe small-town environment with a strong university community that keeps the city intellectually alive."
+      ],
+      "cons": [
+        "Smallest job market in the set by a wide margin — practically all paid employment is university-related or in local services; remote work is near-mandatory for international households.",
+        "Car is essential; the hilltop location means virtually no cycling for transport, and inter-city transit is infrequent.",
+        "Specialist healthcare requires Pesaro (50km) or Ancona (90km); the local hospital covers general family care only.",
+        "Very small social pool for international adults outside the university year; summers see students depart and the city becomes significantly quieter."
+      ]
+    }
+  }
+}

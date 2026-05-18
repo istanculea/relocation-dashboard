@@ -32,7 +32,4 @@ Deployment is handled by `.github/workflows/deploy-pages.yml`:
 
 ## Repository owner follow-up (one-time)
 
-In GitHub repository settings:
-
-1. Open **Settings → Pages**.
-2. Under **Build and deployment**, set **Source** to **GitHub Actions**.
+No manual Pages setup is required. The deploy workflow uses `actions/configure-pages` with automatic enablement, so Pages is initialized from CI on first run.

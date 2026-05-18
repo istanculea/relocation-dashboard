@@ -1,0 +1,48 @@
+# OS / editor junk
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+*.local
+
+# Dependency directories and package manager caches
+node_modules/
+.pnpm-store/
+.npm/
+.yarn/
+
+# Build and test outputs
+coverage/
+dist/
+build/
+.next/
+out/
+.cache/
+.turbo/
+
+# Python cache/build artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.venv/
+venv/
+
+# Misc temp files
+*.tmp
+*.temp
+tmp/

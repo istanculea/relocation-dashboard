@@ -1,8 +1,8 @@
 (() => {
-  const lastUpdated = document.getElementById('last-updated');
-  if (!lastUpdated) {
+  const lastViewed = document.getElementById('last-viewed');
+  if (!lastViewed) {
     return;
   }
 
-  lastUpdated.textContent = new Date().toLocaleString();
+  lastViewed.textContent = new Date().toLocaleString();
 })();

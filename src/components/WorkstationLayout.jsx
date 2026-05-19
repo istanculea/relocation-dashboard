@@ -67,7 +67,7 @@ function FeedRow({ row, rank, isSelected, isHovered, isFiltered, isCompared, onH
         <span className="ws-feed-cell--city-sub">{row.country}</span>
       </div>
       <div className="ws-feed-cell ws-feed-cell--score">{fmt(row.activeWeightedScore)}</div>
-      <div className="ws-feed-cell ws-feed-cell--budget">{formatEuro(row.budgets['oneParent'].midpoint).replace('€', '€')}</div>
+      <div className="ws-feed-cell ws-feed-cell--budget">{formatEuro(row.budgets['oneParent'].midpoint)}</div>
       <div className={`ws-feed-cell ws-feed-cell--air ${airClass}`}>{pm !== null ? `${pm}` : '—'}</div>
       <div className="ws-feed-chevron">›</div>
     </div>

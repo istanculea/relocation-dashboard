@@ -12,6 +12,13 @@ const ZONE_META = {
 // Fixed margins in px (SVG user units = screen px with dynamic viewBox)
 const ML = 68, MR = 22, MT = 24, MB = 52;
 
+const DOT_RADIUS = {
+  selected: 11,
+  hovered: 10,
+  filtered: 8,
+  dimmed: 6,
+};
+
 function medianOf(arr) {
   if (!arr.length) return 0;
   const s = [...arr].sort((a, b) => a - b);
@@ -26,6 +33,220 @@ function classifyZone(score, budget, mScore, mBudget) {
   if (!lowCost && highQol) return 'Premium';
   if (lowCost && !highQol) return 'Cheap';
   return 'Poor Value';
+}
+
+function computePlotStats(rows, scenarioKey) {
+  const scores = rows.map((r) => r.activeWeightedScore ?? 0);
+  const budgets = rows.map((r) => r.budgets?.[scenarioKey]?.midpoint ?? 0);
+  const minS = scores.length ? Math.min(...scores) : 0;
+  const maxS = scores.length ? Math.max(...scores) : 10;
+  const minB = budgets.length ? Math.min(...budgets) : 0;
+  const maxB = budgets.length ? Math.max(...budgets) : 8000;
+  const bSpan = Math.max(maxB - minB, 1);
+  const sSpan = Math.max(maxS - minS, 0.1);
+
+  return {
+    mScore: medianOf(scores),
+    mBudget: medianOf(budgets),
+    xLo: minB - bSpan * 0.06,
+    xHi: maxB + bSpan * 0.06,
+    yLo: minS - sSpan * 0.10,
+    yHi: maxS + sSpan * 0.10,
+  };
+}
+
+function buildEnrichedRows(rows, scenarioKey, mScore, mBudget) {
+  return rows.map((r) => {
+    const score = r.activeWeightedScore ?? 0;
+    const budget = r.budgets?.[scenarioKey]?.midpoint ?? 0;
+    return { ...r, score, budget, zone: classifyZone(score, budget, mScore, mBudget) };
+  });
+}
+
+function buildOrderedDots(enrichedRows, filteredKeys, selectedCityKey) {
+  const dimmed = enrichedRows.filter((r) => !filteredKeys.has(r.key) && r.key !== selectedCityKey);
+  const active = enrichedRows.filter((r) => filteredKeys.has(r.key) && r.key !== selectedCityKey);
+  const top = enrichedRows.filter((r) => r.key === selectedCityKey);
+  return [...dimmed, ...active, ...top];
+}
+
+function getTooltipPosition({ cx, cy, tw, th, plotBounds }) {
+  const tx = cx + 18 + tw > plotBounds.right ? cx - 18 - tw : cx + 18;
+  const ty = Math.max(plotBounds.top + 2, Math.min(cy - th / 2, plotBounds.bottom - th));
+  return { tx, ty };
+}
+
+function getDotVisualState({ row, filteredKeys, selectedCityKey, hoveredCityKey, svgX, svgY }) {
+  const isFiltered = filteredKeys.has(row.key);
+  const isSelected = row.key === selectedCityKey;
+  const isHovered = row.key === hoveredCityKey;
+  const zoneMeta = ZONE_META[row.zone] ?? ZONE_META.Cheap;
+  const cx = svgX(row.budget);
+  const cy = svgY(row.score);
+
+  let dotR = DOT_RADIUS.dimmed;
+  if (isSelected) {
+    dotR = DOT_RADIUS.selected;
+  } else if (isHovered) {
+    dotR = DOT_RADIUS.hovered;
+  } else if (isFiltered) {
+    dotR = DOT_RADIUS.filtered;
+  }
+
+  return {
+    isFiltered,
+    isSelected,
+    isHovered,
+    zoneMeta,
+    cx,
+    cy,
+    dotR,
+    opacity: isFiltered ? 1 : 0.14,
+  };
+}
+
+function ScatterDotRings({ isSelected, isHovered, cx, cy, dotR, zoneMeta }) {
+  if (!isSelected && !isHovered) {
+    return null;
+  }
+
+  return (
+    <>
+      <circle cx={cx} cy={cy} r={dotR + 8} fill="none" stroke={zoneMeta.dot} strokeWidth="2" opacity={0.3} />
+      {isSelected && (
+        <circle cx={cx} cy={cy} r={dotR + 3} fill="none" stroke={zoneMeta.dot} strokeWidth="1.5" opacity={0.55} />
+      )}
+    </>
+  );
+}
+
+function ScatterDotLabel({ row, isFiltered, isSelected, isHovered, zoneMeta, cx, cy, dotR }) {
+  if (isFiltered && !isSelected && !isHovered) {
+    return (
+      <text
+        x={cx}
+        y={cy - dotR - 4}
+        fontSize="10"
+        fontFamily="IBM Plex Sans, sans-serif"
+        textAnchor="middle"
+        fill={zoneMeta.color}
+        opacity="0.9"
+        fontWeight="600"
+        style={{ pointerEvents: 'none' }}
+      >
+        {row.city}
+      </text>
+    );
+  }
+
+  if (isSelected || isHovered) {
+    return (
+      <text
+        x={cx}
+        y={cy - dotR - 7}
+        fontSize="12.5"
+        fontFamily="IBM Plex Sans, sans-serif"
+        textAnchor="middle"
+        fill={zoneMeta.color}
+        fontWeight="700"
+        style={{ pointerEvents: 'none' }}
+      >
+        {row.city}
+      </text>
+    );
+  }
+
+  return null;
+}
+
+function ScatterDot({ row, filteredKeys, selectedCityKey, hoveredCityKey, svgX, svgY, onHover, onSelect }) {
+  const {
+    isFiltered,
+    isSelected,
+    isHovered,
+    zoneMeta,
+    cx,
+    cy,
+    dotR,
+    opacity,
+  } = getDotVisualState({ row, filteredKeys, selectedCityKey, hoveredCityKey, svgX, svgY });
+
+  return (
+    <g
+      key={row.key}
+      style={{ cursor: 'pointer' }}
+      onMouseEnter={() => onHover(row.key)}
+      onMouseLeave={() => onHover(null)}
+      onClick={() => onSelect(row.key)}
+      aria-label={`${row.city}: score ${row.score.toFixed(2)}, budget ${formatEuro(row.budget)}`}
+    >
+      <ScatterDotRings isSelected={isSelected} isHovered={isHovered} cx={cx} cy={cy} dotR={dotR} zoneMeta={zoneMeta} />
+      <circle
+        cx={cx}
+        cy={cy}
+        r={dotR}
+        fill={zoneMeta.dot}
+        opacity={opacity}
+        stroke={isSelected || isHovered ? zoneMeta.dot : 'none'}
+        strokeWidth={isSelected ? 2 : isHovered ? 1.5 : 0}
+        strokeOpacity="0.6"
+      />
+      <ScatterDotLabel
+        row={row}
+        isFiltered={isFiltered}
+        isSelected={isSelected}
+        isHovered={isHovered}
+        zoneMeta={zoneMeta}
+        cx={cx}
+        cy={cy}
+        dotR={dotR}
+      />
+    </g>
+  );
+}
+
+function ScatterTooltip({ row, svgX, svgY, plotBounds }) {
+  if (!row) {
+    return null;
+  }
+
+  const zoneMeta = ZONE_META[row.zone] ?? ZONE_META.Cheap;
+  const cx = svgX(row.budget);
+  const cy = svgY(row.score);
+  const tw = 186;
+  const th = 90;
+  const { tx, ty } = getTooltipPosition({ cx, cy, tw, th, plotBounds });
+
+  return (
+    <g style={{ pointerEvents: 'none' }}>
+      <rect x={tx + 2} y={ty + 2} width={tw} height={th} rx="6" fill="rgba(0,0,0,0.12)" />
+      <rect
+        x={tx}
+        y={ty}
+        width={tw}
+        height={th}
+        rx="6"
+        fill="var(--ws-surface-2)"
+        stroke={zoneMeta.dot}
+        strokeWidth="1.5"
+        strokeOpacity="0.35"
+      />
+      <rect x={tx} y={ty} width={tw} height={4} rx="6" fill={zoneMeta.dot} opacity="0.7" />
+      <text x={tx + 12} y={ty + 23} fontSize="13.5" fontFamily="IBM Plex Sans, sans-serif" fontWeight="700" fill="var(--ws-ink)">
+        {row.city}, {row.country}
+      </text>
+      <text x={tx + 12} y={ty + 43} fontSize="11" fontFamily="IBM Plex Sans, sans-serif" fill="var(--ws-ink-2)">
+        {'Score '}<tspan fontWeight="700" fill="var(--ws-ink)">{row.score.toFixed(2)}</tspan>
+        {'  ·  Zone: '}<tspan fontWeight="700" fill={zoneMeta.color}>{row.zone}</tspan>
+      </text>
+      <text x={tx + 12} y={ty + 62} fontSize="11" fontFamily="IBM Plex Sans, sans-serif" fill="var(--ws-ink-2)">
+        {'Budget '}<tspan fontWeight="700" fill="var(--ws-ink)">{formatEuro(row.budget)}/mo</tspan>
+      </text>
+      <text x={tx + 12} y={ty + 80} fontSize="10" fontFamily="IBM Plex Sans, sans-serif" fill="var(--ws-ink-3)">
+        Click to open city profile
+      </text>
+    </g>
+  );
 }
 
 export function AffordabilityScatterplot({
@@ -59,46 +280,24 @@ export function AffordabilityScatterplot({
   const PW = W - ML - MR;
   const PH = H - MT - MB;
 
-  // Compute axis ranges and medians stable across filter changes
-  const { mScore, mBudget, xLo, xHi, yLo, yHi } = useMemo(() => {
-    const scores  = safeRows.map((r) => r.activeWeightedScore ?? 0);
-    const budgets = safeRows.map((r) => r.budgets?.[scenarioKey]?.midpoint ?? 0);
-    const minS = scores.length  ? Math.min(...scores)  : 0;
-    const maxS = scores.length  ? Math.max(...scores)  : 10;
-    const minB = budgets.length ? Math.min(...budgets) : 0;
-    const maxB = budgets.length ? Math.max(...budgets) : 8000;
-    const bSpan = Math.max(maxB - minB, 1);
-    const sSpan = Math.max(maxS - minS, 0.1);
-    return {
-      mScore:  medianOf(scores),
-      mBudget: medianOf(budgets),
-      xLo: minB - bSpan * 0.06,
-      xHi: maxB + bSpan * 0.06,
-      yLo: minS - sSpan * 0.10,
-      yHi: maxS + sSpan * 0.10,
-    };
-  }, [safeRows, scenarioKey]);
+  const { mScore, mBudget, xLo, xHi, yLo, yHi } = useMemo(
+    () => computePlotStats(safeRows, scenarioKey),
+    [safeRows, scenarioKey],
+  );
 
   // Coordinate projectors
   const svgX = (v) => ML + ((v - xLo) / (xHi - xLo)) * PW;
   const svgY = (v) => MT + PH - ((v - yLo) / (yHi - yLo)) * PH;
 
-  // Enrich rows with budget, score, zone
-  const enriched = useMemo(() =>
-    safeRows.map((r) => {
-      const score  = r.activeWeightedScore ?? 0;
-      const budget = r.budgets?.[scenarioKey]?.midpoint ?? 0;
-      return { ...r, score, budget, zone: classifyZone(score, budget, mScore, mBudget) };
-    }),
-  [safeRows, scenarioKey, mScore, mBudget]);
+  const enriched = useMemo(
+    () => buildEnrichedRows(safeRows, scenarioKey, mScore, mBudget),
+    [safeRows, scenarioKey, mScore, mBudget],
+  );
 
-  // Draw order: dimmed first, active next, selected on top
-  const orderedDots = useMemo(() => {
-    const dimmed = enriched.filter((r) => !filteredKeys.has(r.key) && r.key !== selectedCityKey);
-    const active = enriched.filter((r) =>  filteredKeys.has(r.key) && r.key !== selectedCityKey);
-    const top    = enriched.filter((r) => r.key === selectedCityKey);
-    return [...dimmed, ...active, ...top];
-  }, [enriched, filteredKeys, selectedCityKey]);
+  const orderedDots = useMemo(
+    () => buildOrderedDots(enriched, filteredKeys, selectedCityKey),
+    [enriched, filteredKeys, selectedCityKey],
+  );
 
   // Axis ticks — denser for more reference lines
   const xTicks = Array.from({ length: 7 }, (_, i) => xLo + ((xHi - xLo) * i) / 6);
@@ -108,10 +307,10 @@ export function AffordabilityScatterplot({
   const mX = svgX(mBudget);
   const mY = svgY(mScore);
 
-  // Tooltip row
   const tooltipRow = hoveredCityKey ? enriched.find((r) => r.key === hoveredCityKey) : null;
 
   const allFiltered = filteredKeys.size === safeRows.length;
+  const plotBounds = { right: ML + PW, top: MT, bottom: MT + PH };
 
   return (
     <div className="scp-wrap" ref={containerRef}>
@@ -182,96 +381,21 @@ export function AffordabilityScatterplot({
         </text>
 
         {/* City dots + labels */}
-        {orderedDots.map((r) => {
-          const isFiltered = filteredKeys.has(r.key);
-          const isSelected = r.key === selectedCityKey;
-          const isHov      = r.key === hoveredCityKey;
-          const zm         = ZONE_META[r.zone] ?? ZONE_META['Cheap'];
-          const opacity    = isFiltered ? 1 : 0.14;
-          const cx         = svgX(r.budget);
-          const cy         = svgY(r.score);
-          const dotR       = isSelected ? 11 : isHov ? 10 : isFiltered ? 8 : 6;
+        {orderedDots.map((row) => (
+          <ScatterDot
+            key={row.key}
+            row={row}
+            filteredKeys={filteredKeys}
+            selectedCityKey={selectedCityKey}
+            hoveredCityKey={hoveredCityKey}
+            svgX={svgX}
+            svgY={svgY}
+            onHover={onHover}
+            onSelect={onSelect}
+          />
+        ))}
 
-          return (
-            <g
-              key={r.key}
-              style={{ cursor: 'pointer' }}
-              onMouseEnter={() => onHover(r.key)}
-              onMouseLeave={() => onHover(null)}
-              onClick={() => onSelect(r.key)}
-              aria-label={`${r.city}: score ${r.score.toFixed(2)}, budget ${formatEuro(r.budget)}`}
-            >
-              {/* Outer glow ring for selected/hovered */}
-              {(isSelected || isHov) && (
-                <circle cx={cx} cy={cy} r={dotR + 8} fill="none"
-                  stroke={zm.dot} strokeWidth="2" opacity={0.3} />
-              )}
-              {/* Inner accent ring for selected */}
-              {isSelected && (
-                <circle cx={cx} cy={cy} r={dotR + 3} fill="none"
-                  stroke={zm.dot} strokeWidth="1.5" opacity={0.55} />
-              )}
-              {/* Main dot */}
-              <circle cx={cx} cy={cy} r={dotR}
-                fill={zm.dot}
-                opacity={opacity}
-                stroke={isSelected || isHov ? zm.dot : 'none'}
-                strokeWidth={isSelected ? 2 : isHov ? 1.5 : 0}
-                strokeOpacity="0.6"
-              />
-              {/* City label — always for active cities (non-selected, non-hovered) */}
-              {isFiltered && !isSelected && !isHov && (
-                <text x={cx} y={cy - dotR - 4} fontSize="10" fontFamily="IBM Plex Sans, sans-serif" textAnchor="middle"
-                  fill={zm.color} opacity="0.9" fontWeight="600" style={{ pointerEvents: 'none' }}>
-                  {r.city}
-                </text>
-              )}
-              {/* Bold label on hover or selection */}
-              {(isSelected || isHov) && (
-                <text x={cx} y={cy - dotR - 7} fontSize="12.5" fontFamily="IBM Plex Sans, sans-serif" textAnchor="middle"
-                  fill={zm.color} fontWeight="700" style={{ pointerEvents: 'none' }}>
-                  {r.city}
-                </text>
-              )}
-            </g>
-          );
-        })}
-
-        {/* Tooltip */}
-        {tooltipRow && (() => {
-          const r  = tooltipRow;
-          const zm = ZONE_META[r.zone] ?? ZONE_META['Cheap'];
-          const cx = svgX(r.budget);
-          const cy = svgY(r.score);
-          const tw = 186, th = 90;
-          const tx = cx + 18 + tw > ML + PW ? cx - 18 - tw : cx + 18;
-          const ty = Math.max(MT + 2, Math.min(cy - th / 2, MT + PH - th));
-          return (
-            <g style={{ pointerEvents: 'none' }}>
-              {/* Drop shadow approximation */}
-              <rect x={tx + 2} y={ty + 2} width={tw} height={th} rx="6"
-                fill="rgba(0,0,0,0.12)" />
-              <rect x={tx} y={ty} width={tw} height={th} rx="6"
-                fill="var(--ws-surface-2)" stroke={zm.dot} strokeWidth="1.5" strokeOpacity="0.35" />
-              {/* Zone accent bar at top */}
-              <rect x={tx} y={ty} width={tw} height={4} rx="6"
-                fill={zm.dot} opacity="0.7" />
-              <text x={tx + 12} y={ty + 23} fontSize="13.5" fontFamily="IBM Plex Sans, sans-serif" fontWeight="700" fill="var(--ws-ink)">
-                {r.city}, {r.country}
-              </text>
-              <text x={tx + 12} y={ty + 43} fontSize="11" fontFamily="IBM Plex Sans, sans-serif" fill="var(--ws-ink-2)">
-                {'Score '}<tspan fontWeight="700" fill="var(--ws-ink)">{r.score.toFixed(2)}</tspan>
-                {'  ·  Zone: '}<tspan fontWeight="700" fill={zm.color}>{r.zone}</tspan>
-              </text>
-              <text x={tx + 12} y={ty + 62} fontSize="11" fontFamily="IBM Plex Sans, sans-serif" fill="var(--ws-ink-2)">
-                {'Budget '}<tspan fontWeight="700" fill="var(--ws-ink)">{formatEuro(r.budget)}/mo</tspan>
-              </text>
-              <text x={tx + 12} y={ty + 80} fontSize="10" fontFamily="IBM Plex Sans, sans-serif" fill="var(--ws-ink-3)">
-                Click to open city profile
-              </text>
-            </g>
-          );
-        })()}
+        <ScatterTooltip row={tooltipRow} svgX={svgX} svgY={svgY} plotBounds={plotBounds} />
       </svg>
 
       {/* Filter note */}

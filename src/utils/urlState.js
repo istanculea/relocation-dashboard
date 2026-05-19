@@ -1,11 +1,19 @@
 const SHARE_PARAM = 's';
 
-const toBase64Url = (value) => btoa(unescape(encodeURIComponent(value))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
+const bytesToBinaryString = (bytes) => Array.from(bytes, (byte) => String.fromCharCode(byte)).join('');
+
+const binaryStringToBytes = (binary) => Uint8Array.from(binary, (char) => char.charCodeAt(0));
+
+const toBase64Url = (value) => {
+  const bytes = new TextEncoder().encode(value);
+  return btoa(bytesToBinaryString(bytes)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
+};
 
 const fromBase64Url = (value) => {
   const normalized = value.replace(/-/g, '+').replace(/_/g, '/');
   const padding = normalized.length % 4 === 0 ? '' : '='.repeat(4 - (normalized.length % 4));
-  return decodeURIComponent(escape(atob(`${normalized}${padding}`)));
+  const decoded = atob(`${normalized}${padding}`);
+  return new TextDecoder().decode(binaryStringToBytes(decoded));
 };
 
 export const parseHashLocation = (hash = '') => {

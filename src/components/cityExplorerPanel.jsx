@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useMemo, useState, useRef, useEffect } from 'react';
 import { City360OverviewPanel } from './city360Panels';
 import { SelectedCityVerificationPanel } from './verifiedSnapshotPanels';
 import { DataSanityPanel } from './DataSanityPanel.jsx';
@@ -100,6 +100,15 @@ export const CityExplorerPanel = function cityExplorerPanel({
   rankingRows,
   thresholds,
 }) {
+  const selectedIndex = useMemo(
+    () => cityOptions.findIndex((city) => city.key === selectedCity?.key),
+    [cityOptions, selectedCity?.key],
+  );
+  const previousCity = selectedIndex > 0 ? cityOptions[selectedIndex - 1] : null;
+  const nextCity = selectedIndex >= 0 && selectedIndex < cityOptions.length - 1
+    ? cityOptions[selectedIndex + 1]
+    : null;
+
   return (
     <section className="panel stack-gap-lg explorer-panel">
       <div className="detail-explorer-header">
@@ -115,6 +124,29 @@ export const CityExplorerPanel = function cityExplorerPanel({
             selectedCity={selectedCity}
             onSelectCity={onSelectCity}
           />
+          <div className="detail-explorer-quicknav">
+            <button
+              type="button"
+              className="ws-icon-btn"
+              disabled={!previousCity}
+              onClick={() => previousCity && onSelectCity(previousCity.key)}
+              title={previousCity ? `Go to ${previousCity.city}` : 'No previous city'}
+            >
+              Prev
+            </button>
+            <span className="detail-explorer-quicknav__meta">
+              {selectedIndex >= 0 ? `${selectedIndex + 1} of ${cityOptions.length}` : `${cityOptions.length} cities`}
+            </span>
+            <button
+              type="button"
+              className="ws-icon-btn"
+              disabled={!nextCity}
+              onClick={() => nextCity && onSelectCity(nextCity.key)}
+              title={nextCity ? `Go to ${nextCity.city}` : 'No next city'}
+            >
+              Next
+            </button>
+          </div>
         </div>
       </div>
 

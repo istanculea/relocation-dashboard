@@ -60,6 +60,7 @@
   cursor: pointer;
   font-size: 0.78rem;
   color: var(--muted);
+  -webkit-user-select: none;
   user-select: none;
   padding: 2px 6px;
   border-radius: 4px;
@@ -1190,6 +1191,7 @@
   align-items: center;
   gap: 8px;
   list-style: none; /* hide default triangle in Webkit */
+  -webkit-user-select: none;
   user-select: none;
 }
 
@@ -1586,6 +1588,7 @@
   line-height: 1.55;
   font-style: italic;
   list-style: none;
+  -webkit-user-select: none;
   user-select: none;
 }
 
@@ -1970,4 +1973,6 @@
   margin: 0;
   line-height: 1.45;
 }
+
+
 

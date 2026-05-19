@@ -5,6 +5,8 @@ import './styles.css';
 import './styles/engine-components.css';
 import './styles/print.css';
 import './styles/workstation.css';
+import './styles/pillar-score-display.css';
+import './styles/lens-aware-score-display.css';
 import { DashboardProvider } from './context/DashboardContext.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(

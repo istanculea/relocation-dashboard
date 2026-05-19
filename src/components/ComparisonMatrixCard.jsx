@@ -73,18 +73,57 @@ const MatrixCardHeader = function matrixCardHeader({ row, scoreTier }) {
   );
 };
 
-const MatrixPillarStrip = function matrixPillarStrip({ pillars }) {
+const MatrixPillarStrip = function matrixPillarStrip({ pillars, weights, activeLens, lensLabel }) {
+  if (!pillars) return null;
+  
+  // Sort by weight if weights provided (highlights prioritized pillars)
+  const displayPillars = weights
+    ? [...pillars].sort((a, b) => (weights[b.key] ?? 0) - (weights[a.key] ?? 0))
+    : pillars;
+
   return (
-    <div className="mc-pillar-strip" aria-label="Pillar scores">
-      {pillars.map((pillar) => (
-        <div key={pillar.key} className="mc-pillar">
-          <span className="mc-pillar__label">{pillar.label}</span>
-          <div className="mc-pillar__track" title={`${pillar.label}: ${pillar.score}`}>
-            <div className="mc-pillar__fill" style={{ width: `${(pillar.score / 10) * 100}%` }} />
-          </div>
-          <span className="mc-pillar__value">{pillar.score.toFixed(1)}</span>
+    <div className="mc-pillar-strip" aria-label="15-pillar MCDA scores">
+      {activeLens && lensLabel && (
+        <div className="mc-pillar-strip__lens-note">
+          <span className="mc-pillar-strip__lens-icon">🎯</span>
+          <span className="mc-pillar-strip__lens-text">{lensLabel}</span>
         </div>
-      ))}
+      )}
+      <div className="mc-pillar-strip__grid">
+        {displayPillars.map((pillar) => {
+          const weight = weights?.[pillar.key] ?? 0;
+          const isHighPriority = weight > 0.12;
+          
+          return (
+            <div 
+              key={pillar.key} 
+              className={`mc-pillar ${isHighPriority && weights ? 'mc-pillar--highlighted' : ''}`}
+              data-priority={isHighPriority ? 'high' : 'normal'}
+            >
+              <span className="mc-pillar__label" title={pillar.label}>{pillar.label}</span>
+              <div 
+                className="mc-pillar__track" 
+                role="meter"
+                aria-valuenow={pillar.score}
+                aria-valuemin={0}
+                aria-valuemax={10}
+                title={`${pillar.label}: ${pillar.score.toFixed(1)}/10${weight ? ` (weight: ${(weight * 100).toFixed(0)}%)` : ''}`}
+              >
+                <div 
+                  className="mc-pillar__fill" 
+                  style={{ width: `${(pillar.score / 10) * 100}%` }} 
+                />
+              </div>
+              <span className="mc-pillar__value">{pillar.score.toFixed(1)}</span>
+              {weight && (
+                <span className="mc-pillar__weight" title={`Weight in ${lensLabel}`}>
+                  {(weight * 100).toFixed(0)}%
+                </span>
+              )}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };
@@ -234,7 +273,12 @@ export const MatrixCityCard = function matrixCityCard({ row, isActive, onSelectC
       onClick={() => onSelectCity(row.key)}
     >
       <MatrixCardHeader row={row} scoreTier={scoreTier} />
-      <MatrixPillarStrip pillars={row.strategicBalance.pillars} />
+      <MatrixPillarStrip 
+        pillars={row.strategicBalance.pillars} 
+        weights={row.activePillarWeights}
+        activeLens={row.activeLensKey}
+        lensLabel={row.activeLensLabel}
+      />
 
       <div className="matrix-card__cues">
         <span className="matrix-cue matrix-cue--move">

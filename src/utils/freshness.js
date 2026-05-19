@@ -3,13 +3,28 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 const ISO_DATE_RE = /(\d{4}-\d{2}-\d{2})/;
 const TEXT_DATE_RE = /(\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4})/;
 
+const toValidDate = (value) => {
+  const date = value instanceof Date ? value : new Date(value);
+  return Number.isFinite(date.getTime()) ? date : null;
+};
+
+const parseIsoDateLike = (value) => {
+  const isoMatch = value.match(ISO_DATE_RE);
+  return isoMatch ? toValidDate(`${isoMatch[1]}T12:00:00Z`) : null;
+};
+
+const parseTextDateLike = (value) => {
+  const textMatch = value.match(TEXT_DATE_RE);
+  return textMatch ? toValidDate(textMatch[1]) : null;
+};
+
 export const parseDateLike = (rawValue) => {
   if (!rawValue) {
     return null;
   }
 
-  if (rawValue instanceof Date && Number.isFinite(rawValue.getTime())) {
-    return rawValue;
+  if (rawValue instanceof Date) {
+    return toValidDate(rawValue);
   }
 
   if (typeof rawValue !== 'string') {
@@ -22,26 +37,7 @@ export const parseDateLike = (rawValue) => {
     return null;
   }
 
-  const isoMatch = value.match(ISO_DATE_RE);
-  if (isoMatch) {
-    const isoDate = new Date(`${isoMatch[1]}T12:00:00Z`);
-
-    if (Number.isFinite(isoDate.getTime())) {
-      return isoDate;
-    }
-  }
-
-  const textMatch = value.match(TEXT_DATE_RE);
-  if (textMatch) {
-    const textDate = new Date(textMatch[1]);
-
-    if (Number.isFinite(textDate.getTime())) {
-      return textDate;
-    }
-  }
-
-  const parsed = new Date(value);
-  return Number.isFinite(parsed.getTime()) ? parsed : null;
+  return parseIsoDateLike(value) ?? parseTextDateLike(value) ?? toValidDate(value);
 };
 
 const toTierMeta = (tier) => {

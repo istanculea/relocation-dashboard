@@ -308,18 +308,23 @@ export const buildRanking = (presetKey = 'balanced', scenarioKey = 'oneParent') 
       const strategicBalance = buildStrategicBalanceMatrix(city, balanceProfileType);
       const pillarWeights = effectivePillarWeights ?? preset.pillarWeights;
 
+      const activeWeightedScore = preset.scoreType === 'strategicBalance'
+        ? strategicBalance.weightedScore
+        : preset.scoreType === 'strategicPillar'
+          ? Math.max(1, Math.min(10, strategicBalance.pillars.reduce(
+              (total, pillar) => total + pillar.score * (pillarWeights[pillar.key] ?? 0),
+              0,
+            )))
+          : calculateWeightedScore(city.scores, preset.weights);
+
       return {
         ...city,
         strategicBalance,
-        activeWeightedScore:
-          preset.scoreType === 'strategicBalance'
-            ? strategicBalance.weightedScore
-            : preset.scoreType === 'strategicPillar'
-              ? Math.max(1, Math.min(10, strategicBalance.pillars.reduce(
-                  (total, pillar) => total + pillar.score * (pillarWeights[pillar.key] ?? 0),
-                  0,
-                )))
-              : calculateWeightedScore(city.scores, preset.weights),
+        activeLensKey: presetKey,
+        activeLensLabel: preset.label,
+        activePillarWeights: pillarWeights,
+        activeScoreType: preset.scoreType,
+        activeWeightedScore,
       };
     })
     .sort((left, right) => right.activeWeightedScore - left.activeWeightedScore);

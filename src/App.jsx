@@ -577,41 +577,47 @@ const App = function app() {
   );
 
   const handleJsonExport = async () => {
-    let payload = exportPayload;
+    try {
+      let payload = exportPayload;
 
-    if (filteredComparisonRows.some((row) => row.trends == null)) {
-      const { loadCityTrendDetail } = await import('./data/city360DetailLoader.js');
-      const trendEntries = await Promise.all(
-        filteredComparisonRows.map(async (row) => [row.key, await loadCityTrendDetail(row.key)]),
+      if (filteredComparisonRows.some((row) => row.trends == null)) {
+        const { loadCityTrendDetail } = await import('./data/city360DetailLoader.js');
+        const trendEntries = await Promise.all(
+          filteredComparisonRows.map(async (row) => [row.key, await loadCityTrendDetail(row.key)]),
+        );
+        const trendsByKey = new Map(trendEntries);
+
+        payload = {
+          ...exportPayload,
+          cities: exportPayload.cities.map((city) => ({
+            ...city,
+            trends: trendsByKey.get(city.key) ?? city.trends ?? [],
+          })),
+        };
+      }
+
+      if (filteredComparisonRows.some((row) => row.verifiedDetails.some((detail) => detail.sources == null))) {
+        const { default: verifiedSnapshotSummary } = await import('./data/verifiedSnapshotSummary.json');
+
+        payload = {
+          ...payload,
+          cities: payload.cities.map((city) => ({
+            ...city,
+            verifiedDetails: verifiedSnapshotSummary[city.key]?.verifiedDetails ?? city.verifiedDetails,
+          })),
+        };
+      }
+
+      downloadExportFile(
+        buildExportFileName(exportStamp, 'json'),
+        `${JSON.stringify(payload, null, 2)}\n`,
+        'application/json;charset=utf-8',
       );
-      const trendsByKey = new Map(trendEntries);
-
-      payload = {
-        ...exportPayload,
-        cities: exportPayload.cities.map((city) => ({
-          ...city,
-          trends: trendsByKey.get(city.key) ?? city.trends ?? [],
-        })),
-      };
+    } catch {
+      if (isBrowser) {
+        window.alert('JSON export failed. Please retry.');
+      }
     }
-
-    if (filteredComparisonRows.some((row) => row.verifiedDetails.some((detail) => detail.sources == null))) {
-      const { default: verifiedSnapshotSummary } = await import('./data/verifiedSnapshotSummary.json');
-
-      payload = {
-        ...payload,
-        cities: payload.cities.map((city) => ({
-          ...city,
-          verifiedDetails: verifiedSnapshotSummary[city.key]?.verifiedDetails ?? city.verifiedDetails,
-        })),
-      };
-    }
-
-    downloadExportFile(
-      buildExportFileName(exportStamp, 'json'),
-      `${JSON.stringify(payload, null, 2)}\n`,
-      'application/json;charset=utf-8',
-    );
   };
 
   const handlePrint = () => {
@@ -620,31 +626,48 @@ const App = function app() {
     // Double rAF ensures React has committed the "all charts visible" render before printing
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        document.querySelectorAll('details').forEach((el) => { el.open = true; });
-        window.print();
-        setIsPrinting(false);
+        try {
+          document.querySelectorAll('details').forEach((el) => { el.open = true; });
+          window.print();
+        } catch {
+          window.alert('PDF print export could not be opened. Please retry.');
+        } finally {
+          setIsPrinting(false);
+        }
       });
     });
   };
 
   const handleCsvExport = () => {
-    downloadExportFile(
-      buildExportFileName(exportStamp, 'csv'),
-      buildCsvDocument(exportRows),
-      'text/csv;charset=utf-8',
-    );
+    try {
+      downloadExportFile(
+        buildExportFileName(exportStamp, 'csv'),
+        buildCsvDocument(exportRows),
+        'text/csv;charset=utf-8',
+      );
+    } catch {
+      if (isBrowser) {
+        window.alert('CSV export failed. Please retry.');
+      }
+    }
   };
 
   const handleXlsExport = () => {
-    downloadExportFile(
-      buildExportFileName(exportStamp, 'xls'),
-      buildXlsDocument(filteredComparisonRows, {
-        lensLabel: priorityPresets[lensKey].label,
-        scenarioLabel: scenarioMeta[scenarioKey].label,
-        selectedYear,
-      }),
-      'application/vnd.ms-excel;charset=utf-8',
-    );
+    try {
+      downloadExportFile(
+        buildExportFileName(exportStamp, 'xls'),
+        buildXlsDocument(filteredComparisonRows, {
+          lensLabel: priorityPresets[lensKey].label,
+          scenarioLabel: scenarioMeta[scenarioKey].label,
+          selectedYear,
+        }),
+        'application/vnd.ms-excel;charset=utf-8',
+      );
+    } catch {
+      if (isBrowser) {
+        window.alert('XLS export failed. Please retry.');
+      }
+    }
   };
 
   const handleShare = async () => {
@@ -666,6 +689,19 @@ const App = function app() {
       search: searchValue,
     };
     const shareUrl = buildShareUrl({ route: page, shareState, locationObject: window.location });
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: comparisonTitle,
+          text: 'Relocation dashboard snapshot',
+          url: shareUrl,
+        });
+        return;
+      } catch {
+        // Continue to clipboard fallback when share sheet is unavailable or cancelled.
+      }
+    }
 
     try {
       await navigator.clipboard.writeText(shareUrl);

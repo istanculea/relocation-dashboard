@@ -152,7 +152,13 @@ export const downloadExportFile = (filename, content, mimeType) => {
 
   anchor.href = url;
   anchor.download = filename;
+  anchor.rel = 'noopener';
+  anchor.style.display = 'none';
+  document.body.appendChild(anchor);
   anchor.click();
+  anchor.remove();
 
-  window.URL.revokeObjectURL(url);
+  window.setTimeout(() => {
+    window.URL.revokeObjectURL(url);
+  }, 0);
 };

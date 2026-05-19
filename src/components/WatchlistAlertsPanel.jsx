@@ -15,6 +15,7 @@ const parseWatchlist = (raw) => {
 
 export const WatchlistAlertsPanel = function watchlistAlertsPanel({ rows, scenarioKey, selectedCityKey, onSelectCity }) {
   const [watchlistKeys, setWatchlistKeys] = useState([]);
+  const canAddSelectedCity = Boolean(selectedCityKey) && !watchlistKeys.includes(selectedCityKey);
 
   useEffect(() => {
     const raw = readStoredValue(storageKey, '[]', () => true);
@@ -57,7 +58,15 @@ export const WatchlistAlertsPanel = function watchlistAlertsPanel({ rows, scenar
       <div className="ws-watchlist-panel__header">
         <h3>Watchlist Alerts</h3>
         <div className="ws-watchlist-panel__actions">
-          <button type="button" className="ws-icon-btn" onClick={addSelectedCity}>Add selected city</button>
+          <button
+            type="button"
+            className="ws-icon-btn"
+            onClick={addSelectedCity}
+            disabled={!canAddSelectedCity}
+            title={!selectedCityKey ? 'Select a city first' : watchlistKeys.includes(selectedCityKey) ? 'Selected city is already in the watchlist' : 'Add selected city'}
+          >
+            {selectedCityKey ? 'Add selected city' : 'Select city first'}
+          </button>
           {watchlistKeys.length > 0 && (
             <button type="button" className="ws-icon-btn" onClick={() => setWatchlistKeys([])}>Clear</button>
           )}

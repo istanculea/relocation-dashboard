@@ -420,7 +420,7 @@ function PaneC({
   return (
     <section className="ws-pane" aria-label="Heatmap Matrix">
       <div className="ws-pane__header">
-        <span className="ws-pane__title">Strategic Heatmap · 28 Cities × 15 Pillars</span>
+        <span className="ws-pane__title">Strategic Heatmap</span>
         <div className="ws-legend">
           <span className="ws-legend-item"><span className="ws-legend-swatch ws-legend-swatch--high"/>≥7.5</span>
           <span className="ws-legend-item"><span className="ws-legend-swatch ws-legend-swatch--mid"/>6–7.4</span>
@@ -563,6 +563,20 @@ export function WorkstationLayout({
     return withinBudget && withinAirCap && matchesMobility(carNeed);
   });
 
+  useEffect(() => {
+    const allowedKeys = new Set(localFiltered.map((row) => row.key));
+
+    setCompareKeys((previous) => {
+      const next = new Set([...previous].filter((key) => allowedKeys.has(key)));
+      return next.size === previous.size ? previous : next;
+    });
+
+    if (selectedCityKey && !allowedKeys.has(selectedCityKey)) {
+      onSelectCity(null);
+      setDossierOpen(false);
+    }
+  }, [localFiltered, onSelectCity, selectedCityKey]);
+
   // Compare toggle: max 2
   const handleCompareToggle = useCallback((key) => {
     setCompareKeys((prev) => {
@@ -589,17 +603,17 @@ export function WorkstationLayout({
     setDossierOpen(true);
   }, [onSelectCity]);
 
-  const selectedCity = rows.find((r) => r.key === selectedCityKey) ?? null;
+  const selectedCity = localFiltered.find((r) => r.key === selectedCityKey) ?? null;
   const compareArr = [...compareKeys];
   const isCompareMode = compareArr.length === 2;
-  const { dossierCity, dossierCityB } = resolveDossierCities(compareArr, isCompareMode, rows, selectedCity);
+  const { dossierCity, dossierCityB } = resolveDossierCities(compareArr, isCompareMode, localFiltered, selectedCity);
   const isDossierOpen = dossierOpen && (selectedCity !== null || isCompareMode);
   const pinnedKeys = new Set(shortlistedCityKeys);
 
   const getCityRank = useCallback((key) => {
-    const idx = rows.findIndex((r) => r.key === key);
+    const idx = localFiltered.findIndex((r) => r.key === key);
     return idx >= 0 ? idx + 1 : null;
-  }, [rows]);
+  }, [localFiltered]);
 
   const hasActiveFilters = searchValue.length > 0 || budgetCap < 4500 || airCap < 40 || mobilityFilter !== 'all' || activeFilters.length > 0;
 
@@ -702,14 +716,14 @@ export function WorkstationLayout({
         />
         <div className="ws-main">
           <WatchlistAlertsPanel
-            rows={rows}
+            rows={localFiltered}
             scenarioKey={scenarioKey}
             selectedCityKey={selectedCityKey}
             onSelectCity={handleSelectCity}
           />
           <div className="ws-split-row">
             <PaneB
-              rows={rows}
+              rows={localFiltered}
               filteredRows={localFiltered}
               scenarioKey={scenarioKey}
               selectedCityKey={selectedCityKey}
@@ -720,7 +734,7 @@ export function WorkstationLayout({
               onCompareToggle={handleCompareToggle}
             />
             <PaneC
-              rows={rows}
+              rows={localFiltered}
               filteredRows={localFiltered}
               selectedCityKey={selectedCityKey}
               hoveredCityKey={hoveredCityKey}

@@ -10,6 +10,7 @@ export const ExplorerPage = function explorerPage({
   onYearChange,
   rankingRows,
   onBack,
+  onShare,
   thresholds,
 }) {
   return (
@@ -22,6 +23,9 @@ export const ExplorerPage = function explorerPage({
         <div className="ws-header__divider" />
         <div style={{ flex: 1 }} />
         <div className="ws-header__actions">
+          <button type="button" className="ws-icon-btn" onClick={onShare} title="Copy share link">
+            Share
+          </button>
           <button type="button" className="ws-icon-btn" onClick={onBack} title="Back to Dashboard">
             ← Dashboard
           </button>

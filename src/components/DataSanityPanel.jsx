@@ -10,6 +10,8 @@
  */
 
 import { getGapReason } from '../data/sourceSelection.js';
+import { buildCityDeltaCards } from '../utils/cityDelta.js';
+import { formatFreshnessLabel, getFreshnessMeta } from '../utils/freshness.js';
 
 /* ─── Section display metadata ─────────────────────────────────────────── */
 
@@ -121,6 +123,37 @@ function VerificationLegend() {
   );
 }
 
+function FreshnessBadge({ dateValue }) {
+  const freshnessMeta = getFreshnessMeta(dateValue);
+
+  return (
+    <span className={`freshness-badge ${freshnessMeta.css}`}>
+      {formatFreshnessLabel(freshnessMeta)}
+    </span>
+  );
+}
+
+function DeltaCards({ city }) {
+  const deltaCards = buildCityDeltaCards(city);
+
+  if (!deltaCards.length) {
+    return null;
+  }
+
+  return (
+    <div className="sanity-delta-grid" aria-label="What changed since the oldest trend year">
+      {deltaCards.map((card) => (
+        <article key={card.key} className={`sanity-delta-card sanity-delta-card--${card.tone}`}>
+          <span className="sanity-delta-card__label">{card.label}</span>
+          <strong className="sanity-delta-card__value">{card.value}</strong>
+          <span className="sanity-delta-card__summary">{card.summary}</span>
+          <span className="sanity-delta-card__detail">{card.detail}</span>
+        </article>
+      ))}
+    </div>
+  );
+}
+
 /* ─── Main component ────────────────────────────────────────────────────── */
 
 export const DataSanityPanel = function dataSanityPanel({ city }) {
@@ -160,7 +193,12 @@ export const DataSanityPanel = function dataSanityPanel({ city }) {
         <span className="sanity-meta__item">
           Last reviewed: <strong>{lastReviewed ?? '—'}</strong>
         </span>
+        <span className="sanity-meta__item">
+          Freshness: <FreshnessBadge dateValue={lastReviewed} />
+        </span>
       </div>
+
+      <DeltaCards city={city} />
 
       {notes && (
         notes.length > 140 ? (

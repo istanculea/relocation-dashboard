@@ -21,6 +21,7 @@ import {
 } from './utils/exportHelpers.js';
 import { applySimulationModifiers } from './utils/simulationModifiers.js';
 import { persistStoredValue, readStoredValue } from './utils/storagePersistence.js';
+import { buildHashWithShareState, buildShareUrl, parseHashLocation, readShareStateFromHash } from './utils/urlState.js';
 import { useDashboardState } from './context/DashboardContext.jsx';
 import { useShortlist } from './context/DashboardContext.jsx';
 import { DEFAULT_SIMULATION_MODIFIERS } from './context/DashboardContext.jsx';
@@ -39,6 +40,11 @@ const storageKeys = {
 const LazyExplorerPage = lazy(async () => {
   const module = await import('./components/explorerPage.jsx');
   return { default: module.ExplorerPage };
+});
+
+const LazyCityMapPage = lazy(async () => {
+  const module = await import('./components/CityMapPage.jsx');
+  return { default: module.CityMapPage };
 });
 
 let dashboardDataPromise;
@@ -63,6 +69,10 @@ const DashboardStatusPanel = function dashboardStatusPanel({ title, detail }) {
     </div>
   );
 };
+
+const pickAllowed = (value, options, fallback) => (
+  options.some((option) => option.value === value) ? value : fallback
+);
 
 const App = function app() {
   // ── Context: simulationModifiers and shortlist from DashboardContext ──────
@@ -90,41 +100,72 @@ const App = function app() {
   const [dashboardLoadError, setDashboardLoadError] = useState(null);
   const [cityExplorerDetails, setCityExplorerDetails] = useState(() => new Map());
 
-  const [lensKey, setLensKey] = useState(() =>
-    readStoredValue(storageKeys.lens, 'balanced', (value) => Object.hasOwn(priorityPresets, value)),
+  const initialShareState = useMemo(
+    () => (isBrowser ? readShareStateFromHash(window.location.hash) : null),
+    [],
   );
-  const [scenarioKey, setScenarioKey] = useState(() =>
-    readStoredValue(storageKeys.scenario, 'oneParent', (value) => Object.hasOwn(scenarioMeta, value)),
-  );
-  const [selectedCityKey, setSelectedCityKey] = useState(null);
+
+  const [lensKey, setLensKey] = useState(() => {
+    if (initialShareState?.lens && Object.hasOwn(priorityPresets, initialShareState.lens)) {
+      return initialShareState.lens;
+    }
+
+    return readStoredValue(storageKeys.lens, 'balanced', (value) => Object.hasOwn(priorityPresets, value));
+  });
+  const [scenarioKey, setScenarioKey] = useState(() => {
+    if (initialShareState?.scenario && Object.hasOwn(scenarioMeta, initialShareState.scenario)) {
+      return initialShareState.scenario;
+    }
+
+    return readStoredValue(storageKeys.scenario, 'oneParent', (value) => Object.hasOwn(scenarioMeta, value));
+  });
+  const [selectedCityKey, setSelectedCityKey] = useState(() => initialShareState?.city ?? null);
   const [selectedYear, setSelectedYear] = useState(() => {
+    if (initialShareState?.year && /^\d{4}$/.test(String(initialShareState.year))) {
+      return Number(initialShareState.year);
+    }
+
     const storedYear = Number(readStoredValue(storageKeys.year, '2026', (value) => /^\d{4}$/.test(value)));
 
     return Number.isFinite(storedYear) ? storedYear : 2026;
   });
   const [isPrinting, setIsPrinting] = useState(false);
-  const [page, setPage] = useState(() =>
-    isBrowser && window.location.hash === '#/explorer' ? 'explorer' : '',
-  );
+  const [page, setPage] = useState(() => {
+    if (!isBrowser) {
+      return '';
+    }
+
+    if (initialShareState?.page === 'explorer' || initialShareState?.page === 'map') {
+      return initialShareState.page;
+    }
+
+    return parseHashLocation(window.location.hash).route;
+  });
 
   const navigateTo = (target) => {
     setPage(target);
     if (isBrowser) {
-      window.location.hash = target ? `/${target}` : '';
+      window.location.hash = buildHashWithShareState(target, null);
       window.scrollTo(0, 0);
     }
   };
-  const [sortKey, setSortKey] = useState('score');
-  const [verificationFilter, setVerificationFilter] = useState('all');
-  const [budgetFilter, setBudgetFilter] = useState('all');
-  const [mobilityFilter, setMobilityFilter] = useState('all');
-  const [airFilter, setAirFilter] = useState('all');
+  const [sortKey, setSortKey] = useState(() => pickAllowed(initialShareState?.sort, sortOptions, 'score'));
+  const [verificationFilter, setVerificationFilter] = useState(() => pickAllowed(initialShareState?.verification, verificationOptions, 'all'));
+  const [budgetFilter, setBudgetFilter] = useState(() => pickAllowed(initialShareState?.budget, budgetOptions, 'all'));
+  const [mobilityFilter, setMobilityFilter] = useState(() => pickAllowed(initialShareState?.mobility, mobilityOptions, 'all'));
+  const [airFilter, setAirFilter] = useState(() => pickAllowed(initialShareState?.air, airOptions, 'all'));
   const cities = dashboardData?.cities ?? [];
   const benchmarkSources = dashboardData?.benchmarkSources ?? [];
   const buildRankingFn = dashboardData?.buildRanking ?? null;
   const buildVerifiedSnapshotRowsFn = dashboardData?.buildVerifiedSnapshotRows ?? null;
   const exportStamp = useMemo(() => new Date().toISOString().slice(0, 10), []);
   const comparisonCities = useMemo(() => cities.map((city) => city.city).join(', '), [cities]);
+
+  useEffect(() => {
+    if (typeof initialShareState?.search === 'string' && initialShareState.search.length > 0) {
+      setSearchValue(initialShareState.search);
+    }
+  }, [initialShareState?.search, setSearchValue]);
 
   useEffect(() => {
     let cancelled = false;
@@ -606,6 +647,33 @@ const App = function app() {
     );
   };
 
+  const handleShare = async () => {
+    if (!isBrowser) {
+      return;
+    }
+
+    const shareState = {
+      page,
+      lens: lensKey,
+      scenario: scenarioKey,
+      city: selectedCityKey,
+      year: selectedYear,
+      sort: sortKey,
+      verification: verificationFilter,
+      budget: budgetFilter,
+      mobility: mobilityFilter,
+      air: airFilter,
+      search: searchValue,
+    };
+    const shareUrl = buildShareUrl({ route: page, shareState, locationObject: window.location });
+
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+    } catch {
+      window.prompt('Copy share link:', shareUrl);
+    }
+  };
+
   useEffect(() => {
     persistStoredValue(storageKeys.lens, lensKey);
   }, [lensKey]);
@@ -694,11 +762,34 @@ const App = function app() {
           onYearChange={setSelectedYear}
           rankingRows={explorerRankingRows}
           onBack={() => navigateTo('')}
+          onShare={handleShare}
           hasActiveSimulation={hasActiveSimulation}
           thresholds={thresholds}
           onThresholdChange={setThreshold}
           onResetThresholds={resetThresholds}
           hasActiveThresholds={hasActiveThresholds}
+        />
+      </Suspense>
+    );
+  }
+
+  if (page === 'map') {
+    return (
+      <Suspense
+        fallback={
+          <DashboardStatusPanel
+            title="Loading city map"
+            detail="Preparing geographic view of relocation cities."
+          />
+        }
+      >
+        <LazyCityMapPage
+          cityOptions={citySelectorOptions}
+          selectedCity={selectedExplorerCity}
+          onSelectCity={setSelectedCityKey}
+          onBack={() => navigateTo('')}
+          onGoToExplorer={() => navigateTo('explorer')}
+          onShare={handleShare}
         />
       </Suspense>
     );
@@ -730,6 +821,8 @@ const App = function app() {
       onExportCsv={handleCsvExport}
       onExportJson={handleJsonExport}
       onGoToExplorer={() => navigateTo('explorer')}
+      onGoToMap={() => navigateTo('map')}
+      onShare={handleShare}
     />
   );
 };

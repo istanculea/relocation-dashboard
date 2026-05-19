@@ -246,6 +246,98 @@
   min-height: 0;
 }
 
+.ws-watchlist-panel {
+  flex: 0 0 auto;
+  border-bottom: 1px solid var(--ws-border-strong);
+  background: linear-gradient(90deg, #f7f4ed 0%, #eef3f6 100%);
+  padding: 10px 12px;
+  display: grid;
+  gap: 8px;
+}
+
+.ws-watchlist-panel__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.ws-watchlist-panel__header h3 {
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ws-ink-2);
+}
+
+.ws-watchlist-panel__actions {
+  display: flex;
+  gap: 6px;
+}
+
+.ws-watchlist-empty {
+  margin: 0;
+  font-size: 12px;
+  color: var(--ws-ink-3);
+}
+
+.ws-watchlist-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.ws-watchlist-chip {
+  border: 1px solid var(--ws-border-strong);
+  background: var(--ws-surface);
+  color: var(--ws-ink-2);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.ws-watchlist-chip span {
+  font-weight: 700;
+}
+
+.ws-watchlist-alerts {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 5px;
+}
+
+.ws-watchlist-alert {
+  border: 1px solid var(--ws-border);
+  border-radius: 10px;
+  background: var(--ws-surface);
+  padding: 6px 9px;
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  font-size: 12px;
+}
+
+.ws-watchlist-alert--warning {
+  border-color: #d8b47b;
+  background: #fff5e8;
+}
+
+.ws-watchlist-alert--critical {
+  border-color: #d7877f;
+  background: #fff0ee;
+}
+
+.ws-watchlist-alert--ok {
+  border-color: #9bc8b7;
+  background: #ecf7f2;
+}
+
 /* ── Pane base ──────────────────────────────────────────────────── */
 .ws-pane {
   height: 100%;

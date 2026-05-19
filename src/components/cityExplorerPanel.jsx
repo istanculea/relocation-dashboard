@@ -3,6 +3,9 @@ import { City360OverviewPanel } from './city360Panels';
 import { SelectedCityVerificationPanel } from './verifiedSnapshotPanels';
 import { DataSanityPanel } from './DataSanityPanel.jsx';
 import { FinancingEnginePanel } from './FinancingEnginePanel.jsx';
+import { DecisionNotesPanel } from './DecisionNotesPanel.jsx';
+import { ChecklistPlannerPanel } from './ChecklistPlannerPanel.jsx';
+import { NeighborhoodTablePanel } from './NeighborhoodTablePanel.jsx';
 
 /* ─── Searchable city combobox ───────────────────────────────────────────── */
 
@@ -129,7 +132,13 @@ export const CityExplorerPanel = function cityExplorerPanel({
 
           <SelectedCityVerificationPanel city={selectedCity} snapshot={selectedSnapshot} embedded />
 
-          <FinancingEnginePanel city={selectedCity} scenarioKey={scenarioKey} />
+          <FinancingEnginePanel city={selectedCity} scenarioKey={scenarioKey} rankingRows={rankingRows} />
+
+          <DecisionNotesPanel city={selectedCity} />
+
+          <ChecklistPlannerPanel city={selectedCity} />
+
+          <NeighborhoodTablePanel city={selectedCity} />
 
           <DataSanityPanel city={selectedCity} />
         </>

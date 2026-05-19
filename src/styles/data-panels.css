@@ -258,6 +258,171 @@
   color: var(--muted);
 }
 
+.city-note-input {
+  width: 100%;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.8);
+  padding: 12px 14px;
+  font: inherit;
+  line-height: 1.5;
+  color: var(--ink);
+  resize: vertical;
+  min-height: 130px;
+}
+
+.city-note-input:focus-visible {
+  outline: 2px solid rgba(55, 106, 146, 0.28);
+  outline-offset: 1px;
+}
+
+.city-note-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.checklist-progress {
+  display: grid;
+  gap: 8px;
+}
+
+.checklist-progress__label {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.checklist-progress__label strong {
+  color: var(--ink);
+}
+
+.checklist-progress__track {
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(31, 42, 46, 0.1);
+  overflow: hidden;
+}
+
+.checklist-progress__fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #376a92, #2f7f62);
+}
+
+.checklist-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.checklist-item {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.checklist-item label {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  font-size: 0.92rem;
+}
+
+.checklist-item__phase {
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 2px 6px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(31, 42, 46, 0.04);
+}
+
+.checklist-item--done {
+  opacity: 0.78;
+}
+
+.checklist-item--done label span:last-child {
+  text-decoration: line-through;
+}
+
+.checklist-add-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 8px;
+  align-items: center;
+}
+
+.city-map-panel {
+  gap: 16px;
+}
+
+.city-map-svg {
+  width: 100%;
+  min-height: 360px;
+  border-radius: 24px;
+  border: 1px solid rgba(31, 42, 46, 0.14);
+}
+
+.city-map-point {
+  cursor: pointer;
+}
+
+.city-map-point circle {
+  fill: #376a92;
+  stroke: #ffffff;
+  stroke-width: 2;
+}
+
+.city-map-point text {
+  font-size: 14px;
+  fill: #1f2a2e;
+  font-weight: 600;
+}
+
+.city-map-point--active circle {
+  fill: #c57c2a;
+}
+
+.city-map-overlays .city-map-overlay circle {
+  fill: rgba(47, 127, 98, 0.2);
+  stroke: rgba(47, 127, 98, 0.7);
+  stroke-width: 1.4;
+}
+
+.city-map-overlays .city-map-overlay text {
+  font-size: 11px;
+  fill: #1f2a2e;
+  font-weight: 600;
+}
+
+.city-map-overlay-hint {
+  margin: 0;
+  font-size: 0.87rem;
+  color: var(--muted);
+}
+
+.city-map-selection {
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.72);
+  border-radius: 12px;
+  padding: 10px 12px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
 .print-brief-header,
 .print-brief-footer {
   border: 1px solid var(--line);

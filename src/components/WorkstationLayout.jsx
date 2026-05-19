@@ -4,6 +4,7 @@ import { PaneD } from './WorkstationDossierPanel.jsx';
 import { useShortlist } from '../context/DashboardContext.jsx';
 import { Scatterplot } from './WorkstationScatterplot.jsx';
 import { formatEuro } from '../utils/formatters.js';
+import { WatchlistAlertsPanel } from './WatchlistAlertsPanel.jsx';
 
 // ── Inline SVG icons ─────────────────────────────────────────────────────────
 const IconPdf = () => (
@@ -518,6 +519,9 @@ export function WorkstationLayout({
   onExportPdf, onExportXls, onExportCsv, onExportJson,
   // explorer nav
   onGoToExplorer,
+  onGoToMap,
+  // share link action
+  onShare,
   // pillar thresholds (pass-through for App-level filter)
 }) {
   const { shortlistedCityKeys, toggleShortlist } = useShortlist();
@@ -661,6 +665,12 @@ export function WorkstationLayout({
           <button type="button" className="ws-icon-btn" onClick={onExportJson} title="Export JSON">
             <IconJson /> JSON
           </button>
+          <button type="button" className="ws-icon-btn" onClick={onShare} title="Copy share link">
+            Share
+          </button>
+          <button type="button" className="ws-icon-btn" onClick={onGoToMap} title="Open city map">
+            Map
+          </button>
           <div className="ws-header__divider" />
           <button type="button" className="ws-icon-btn ws-icon-btn--cta" onClick={onGoToExplorer} title="Open City Explorer">
             City Explorer →
@@ -688,6 +698,12 @@ export function WorkstationLayout({
           sortPillarKey={sortPillarLabel}
         />
         <div className="ws-main">
+          <WatchlistAlertsPanel
+            rows={rows}
+            scenarioKey={scenarioKey}
+            selectedCityKey={selectedCityKey}
+            onSelectCity={handleSelectCity}
+          />
           <PaneB
             rows={rows}
             filteredRows={localFiltered}

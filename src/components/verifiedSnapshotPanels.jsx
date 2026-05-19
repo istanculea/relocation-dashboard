@@ -15,6 +15,8 @@ import {
   summarizeAudit,
   userFacingSectionKeys,
 } from './verificationPanelShared';
+import { buildCityDeltaCards } from '../utils/cityDelta.js';
+import { formatFreshnessLabel, getFreshnessMeta } from '../utils/freshness.js';
 
 const isStrictlyVerifiedSection = (city, sectionKey) =>
   city.audit.sections[sectionKey] === 'verified' && getVerifiedSources(city, sectionKey).length > 0;
@@ -307,6 +309,8 @@ export const SelectedCityVerificationPanel = function selectedCityVerificationPa
 
   const visibleSections = strictSectionCards.filter((section) => isStrictlyVerifiedSection(city, section.key));
   const wrapperClassName = embedded ? 'stack-gap-lg' : 'panel stack-gap-lg';
+  const freshnessMeta = getFreshnessMeta(snapshot?.lastReviewed ?? city.audit.lastReviewed);
+  const deltaCards = buildCityDeltaCards(city);
 
   return (
     <section className={wrapperClassName}>
@@ -318,8 +322,24 @@ export const SelectedCityVerificationPanel = function selectedCityVerificationPa
       <div className="verification-meta-strip">
         <span><strong>Verified sections:</strong> {visibleSections.length} of {strictSectionCards.length} — {snapshot?.verifiedSections.join(', ') || 'none yet'}</span>
         <span><strong>Last reviewed:</strong> {snapshot?.lastReviewed ?? city.audit.lastReviewed}</span>
+        <span>
+          <strong>Freshness:</strong>{' '}
+          <span className={`freshness-badge ${freshnessMeta.css}`}>{formatFreshnessLabel(freshnessMeta)}</span>
+        </span>
         <span><strong>Source window:</strong> {verificationWindow.label}</span>
       </div>
+      {deltaCards.length ? (
+        <div className="verification-delta-grid">
+          {deltaCards.map((card) => (
+            <article key={`${city.key}-${card.key}-verification-delta`} className={`verification-delta-card verification-delta-card--${card.tone}`}>
+              <span className="verification-delta-card__label">{card.label}</span>
+              <strong className="verification-delta-card__value">{card.value}</strong>
+              <span className="verification-delta-card__summary">{card.summary}</span>
+              <span className="verification-delta-card__detail">{card.detail}</span>
+            </article>
+          ))}
+        </div>
+      ) : null}
       <ul className="compact-source-list">
         {strictSectionCards.map((section) => (
           <li key={`${city.key}-${section.key}-strict-card`} className="compact-source-list__item">

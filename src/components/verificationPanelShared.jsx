@@ -6,6 +6,7 @@ import {
   getStrictDisplaySources,
   getVerifiedSources,
 } from '../data/sourceSelection.js';
+import { formatFreshnessLabel, getFreshnessMeta } from '../utils/freshness.js';
 
 export const strictWithheldCopy =
   'Withheld from the strict verified snapshot until an official 2022-2026 source is attached.';
@@ -152,9 +153,21 @@ export const SectionSources = function sectionSources({ city, sectionKey, strict
               ) : (
                 <span>{entry.label}</span>
               )}
-              {entry.verifiedAt || entry.observedAt ? (
-                <span className="source-date">{entry.verifiedAt ?? entry.observedAt}</span>
-              ) : null}
+              {entry.verifiedAt || entry.observedAt ? (() => {
+                const sourceDateLabel = entry.verifiedAt ?? entry.observedAt;
+                const freshnessMeta = getFreshnessMeta(sourceDateLabel);
+
+                return (
+                  <>
+                    <span className="source-date">{sourceDateLabel}</span>
+                    {freshnessMeta.tier !== 'unknown' ? (
+                      <span className={`source-freshness ${freshnessMeta.css}`}>
+                        {formatFreshnessLabel(freshnessMeta)}
+                      </span>
+                    ) : null}
+                  </>
+                );
+              })() : null}
               {entry.note ? <small>{entry.note}</small> : null}
             </li>
           ))}

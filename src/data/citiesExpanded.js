@@ -1,5 +1,3 @@
-import cityExpansionWaveSummary from './cityExpansionWaveSummary.json';
-
 export const expandedCities = [
   {
     key: 'reggioEmilia',
@@ -242,5 +240,4 @@ export const expandedCities = [
       bothWorking: { min: 3070, midpoint: 3615, comfortable: 4340 },
     },
   },
-  ...cityExpansionWaveSummary.cities,
 ];

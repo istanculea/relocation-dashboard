@@ -1673,6 +1673,99 @@
   gap: 4px;
 }
 
+.freshness-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.freshness-badge--fresh {
+  background: rgba(47, 127, 98, 0.14);
+  color: #20644f;
+}
+
+.freshness-badge--aging {
+  background: rgba(186, 141, 45, 0.16);
+  color: #825d0e;
+}
+
+.freshness-badge--stale {
+  background: rgba(176, 70, 70, 0.14);
+  color: #8e2f2f;
+}
+
+.freshness-badge--unknown {
+  background: rgba(31, 42, 46, 0.1);
+  color: var(--muted);
+}
+
+.source-freshness {
+  margin-left: 6px;
+}
+
+.sanity-delta-grid,
+.verification-delta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+}
+
+.sanity-delta-card,
+.verification-delta-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+.sanity-delta-card__label,
+.verification-delta-card__label {
+  font-size: 0.72rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 700;
+}
+
+.sanity-delta-card__value,
+.verification-delta-card__value {
+  font-size: 0.98rem;
+  color: var(--ink);
+}
+
+.sanity-delta-card__summary,
+.verification-delta-card__summary {
+  font-size: 0.74rem;
+  color: var(--muted);
+}
+
+.sanity-delta-card__detail,
+.verification-delta-card__detail {
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+}
+
+.sanity-delta-card--positive,
+.verification-delta-card--positive {
+  background: rgba(47, 127, 98, 0.08);
+}
+
+.sanity-delta-card--negative,
+.verification-delta-card--negative {
+  background: rgba(176, 70, 70, 0.08);
+}
+
+.sanity-delta-card--neutral,
+.verification-delta-card--neutral {
+  background: rgba(31, 42, 46, 0.04);
+}
+
 /* ============================================================
    FINANCING ENGINE PANEL
    ============================================================ */

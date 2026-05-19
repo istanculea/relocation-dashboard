@@ -17,14 +17,14 @@ import {
 } from './data/strategicBalanceMatrix.js';
 import cityAuditMetaSummary from './data/cityAuditMetaSummary.json';
 import city360SummaryMeta from './data/city360SummaryMeta.json';
+import cityComparisonSummary from './data/cityComparisonSummary.json';
 import { cityBudgetModels } from './data/cityBudgetModels';
 import { cityComparisonMeta } from './data/cityComparisonMeta';
+import { cityCatalog } from './data/cityCatalog.js';
 import { benchmarkSources } from './data/benchmarkSources.js';
 import { mcdaPayloads } from './data/mcdaPayloads.js';
 import { officialChildcareTariffs } from './data/officialChildcareTariffs.js';
 import verifiedSnapshotCompact from './data/verifiedSnapshotCompact.json';
-import { coreCities } from './data/citiesCore';
-import { expandedCities } from './data/citiesExpanded';
 import { computeClassicScore } from './data/engines/scoringFormulas.js';
 
 const countAuditStatuses = (sections) =>
@@ -50,6 +50,67 @@ const enrichAudit = (audit) => ({
 const sumBudgetComponents = (components) =>
   Object.values(components).reduce((total, value) => total + value, 0);
 
+const mergedComparisonMeta = {
+  ...cityComparisonSummary,
+  ...cityComparisonMeta,
+};
+
+const ensureBudgetBand = (band, fallbackMidpoint = null) => {
+  const midpoint = Number.isFinite(band?.midpoint) ? band.midpoint : fallbackMidpoint;
+
+  if (!Number.isFinite(midpoint)) {
+    return { min: null, midpoint: null, comfortable: null };
+  }
+
+  return {
+    min: Number.isFinite(band?.min) ? band.min : Math.round(midpoint * 0.87),
+    midpoint,
+    comfortable: Number.isFinite(band?.comfortable) ? band.comfortable : Math.round(midpoint * 1.20),
+  };
+};
+
+const buildCityBudgets = (city, budgetComponents) => {
+  if (!budgetComponents) {
+    const oneParentMidpoint = Number.isFinite(city?.budgets?.oneParent?.midpoint)
+      ? city.budgets.oneParent.midpoint
+      : null;
+
+    return {
+      oneParent: ensureBudgetBand(city?.budgets?.oneParent),
+      bothWorking: ensureBudgetBand(city?.budgets?.bothWorking),
+      twoKids: ensureBudgetBand(
+        city?.budgets?.twoKids,
+        Number.isFinite(oneParentMidpoint) ? Math.round(oneParentMidpoint * 1.18) : null,
+      ),
+      oneIncTwoKids: ensureBudgetBand(
+        city?.budgets?.oneIncTwoKids,
+        Number.isFinite(oneParentMidpoint) ? Math.round(oneParentMidpoint * 1.18) : null,
+      ),
+    };
+  }
+
+  return {
+    oneParent: {
+      ...city.budgets.oneParent,
+      midpoint: sumBudgetComponents(budgetComponents.oneParent),
+    },
+    bothWorking: {
+      ...city.budgets.bothWorking,
+      midpoint: sumBudgetComponents(budgetComponents.bothWorking),
+    },
+    twoKids: (() => {
+      const mid = sumBudgetComponents(budgetComponents.twoKids);
+      return { min: Math.round(mid * 0.87), midpoint: mid, comfortable: Math.round(mid * 1.20) };
+    })(),
+    oneIncTwoKids: (() => {
+      const mid = budgetComponents.oneIncTwoKids
+        ? sumBudgetComponents(budgetComponents.oneIncTwoKids)
+        : Math.round(sumBudgetComponents(budgetComponents.oneParent) * 1.18);
+      return { min: Math.round(mid * 0.87), midpoint: mid, comfortable: Math.round(mid * 1.20) };
+    })(),
+  };
+};
+
 const getCityMaxAqi = (city, city360) => {
   if (Number.isFinite(city360?.maxAqi)) {
     return city360.maxAqi;
@@ -70,9 +131,9 @@ const getVerifiedSnapshot = (cityKey) => verifiedSnapshotCompact[cityKey] ?? {
   lastReviewed: null,
 };
 
-export const cities = [...coreCities, ...expandedCities].map((city) => {
+export const cities = cityCatalog.map((city) => {
   const audit = enrichAudit(cityAuditMetaSummary[city.key]);
-  const budgetComponents = cityBudgetModels[city.key];
+  const budgetComponents = cityBudgetModels[city.key] ?? null;
   const city360 = city360SummaryMeta[city.key];
   const officialChildcareTariff = officialChildcareTariffs[city.key] ?? null;
 
@@ -81,30 +142,11 @@ export const cities = [...coreCities, ...expandedCities].map((city) => {
     audit,
     budgetComponents,
     city360,
-    comparison: cityComparisonMeta[city.key],
+    comparison: mergedComparisonMeta[city.key] ?? null,
     hasOfficialChildcareTariff: Boolean(officialChildcareTariff),
     maxAqi: getCityMaxAqi(city, city360),
     officialChildcareTariff,
-    budgets: {
-      oneParent: {
-        ...city.budgets.oneParent,
-        midpoint: sumBudgetComponents(budgetComponents.oneParent),
-      },
-      bothWorking: {
-        ...city.budgets.bothWorking,
-        midpoint: sumBudgetComponents(budgetComponents.bothWorking),
-      },
-      twoKids: (() => {
-        const mid = sumBudgetComponents(budgetComponents.twoKids);
-        return { min: Math.round(mid * 0.87), midpoint: mid, comfortable: Math.round(mid * 1.20) };
-      })(),
-      oneIncTwoKids: (() => {
-        const mid = budgetComponents.oneIncTwoKids
-          ? sumBudgetComponents(budgetComponents.oneIncTwoKids)
-          : Math.round(sumBudgetComponents(budgetComponents.oneParent) * 1.18);
-        return { min: Math.round(mid * 0.87), midpoint: mid, comfortable: Math.round(mid * 1.20) };
-      })(),
-    },
+    budgets: buildCityBudgets(city, budgetComponents),
   };
 
   return {
@@ -156,7 +198,9 @@ export const buildThresholdRows = (scenario) =>
   });
 
 export const buildBudgetComponentRows = (scenario) =>
-  cities.map((city) => {
+  cities
+    .filter((city) => city.budgetComponents?.[scenario])
+    .map((city) => {
     const components = city.budgetComponents[scenario];
 
     return {

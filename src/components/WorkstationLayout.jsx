@@ -269,16 +269,17 @@ function PaneB({
   compareKeys, onCompareToggle,
 }) {
   return (
-    <section className="ws-scatter-section" aria-label="Quality vs Budget Chart">
+    <section className="ws-scatter-section" aria-label="Affordability and Quality of Life table">
       <div className="ws-pane__header">
-        <span className="ws-pane__title">Quality of Life vs Budget</span>
+        <span className="ws-pane__title">Affordability &amp; Quality of Life</span>
         <div className="ws-legend">
-          <span className="ws-legend-item"><span className="ws-legend-swatch ws-legend-swatch--high"/>High ≥7.5</span>
-          <span className="ws-legend-item"><span className="ws-legend-swatch ws-legend-swatch--mid"/>Mid 6–7.5</span>
-          <span className="ws-legend-item"><span className="ws-legend-swatch ws-legend-swatch--low"/>Low &lt;6</span>
+          <span className="ws-legend-item"><span className="ws-legend-swatch" style={{ background: 'rgba(47,127,98,0.55)' }}/>Good Value</span>
+          <span className="ws-legend-item"><span className="ws-legend-swatch" style={{ background: 'rgba(55,106,146,0.55)' }}/>Premium</span>
+          <span className="ws-legend-item"><span className="ws-legend-swatch" style={{ background: 'rgba(120,120,140,0.45)' }}/>Cheap</span>
+          <span className="ws-legend-item"><span className="ws-legend-swatch" style={{ background: 'rgba(197,124,42,0.55)' }}/>Poor Value</span>
         </div>
       </div>
-      <div style={{ flex: '1 1 0', minHeight: 0, position: 'relative' }}>
+      <div style={{ flex: '1 1 0', minHeight: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
         <Scatterplot
           rows={rows}
           filteredRows={filteredRows}
@@ -458,9 +459,10 @@ function PaneC({
             </tr>
           </thead>
           <tbody>
-            {sortedRows.filter((row) => filteredSet.has(row.key)).map((row, idx) => {
+            {sortedRows.map((row, idx) => {
               const isSelected = row.key === selectedCityKey;
               const isHovered = row.key === hoveredCityKey;
+              const isDimmed = !filteredSet.has(row.key);
               return (
                 <tr
                   key={row.key}
@@ -468,6 +470,7 @@ function PaneC({
                     'ws-matrix-tr',
                     isSelected ? 'ws-matrix-tr--selected' : '',
                     isHovered && !isSelected ? 'ws-matrix-tr--hovered' : '',
+                    isDimmed ? 'ws-matrix-tr--dimmed' : '',
                   ].filter(Boolean).join(' ')}
                   onMouseEnter={() => onHover(row.key)}
                   onMouseLeave={() => onHover(null)}
@@ -704,27 +707,29 @@ export function WorkstationLayout({
             selectedCityKey={selectedCityKey}
             onSelectCity={handleSelectCity}
           />
-          <PaneB
-            rows={rows}
-            filteredRows={localFiltered}
-            scenarioKey={scenarioKey}
-            selectedCityKey={selectedCityKey}
-            hoveredCityKey={hoveredCityKey}
-            onHover={setHoveredCityKey}
-            onSelect={handleSelectCity}
-            compareKeys={compareKeys}
-            onCompareToggle={handleCompareToggle}
-          />
-          <PaneC
-            rows={rows}
-            filteredRows={localFiltered}
-            selectedCityKey={selectedCityKey}
-            hoveredCityKey={hoveredCityKey}
-            onHover={setHoveredCityKey}
-            onSelect={handleSelectCity}
-            sortPillarKey={sortPillarKey}
-            onSortByPillar={handleSortByPillar}
-          />
+          <div className="ws-split-row">
+            <PaneB
+              rows={rows}
+              filteredRows={localFiltered}
+              scenarioKey={scenarioKey}
+              selectedCityKey={selectedCityKey}
+              hoveredCityKey={hoveredCityKey}
+              onHover={setHoveredCityKey}
+              onSelect={handleSelectCity}
+              compareKeys={compareKeys}
+              onCompareToggle={handleCompareToggle}
+            />
+            <PaneC
+              rows={rows}
+              filteredRows={localFiltered}
+              selectedCityKey={selectedCityKey}
+              hoveredCityKey={hoveredCityKey}
+              onHover={setHoveredCityKey}
+              onSelect={handleSelectCity}
+              sortPillarKey={sortPillarKey}
+              onSortByPillar={handleSortByPillar}
+            />
+          </div>
         </div>
       </div>
 

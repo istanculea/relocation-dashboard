@@ -8,7 +8,7 @@
   --ws-header-h: 54px;
   --ws-statusbar-h: 34px;
   --ws-sidebar-w: 230px;
-  --ws-scatter-h: 37%;
+  --ws-scatter-h: 72%;
   --ws-dossier-w: 42%;
   /* Light warm palette — mirrors the City Explorer theme */
   --ws-bg: #f4f0e8;
@@ -759,11 +759,34 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   SCATTER SECTION (top strip of ws-main)
+   SPLIT ROW — scatter (top) + heatmap (bottom) stacked vertically
+   ═══════════════════════════════════════════════════════════════════ */
+
+.ws-split-row {
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.ws-split-row > .ws-pane {
+  flex: 1 1 0;
+  min-height: 0;
+  min-width: 0;
+  height: auto;
+  border-right: none;
+  border-top: none;
+  border-left: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SCATTER SECTION (left column of ws-split-row)
    ═══════════════════════════════════════════════════════════════════ */
 
 .ws-scatter-section {
-  flex: 0 0 var(--ws-scatter-h);
+  flex: 0 0 60%;
+  min-width: 0;
   min-height: 0;
   display: flex;
   flex-direction: column;
@@ -790,7 +813,7 @@
 
 /* Scatterplot */
 .ws-scatter-wrap {
-  flex: 0 0 42%;
+  flex: 0 0 75%;
   min-height: 0;
   border-bottom: 1px solid var(--ws-border);
   position: relative;
@@ -1004,7 +1027,8 @@
   border-collapse: collapse;
   table-layout: fixed;
   font-size: 13px;
-  min-width: 100%;
+  /* city(155) + score(68) + 15 pillars × 74px = 1333px; ensures all cols are visible via scroll */
+  min-width: 1340px;
 }
 
 /* Frozen city column */
@@ -1046,7 +1070,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 100px;
+  width: 74px;
   min-width: 74px;
   user-select: none;
 }
@@ -1196,6 +1220,7 @@
   letter-spacing: 0.06em;
   color: var(--ws-accent);
   text-align: center;
+  width: 68px;
   min-width: 60px;
   cursor: pointer;
   user-select: none;
@@ -1421,6 +1446,254 @@
   flex: 0 0 auto;
   max-width: 48%;
   line-height: 1.4;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   PANE B — Affordability & Quality of Life Scatterplot
+   ═══════════════════════════════════════════════════════════════════ */
+
+.scp-wrap {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.scp-svg {
+  flex: 1 1 0;
+  min-height: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.scp-filter-note {
+  flex-shrink: 0;
+  padding: 4px 10px;
+  font-size: 10px;
+  color: var(--ws-ink-3);
+  text-align: right;
+}
+
+.scp-filter-note--warn {
+  color: var(--ws-amber);
+}
+
+/* ── Legacy table classes (kept for reference) ── */
+.aff-wrap {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.aff-scroll {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow: auto;
+}
+
+.aff-scroll::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+.aff-scroll::-webkit-scrollbar-thumb {
+  background: var(--ws-surface-3);
+  border-radius: 3px;
+}
+.aff-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--ws-ink-3);
+}
+
+.aff-table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+  min-width: 480px;
+  font-size: 13px;
+}
+
+/* Header */
+.aff-th {
+  background: var(--ws-surface-2);
+  border-bottom: 2px solid var(--ws-surface-3);
+  padding: 7px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--ws-ink-3);
+  text-align: left;
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  user-select: none;
+}
+
+.aff-th--score,
+.aff-th--budget,
+.aff-th--zone {
+  cursor: pointer;
+  transition: color 0.12s, background 0.12s;
+}
+
+.aff-th--score:hover,
+.aff-th--budget:hover,
+.aff-th--zone:hover {
+  background: var(--ws-accent-dim);
+  color: var(--ws-accent);
+}
+
+.aff-th--active {
+  background: var(--ws-accent-dim);
+  color: var(--ws-accent);
+  border-bottom-color: var(--ws-accent);
+}
+
+/* Column widths */
+.aff-th--rank   { width: 40px;  text-align: center; }
+.aff-th--city   { width: auto;  min-width: 130px; }
+.aff-th--score  { width: 70px;  text-align: right; }
+.aff-th--budget { width: 98px;  text-align: right; }
+.aff-th--zone   { width: 108px; text-align: center; }
+.aff-th--bar    { width: 90px; }
+
+.aff-sort-arrow {
+  font-size: 10px;
+  opacity: 0.8;
+}
+
+/* Rows */
+.aff-tr {
+  cursor: pointer;
+  transition: background 0.07s, opacity 0.12s;
+  border-bottom: 1px solid rgba(31, 42, 46, 0.06);
+}
+
+.aff-tr:nth-child(even) {
+  background: rgba(31, 42, 46, 0.018);
+}
+
+.aff-tr:hover,
+.aff-tr--hovered {
+  background: var(--ws-surface-2);
+}
+
+.aff-tr--selected {
+  background: var(--ws-accent-dim) !important;
+  box-shadow: inset 3px 0 0 var(--ws-accent);
+}
+
+.aff-tr--dimmed {
+  opacity: 0.25;
+}
+
+/* Cells */
+.aff-td {
+  padding: 5px 8px;
+  color: var(--ws-ink-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.aff-td--rank {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.aff-rank-active {
+  color: var(--ws-accent);
+}
+
+.aff-rank-dim {
+  color: var(--ws-ink-3);
+  font-weight: 400;
+}
+
+.aff-td--city {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.aff-city-name {
+  display: block;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--ws-ink);
+  line-height: 1.3;
+}
+
+.aff-country {
+  display: block;
+  font-size: 11px;
+  color: var(--ws-ink-3);
+  line-height: 1.2;
+}
+
+.aff-td--score {
+  font-weight: 800;
+  font-size: 13px;
+  font-family: 'Fraunces', Georgia, serif;
+  text-align: right;
+}
+
+.aff-td--budget {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ws-ink-2);
+  text-align: right;
+}
+
+.aff-td--zone {
+  text-align: center;
+}
+
+.aff-zone-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 2px 6px;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+
+.aff-td--bar {
+  vertical-align: middle;
+  padding-right: 10px;
+}
+
+.aff-bar {
+  height: 5px;
+  background: rgba(31, 42, 46, 0.08);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.aff-bar__fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.18s ease;
+}
+
+.aff-filter-note {
+  flex: 0 0 auto;
+  padding: 5px 12px;
+  font-size: 11px;
+  color: var(--ws-ink-3);
+  border-top: 1px solid var(--ws-surface-3);
+  background: var(--ws-surface-2);
+  letter-spacing: 0.02em;
+}
+
+.aff-filter-note--warn {
+  color: var(--ws-amber);
 }
 
 .ws-dos-kv__value {

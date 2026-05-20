@@ -3,11 +3,8 @@ import { City360OverviewPanel } from './city360Panels';
 import { SelectedCityVerificationPanel } from './verifiedSnapshotPanels';
 import { DataSanityPanel } from './DataSanityPanel.jsx';
 import { FinancingEnginePanel } from './FinancingEnginePanel.jsx';
-import { DecisionNotesPanel } from './DecisionNotesPanel.jsx';
-import { ChecklistPlannerPanel } from './ChecklistPlannerPanel.jsx';
 import { NeighborhoodTablePanel } from './NeighborhoodTablePanel.jsx';
 import { VisaResidencyPlannerPanel } from './VisaResidencyPlannerPanel.jsx';
-import { PillarThresholdSliders } from '../hooks/usePillarThresholds.jsx';
 
 /* ─── Searchable city combobox ───────────────────────────────────────────── */
 
@@ -155,15 +152,6 @@ export const CityExplorerPanel = function cityExplorerPanel({
         </div>
       </div>
 
-      {thresholds && onThresholdChange && onResetThresholds && (
-        <PillarThresholdSliders
-          thresholds={thresholds}
-          onThresholdChange={onThresholdChange}
-          onReset={onResetThresholds}
-          hasActive={Boolean(hasActiveThresholds)}
-        />
-      )}
-
       {selectedCity && (
         <>
           <City360OverviewPanel
@@ -181,10 +169,6 @@ export const CityExplorerPanel = function cityExplorerPanel({
           <VisaResidencyPlannerPanel city={selectedCity} />
 
           <FinancingEnginePanel city={selectedCity} scenarioKey={scenarioKey} rankingRows={rankingRows} />
-
-          <DecisionNotesPanel city={selectedCity} />
-
-          <ChecklistPlannerPanel city={selectedCity} />
 
           <NeighborhoodTablePanel city={selectedCity} />
 

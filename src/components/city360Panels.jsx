@@ -3,7 +3,6 @@ import {
 } from '../data/dashboardConfig.js';
 import { formatEuro } from '../utils/formatters.js';
 import { CarFreeMatrix, SunshineRainfallTimeline } from './ClimateLogisticsPanel';
-import { LensAwareScoreBreakdown } from './LensAwareScoreDisplay.jsx';
 import { PillarScoreGrid } from './PillarScoreDisplay.jsx';
 
 const formatScore = (value) => value.toFixed(2);
@@ -279,22 +278,12 @@ export const City360OverviewPanel = function city360OverviewPanel({
         )}
 
         {pillars.length > 0 && city.activePillarWeights && (
-          <>
-            <LensAwareScoreBreakdown
-              city={city}
-              strategicBalance={city.strategicBalance}
-              currentLensKey={city.activeLensKey ?? 'balanced'}
-              currentWeights={city.activePillarWeights}
-              scenarioKey={scenarioKey}
-              profileType={profileTypeByScenario[scenarioKey] ?? 'single_income'}
-            />
-            <PillarScoreGrid
-              pillars={pillars}
-              weights={city.activePillarWeights}
-              finalScore={city.activeWeightedScore ?? balancedScore}
-              title="15-Pillar Contributions"
-            />
-          </>
+          <PillarScoreGrid
+            pillars={pillars}
+            weights={city.activePillarWeights}
+            finalScore={city.activeWeightedScore ?? balancedScore}
+            title="15-Pillar Contributions"
+          />
         )}
       </section>
 

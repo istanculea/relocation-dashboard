@@ -2057,15 +2057,21 @@
     overflow-x: auto;
     overflow-y: hidden;
     padding-bottom: 2px;
+  }
+
+  .ws-header__actions,
+  .ws-statusbar {
     scrollbar-width: thin;
     scrollbar-color: var(--ws-border-strong) transparent;
   }
 
-  .ws-header__actions::-webkit-scrollbar {
+  .ws-header__actions::-webkit-scrollbar,
+  .ws-statusbar::-webkit-scrollbar {
     height: 4px;
   }
 
-  .ws-header__actions::-webkit-scrollbar-thumb {
+  .ws-header__actions::-webkit-scrollbar-thumb,
+  .ws-statusbar::-webkit-scrollbar-thumb {
     background: var(--ws-border-strong);
     border-radius: 999px;
   }
@@ -2127,17 +2133,6 @@
   .ws-statusbar {
     overflow-x: auto;
     overflow-y: hidden;
-    scrollbar-width: thin;
-    scrollbar-color: var(--ws-border-strong) transparent;
-  }
-
-  .ws-statusbar::-webkit-scrollbar {
-    height: 4px;
-  }
-
-  .ws-statusbar::-webkit-scrollbar-thumb {
-    background: var(--ws-border-strong);
-    border-radius: 999px;
   }
 
   .ws-control-group {

@@ -2057,6 +2057,8 @@
     overflow-x: auto;
     overflow-y: hidden;
     padding-bottom: 2px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--ws-border-strong) transparent;
   }
 
   .ws-header__actions::-webkit-scrollbar {
@@ -2125,6 +2127,8 @@
   .ws-statusbar {
     overflow-x: auto;
     overflow-y: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: var(--ws-border-strong) transparent;
   }
 
   .ws-control-group {
@@ -2269,4 +2273,3 @@
     animation: none;
   }
 }
-

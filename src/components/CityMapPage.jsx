@@ -5,6 +5,7 @@ import countriesTopology from 'world-atlas/countries-110m.json';
 import { cityGeoData, projectGeoPoint } from '../data/cityGeoData.js';
 import { getNeighborhoodProfiles } from '../data/neighborhoodProfiles.js';
 import { strategicBalanceWeights } from '../data/dashboardConfig.js';
+import { StrategicRadarChart } from './StrategicRadarChart.jsx';
 
 const VIEWBOX_WIDTH = 1180;
 const VIEWBOX_HEIGHT = 760;
@@ -373,6 +374,545 @@ const buildConnectivityRanking = (cityOptions, networkConnections, topN = 5) => 
   }));
 };
 
+const STRATEGIC_MODES = {
+  familyStability: {
+    label: 'Family Stability',
+    detail: 'Prioritises childcare, healthcare, safety, green space, and a lighter commute burden.',
+    weights: {
+      familyReadiness: 0.28,
+      healthcare: 0.20,
+      safety: 0.18,
+      greenSpace: 0.12,
+      commuteEfficiency: 0.12,
+      accessibility: 0.06,
+      affordability: 0.04,
+    },
+  },
+  careerAcceleration: {
+    label: 'Career Acceleration',
+    detail: 'Prioritises business mobility, connectivity, airport reach, and infrastructure reliability.',
+    weights: {
+      businessMobility: 0.22,
+      connectivity: 0.20,
+      airportReach: 0.16,
+      railIntegration: 0.14,
+      infrastructure: 0.12,
+      digitalization: 0.10,
+      commuteEfficiency: 0.06,
+    },
+  },
+  climateResilience: {
+    label: 'Climate Resilience',
+    detail: 'Prioritises long-term resilience, climate comfort, green space, and urban stability.',
+    weights: {
+      resilience: 0.26,
+      climateComfort: 0.20,
+      greenSpace: 0.16,
+      safety: 0.12,
+      commuteEfficiency: 0.10,
+      infrastructure: 0.08,
+      urbanCalm: 0.08,
+    },
+  },
+  carFreeLifestyle: {
+    label: 'Car-Free Lifestyle',
+    detail: 'Prioritises walkability, transit reach, accessibility, and a low car-need daily rhythm.',
+    weights: {
+      mobility: 0.24,
+      walkability: 0.18,
+      accessibility: 0.16,
+      railIntegration: 0.14,
+      commuteEfficiency: 0.12,
+      safety: 0.08,
+      urbanCalm: 0.08,
+    },
+  },
+  highSavingsPotential: {
+    label: 'High Savings Potential',
+    detail: 'Prioritises affordability, housing pressure, administrative efficiency, and low friction.',
+    weights: {
+      affordability: 0.24,
+      housing: 0.22,
+      adminEase: 0.14,
+      commuteEfficiency: 0.12,
+      resilience: 0.08,
+      safety: 0.08,
+      socialEase: 0.06,
+      connectivity: 0.06,
+    },
+  },
+  crossEuropeMobility: {
+    label: 'Cross-Europe Mobility',
+    detail: 'Prioritises rail integration, airport reach, multimodal transport, and continental leverage.',
+    weights: {
+      connectivity: 0.24,
+      railIntegration: 0.20,
+      airportReach: 0.18,
+      mobility: 0.14,
+      infrastructure: 0.10,
+      businessMobility: 0.08,
+      commuteEfficiency: 0.06,
+    },
+  },
+  remoteSlowLiving: {
+    label: 'Remote Slow Living',
+    detail: 'Prioritises urban calm, affordability, green space, climate comfort, and daily ease.',
+    weights: {
+      urbanCalm: 0.22,
+      greenSpace: 0.18,
+      affordability: 0.16,
+      safety: 0.12,
+      climateComfort: 0.10,
+      socialEase: 0.08,
+      commuteEfficiency: 0.08,
+      walkability: 0.06,
+    },
+  },
+};
+
+const PERSONA_PROFILES = {
+  remoteITEngineer: {
+    label: 'Remote IT / Engineer',
+    tone: 'Optimized for high-efficiency remote work and continental mobility.',
+    weights: {
+      connectivity: 0.20,
+      digitalization: 0.18,
+      railIntegration: 0.16,
+      airportReach: 0.14,
+      infrastructure: 0.14,
+      commuteEfficiency: 0.08,
+      businessMobility: 0.06,
+      socialEase: 0.04,
+    },
+  },
+  internationalFamily: {
+    label: 'International Family',
+    tone: 'Focused on long-term stability, healthy urban living, and family logistics.',
+    weights: {
+      familyReadiness: 0.26,
+      safety: 0.16,
+      greenSpace: 0.14,
+      accessibility: 0.12,
+      healthcare: 0.12,
+      commuteEfficiency: 0.10,
+      walkability: 0.06,
+      housing: 0.04,
+    },
+  },
+  psychologistPsychotherapist: {
+    label: 'Psychologist / Psychotherapist',
+    tone: 'Prioritizes emotional sustainability, healthy rhythm, and long-term well-being.',
+    weights: {
+      urbanCalm: 0.22,
+      healthcare: 0.18,
+      socialEase: 0.14,
+      greenSpace: 0.12,
+      affordability: 0.12,
+      commuteEfficiency: 0.10,
+      safety: 0.08,
+      digitalization: 0.04,
+    },
+  },
+  startupFounder: {
+    label: 'Startup Founder',
+    tone: 'Built for business mobility, talent access, and operational scalability.',
+    weights: {
+      businessMobility: 0.22,
+      connectivity: 0.18,
+      airportReach: 0.16,
+      digitalization: 0.14,
+      infrastructure: 0.12,
+      mobility: 0.08,
+      affordability: 0.05,
+      adminEase: 0.05,
+    },
+  },
+  freelancer: {
+    label: 'Freelancer',
+    tone: 'Optimized for flexible independent living with balanced cost and lifestyle quality.',
+    weights: {
+      affordability: 0.22,
+      housing: 0.16,
+      urbanCalm: 0.14,
+      walkability: 0.12,
+      socialEase: 0.10,
+      greenSpace: 0.10,
+      digitalization: 0.08,
+      commuteEfficiency: 0.08,
+    },
+  },
+};
+
+const CITY_DNA = {
+  bilbao: 'Compact civic city with strong family rhythm, pragmatic mobility, and a grounded Atlantic feel.',
+  bucharest: 'High-velocity capital with a sharp cost advantage, strong potential, and meaningful daily friction.',
+  bologna: 'Dense civic city balancing university energy, healthcare access, and manageable everyday routines.',
+  lugo: 'Small-scale provincial city with quieter rhythms, low-cost stability, and a slower civic pulse.',
+  milan: 'High-intensity continental gateway optimized for business mobility, talent access, and European reach.',
+  reggioEmilia: 'Quietly efficient family city with low-friction routines and a strong local stability profile.',
+  cologne: 'International Rhine hub with broad opportunity, a relaxed social tone, and strong transport depth.',
+  valencia: 'Mediterranean balance city prioritising affordability, daylight, and a slower urban rhythm.',
+  vienna: 'Institutionally stable family-oriented capital with exceptional infrastructure reliability and civic polish.',
+};
+
+const SIGNAL_LABELS = {
+  familyReadiness: 'Family readiness',
+  healthcare: 'Healthcare',
+  safety: 'Safety',
+  greenSpace: 'Green space',
+  commuteEfficiency: 'Commute efficiency',
+  connectivity: 'Connectivity',
+  mobility: 'Mobility',
+  affordability: 'Affordability',
+  housing: 'Housing pressure',
+  resilience: 'Resilience',
+  accessibility: 'Accessibility',
+  infrastructure: 'Infrastructure',
+  railIntegration: 'Rail integration',
+  airportReach: 'Airport reach',
+  digitalization: 'Digital administration',
+  adminEase: 'Administrative ease',
+  urbanCalm: 'Urban calm',
+  economicMomentum: 'Economic momentum',
+  businessMobility: 'Business mobility',
+  socialEase: 'Social ease',
+  climateComfort: 'Climate comfort',
+  walkability: 'Walkability',
+  frictionEase: 'Daily friction ease',
+};
+
+const CONTRAST_PHRASES = {
+  familyReadiness: 'stronger family infrastructure',
+  healthcare: 'better healthcare access',
+  safety: 'higher day-to-day safety',
+  greenSpace: 'more green-space breathing room',
+  commuteEfficiency: 'lighter commute burden',
+  connectivity: 'stronger continental connectivity',
+  mobility: 'more flexible multimodal mobility',
+  affordability: 'lower housing pressure',
+  housing: 'less housing pressure',
+  resilience: 'more resilient long-term profile',
+  accessibility: 'easier daily access',
+  infrastructure: 'stronger infrastructure quality',
+  railIntegration: 'better rail integration',
+  airportReach: 'wider airport reach',
+  digitalization: 'more digital administration',
+  adminEase: 'lighter administrative load',
+  urbanCalm: 'quieter daily rhythm',
+  economicMomentum: 'stronger economic momentum',
+  businessMobility: 'faster business mobility',
+  socialEase: 'easier social soft landing',
+  climateComfort: 'better climate comfort',
+  walkability: 'better walkability',
+  frictionEase: 'less hidden friction',
+};
+
+const describeScoreBand = (score) => {
+  if (score >= 8.6) {
+    return 'Exceptional';
+  }
+  if (score >= 7.2) {
+    return 'Strong';
+  }
+  if (score >= 5.8) {
+    return 'Balanced';
+  }
+  if (score >= 4.4) {
+    return 'Mixed';
+  }
+  return 'Fragile';
+};
+
+const firstSentence = (text) => {
+  if (typeof text !== 'string' || text.trim().length === 0) {
+    return '';
+  }
+
+  return text.trim().match(/^[^.!?]+[.!?]?/)?.[0] ?? text.trim();
+};
+
+const scoreFromKeywords = (text, keywordPairs, fallback = 6) => {
+  const normalized = String(text ?? '').toLowerCase();
+
+  for (const [needle, score] of keywordPairs) {
+    if (normalized.includes(needle)) {
+      return score;
+    }
+  }
+
+  return fallback;
+};
+
+const parseBureaucracyScore = (text) => {
+  if (typeof text !== 'string') {
+    return null;
+  }
+
+  const match = text.match(/(\d+(?:\.\d+)?)\s*\/\s*10/);
+  return match ? Number(match[1]) : null;
+};
+
+const parseDigitalizationScore = (text) => scoreFromKeywords(text, [
+  ['very high', 9.0],
+  ['medium-high', 7.8],
+  ['high', 8.6],
+  ['medium-low', 5.1],
+  ['medium', 6.2],
+  ['low', 4.0],
+], 6.0);
+
+const parseNarrativeEaseScore = (text) => scoreFromKeywords(text, [
+  ['easier socially', 8.8],
+  ['open, social', 8.7],
+  ['well-established', 8.4],
+  ['good fit', 8.1],
+  ['manageable', 7.2],
+  ['workable', 7.0],
+  ['used to international', 7.8],
+  ['need to integrate locally', 5.9],
+  ['thin-network', 5.5],
+  ['hard', 4.8],
+], 6.4);
+
+const parseDescriptorScore = (text) => {
+  if (typeof text !== 'string') {
+    return null;
+  }
+
+  const explicitScore = text.match(/(\d+(?:\.\d+)?)\s*\/\s*10/);
+
+  if (explicitScore) {
+    return Number(explicitScore[1]);
+  }
+
+  const normalized = text.toLowerCase();
+
+  if (normalized.includes('yes')) {
+    return 8.8;
+  }
+
+  if (normalized.includes('partial')) {
+    return 6.4;
+  }
+
+  if (normalized.includes('good') || normalized.includes('strong')) {
+    return 7.8;
+  }
+
+  if (normalized.includes('weak') || normalized.includes('no')) {
+    return 4.2;
+  }
+
+  return null;
+};
+
+const weightedAverageScore = (signals, weights) => {
+  let weightedTotal = 0;
+  let totalWeight = 0;
+
+  Object.entries(weights).forEach(([key, weight]) => {
+    const score = signals[key];
+
+    if (Number.isFinite(score) && weight > 0) {
+      weightedTotal += score * weight;
+      totalWeight += weight;
+    }
+  });
+
+  return totalWeight > 0 ? weightedTotal / totalWeight : 0;
+};
+
+const buildContributionRows = (signals, weights, limit = 4) => Object.entries(weights)
+  .map(([key, weight]) => ({
+    key,
+    label: SIGNAL_LABELS[key] ?? key,
+    weight,
+    score: signals[key] ?? 0,
+    contribution: (signals[key] ?? 0) * weight,
+  }))
+  .filter((entry) => entry.weight > 0)
+  .sort((left, right) => right.contribution - left.contribution)
+  .slice(0, limit);
+
+const buildCitySignals = (city, dimensions, networkRow) => {
+  const scores = city?.scores ?? {};
+  const city360 = city?.city360 ?? {};
+  const connectivity = dimensions?.connectivity ?? 0;
+  const mobility = dimensions?.mobility ?? 0;
+  const family = dimensions?.family ?? 0;
+  const resilience = dimensions?.resilience ?? 0;
+  const affordability = dimensions?.affordability ?? 0;
+  const housing = Number.isFinite(scores.housing) ? scores.housing : affordability;
+  const childcare = Number.isFinite(scores.childcare) ? scores.childcare : family;
+  const healthcare = Number.isFinite(scores.healthcare) ? scores.healthcare : family;
+  const safety = Number.isFinite(scores.safety) ? scores.safety : resilience;
+  const environment = Number.isFinite(scores.environment) ? scores.environment : resilience;
+  const commuteMinutes = dimensions?.commuteMinutes ?? 35;
+  const commuteEfficiency = clampValue(10 - ((commuteMinutes - 16) / 4.2), 0, 10);
+  const walkability = clampValue((parseDescriptorScore(city360.fifteenMinute) ?? 6) * 0.55
+    + (parseDescriptorScore(city360.bikeLanes) ?? 6) * 0.25
+    + commuteEfficiency * 0.2, 0, 10);
+  const greenSpace = normalizeScore((environment * 0.6) + (resilience * 0.4));
+  const railIntegration = normalizeScore((connectivity * 0.55) + (mobility * 0.45));
+  const airportReach = normalizeScore((connectivity * 0.7) + ((networkRow?.modeCount ?? 2) * 0.9));
+  const digitalization = parseDigitalizationScore(city360.digitalization);
+  const bureaucracyScore = parseBureaucracyScore(city360.adminBureaucracy);
+  const socialEase = parseNarrativeEaseScore(city360.fittingIn ?? city360.community ?? city360.personality);
+  const adminEase = Number.isFinite(bureaucracyScore)
+    ? clampValue(10 - bureaucracyScore, 0, 10)
+    : clampValue((digitalization + socialEase) / 2, 0, 10);
+  const accessibility = normalizeScore((mobility * 0.35) + (family * 0.25) + (healthcare * 0.2) + (safety * 0.2));
+  const infrastructure = normalizeScore((connectivity * 0.35) + (mobility * 0.35) + (safety * 0.15) + (commuteEfficiency * 0.15));
+  const familyReadiness = normalizeScore((childcare * 0.28) + (healthcare * 0.25) + (safety * 0.22) + (greenSpace * 0.15) + (accessibility * 0.1));
+  const urbanCalm = normalizeScore((safety * 0.3) + (greenSpace * 0.25) + (commuteEfficiency * 0.25) + (socialEase * 0.2));
+  const businessMobility = normalizeScore((connectivity * 0.28) + (airportReach * 0.22) + (digitalization * 0.22) + (adminEase * 0.18) + (mobility * 0.1));
+  const economicMomentum = normalizeScore((connectivity * 0.3) + (infrastructure * 0.25) + (digitalization * 0.2) + (adminEase * 0.15) + (affordability * 0.1));
+  const climateComfort = normalizeScore((resilience * 0.55) + (greenSpace * 0.25) + (urbanCalm * 0.2));
+  const frictionEase = normalizeScore((adminEase * 0.38) + (digitalization * 0.24) + (commuteEfficiency * 0.2) + (socialEase * 0.18));
+
+  return {
+    familyReadiness,
+    healthcare,
+    safety,
+    greenSpace,
+    commuteEfficiency,
+    connectivity,
+    mobility,
+    affordability,
+    housing,
+    resilience,
+    accessibility,
+    infrastructure,
+    railIntegration,
+    airportReach,
+    digitalization,
+    adminEase,
+    urbanCalm,
+    economicMomentum,
+    businessMobility,
+    socialEase,
+    climateComfort,
+    walkability,
+    frictionEase,
+    city360,
+  };
+};
+
+const buildIntelligenceRanking = (cityOptions, cityDimensionByKey, connectivityRanking, selectedModeKey, selectedPersonaKey) => {
+  const connectivityByKey = new Map(connectivityRanking.map((row) => [row.key, row]));
+  const modeProfile = STRATEGIC_MODES[selectedModeKey] ?? STRATEGIC_MODES.familyStability;
+  const personaProfile = PERSONA_PROFILES[selectedPersonaKey] ?? PERSONA_PROFILES.internationalFamily;
+  const combinedWeights = { ...modeProfile.weights };
+
+  Object.entries(personaProfile.weights).forEach(([key, weight]) => {
+    combinedWeights[key] = (combinedWeights[key] ?? 0) + weight;
+  });
+
+  return cityOptions
+    .map((city) => {
+      const dimensions = cityDimensionByKey.get(city.key);
+      const networkRow = connectivityByKey.get(city.key);
+
+      if (!dimensions) {
+        return null;
+      }
+
+      const signals = buildCitySignals(city, dimensions, networkRow);
+      const modeScore = weightedAverageScore(signals, modeProfile.weights);
+      const personaScore = weightedAverageScore(signals, personaProfile.weights);
+      const strategicFit = normalizeScore((modeScore * 0.55) + (personaScore * 0.45));
+
+      return {
+        key: city.key,
+        city,
+        dimensions,
+        networkRow,
+        signals,
+        modeScore,
+        personaScore,
+        strategicFit,
+        fitBand: describeScoreBand(strategicFit),
+        fitSummary: `${describeScoreBand(modeScore)} ${modeProfile.label.toLowerCase()} fit with ${describeScoreBand(personaScore).toLowerCase()} ${personaProfile.label.toLowerCase()} alignment.`,
+        drivers: buildContributionRows(signals, {
+          ...modeProfile.weights,
+          ...personaProfile.weights,
+        }, 4),
+        modeDrivers: buildContributionRows(signals, modeProfile.weights, 3),
+        personaDrivers: buildContributionRows(signals, personaProfile.weights, 3),
+        totalDrivers: buildContributionRows(signals, combinedWeights, 4),
+        dna: CITY_DNA[city.key] ?? `${city.city} is a ${describeScoreBand(strategicFit).toLowerCase()} relocation fit with a distinct geographic identity.`,
+        truthGood: city?.city360?.honestTruth?.good ?? [],
+        truthBad: city?.city360?.honestTruth?.bad ?? [],
+      };
+    })
+    .filter(Boolean)
+    .sort((left, right) => right.strategicFit - left.strategicFit || right.modeScore - left.modeScore)
+    .map((entry, index) => ({
+      ...entry,
+      rank: index + 1,
+    }));
+};
+
+const buildContrastLines = (focusSignals, compareSignals, weights) => {
+  const contrastRows = Object.entries(weights)
+    .map(([key, weight]) => ({
+      key,
+      weight,
+      delta: (focusSignals[key] ?? 0) - (compareSignals[key] ?? 0),
+    }))
+    .filter((row) => row.weight > 0)
+    .sort((left, right) => Math.abs(right.delta * right.weight) - Math.abs(left.delta * left.weight))
+    .slice(0, 4);
+
+  return contrastRows.map((row) => ({
+    key: row.key,
+    text: `${row.delta >= 0 ? '+' : '-'} ${CONTRAST_PHRASES[row.key] ?? SIGNAL_LABELS[row.key] ?? row.key}`,
+  }));
+};
+
+const buildWeeklyLifeSnapshot = (city, dimensions, signals) => {
+  const city360 = city?.city360 ?? {};
+  const errandsCarFree = dimensions?.carFreeErrands ?? 0;
+  const commuteMinutes = dimensions?.commuteMinutes ?? 35;
+
+  return [
+    `Average commute sits around ${commuteMinutes} min, with ${errandsCarFree}% of errands manageable without a car.`,
+    city360.fifteenMinute ? firstSentence(city360.fifteenMinute) : 'Neighbourhood routines shape the week more than long cross-city commutes.',
+    city360.traffic ? firstSentence(city360.traffic) : 'Transit reliability defines the working week here.',
+    city360.community ? firstSentence(city360.community) : 'Community routines and social rhythm are a meaningful part of the fit.',
+  ].filter(Boolean);
+};
+
+const buildForecastSnapshot = (signals, city) => {
+  const city360 = city?.city360 ?? {};
+  const railGrowth = clampValue(Math.round((signals.railIntegration * 1.8) + (signals.connectivity * 0.6) - 3), 4, 18);
+  const climateState = signals.resilience >= 7.8
+    ? 'Stable to 2035, with limited downside from climate stress.'
+    : signals.resilience >= 6.2
+      ? 'Moderate degradation risk after 2035, mostly from heat and resilience pressure.'
+      : 'Rising climate and infrastructure stress warrants caution.';
+  const affordabilityState = signals.affordability >= 7.6
+    ? 'Pressure should stay manageable in the medium term.'
+    : signals.affordability >= 5.8
+      ? 'Moderate pressure remains, especially in prime districts.'
+      : 'Housing competition likely to intensify.';
+  const infrastructureState = city360.futureProofing ? firstSentence(city360.futureProofing) : 'Infrastructure investment remains the key forecast lever.';
+
+  return {
+    railGrowth,
+    climateState,
+    affordabilityState,
+    infrastructureState,
+    timeline: [
+      { year: '2015', label: 'Legacy baseline', detail: 'Earlier infrastructure, less digital administration, and a weaker strategic lens.' },
+      { year: '2025', label: 'Current state', detail: `${describeScoreBand(signals.connectivity)} connectivity and ${describeScoreBand(signals.resilience).toLowerCase()} resilience.` },
+      { year: '2035', label: 'Projected', detail: `Projected rail integration: +${railGrowth}% by 2035. ${climateState}` },
+    ],
+  };
+};
+
+const buildUrbanDNA = (city, signals) => CITY_DNA[city?.key] ?? `${city?.city ?? 'This city'} is a ${describeScoreBand(signals?.strategic ?? 0).toLowerCase()} relocation fit with a distinct urban rhythm.`;
+
 const buildArcPath = (fromPoint, toPoint, curvature = 0.18) => {
   const dx = toPoint.x - fromPoint.x;
   const dy = toPoint.y - fromPoint.y;
@@ -517,6 +1057,7 @@ const CityMapCanvas = function cityMapCanvas({
   activeTransportModes,
   cityNetworkConnections,
   cityDimensionByKey,
+  cityIntelligenceByKey,
   topCityRankByKey,
   zoom,
   pan,
@@ -579,6 +1120,30 @@ const CityMapCanvas = function cityMapCanvas({
             ))}
           </g>
 
+          <g className="city-map-gravity-fields" aria-label="Mobility gravity fields">
+            {cityOptions.map((city) => {
+              const geo = cityGeoData[city.key];
+              if (!geo) {
+                return null;
+              }
+
+              const point = projectEuropePoint(geo, MAIN_EUROPE_MAP, VIEWBOX_WIDTH, VIEWBOX_HEIGHT);
+              const intelligenceRow = cityIntelligenceByKey.get(city.key);
+              const gravityScore = intelligenceRow?.strategicFit ?? getScoreValue(city);
+              const radius = clampValue(34 + gravityScore * 4.8, 38, 84);
+
+              return (
+                <circle
+                  key={`gravity-${city.key}`}
+                  className={`city-map-gravity-field city-map-gravity-field--${intelligenceRow?.fitBand?.toLowerCase() ?? 'balanced'}`}
+                  cx={point.x}
+                  cy={point.y}
+                  r={radius}
+                />
+              );
+            })}
+          </g>
+
           {showHeat && (
             <g className="city-map-heat-zones" aria-label="Mobility intensity zones">
               {cityOptions.map((city) => {
@@ -588,8 +1153,9 @@ const CityMapCanvas = function cityMapCanvas({
                 }
                 const point = projectEuropePoint(geo, MAIN_EUROPE_MAP, VIEWBOX_WIDTH, VIEWBOX_HEIGHT);
                 const dimensions = cityDimensionByKey.get(city.key);
-                const strategicScore = dimensions?.strategic ?? getScoreValue(city);
-                const radius = clampValue(22 + strategicScore * 3.6, 26, 58);
+                const intelligenceRow = cityIntelligenceByKey.get(city.key);
+                const strategicScore = intelligenceRow?.strategicFit ?? dimensions?.strategic ?? getScoreValue(city);
+                const radius = clampValue(22 + strategicScore * 3.4, 26, 58);
 
                 return (
                   <circle
@@ -672,7 +1238,8 @@ const CityMapCanvas = function cityMapCanvas({
 
             const point = projectEuropePoint(geo, MAIN_EUROPE_MAP, VIEWBOX_WIDTH, VIEWBOX_HEIGHT);
             const dimensions = cityDimensionByKey.get(city.key);
-            const strategic = dimensions?.strategic ?? getScoreValue(city);
+            const intelligenceRow = cityIntelligenceByKey.get(city.key);
+            const strategic = intelligenceRow?.strategicFit ?? dimensions?.strategic ?? getScoreValue(city);
             const pointRadius = clampValue(5.8 + (strategic - 5.8) * 1.8, 5.5, 12.5);
             const isActive = city.key === selectedCityKey;
             const isHovered = city.key === hoveredCityKey;
@@ -714,17 +1281,32 @@ const CityMapCanvas = function cityMapCanvas({
   );
 };
 
-const StrategicCityCard = function strategicCityCard({ city, dimensions, networkRow, rank, onOpen }) {
+const StrategicCityCard = function strategicCityCard({ city, dimensions, intelligenceRow, networkRow, rank, onOpen, modeLabel, personaLabel }) {
+  const topDrivers = intelligenceRow?.totalDrivers ?? [];
+  const driverSummary = topDrivers
+    .slice(0, 2)
+    .map((driver) => driver.label)
+    .join(' · ');
+
   return (
     <article className="city-map-strategic-card">
       <header className="city-map-strategic-card__header">
         <div>
-          <p className="city-map-strategic-card__eyebrow">Tier {rank}</p>
+          <p className="city-map-strategic-card__eyebrow">Tier {rank} · {intelligenceRow?.fitBand ?? 'Balanced'} fit</p>
           <h4>{city.city}</h4>
           <span>{city.country}</span>
         </div>
-        <span className="city-map-strategic-card__score">{dimensions.strategic.toFixed(1)}</span>
+        <span className="city-map-strategic-card__score">{intelligenceRow?.strategicFit?.toFixed(1) ?? dimensions.strategic.toFixed(1)}</span>
       </header>
+
+      <p className="city-map-strategic-card__summary">
+        {modeLabel} · {personaLabel}
+      </p>
+      <p className="city-map-strategic-card__narrative">
+        {intelligenceRow?.fitSummary ?? `${describeScoreBand(dimensions.strategic)} relocation fit.`}
+      </p>
+
+      {driverSummary && <p className="city-map-strategic-card__drivers">{driverSummary}</p>}
 
       <dl className="city-map-strategic-card__metrics">
         <div><dt>Connectivity</dt><dd>{dimensions.connectivity.toFixed(1)}</dd></div>
@@ -739,7 +1321,7 @@ const StrategicCityCard = function strategicCityCard({ city, dimensions, network
       </p>
 
       <button type="button" className="city-map-strategic-card__cta" onClick={onOpen}>
-        Open intelligence card {networkRow ? `(${networkRow.links} transport links)` : ''}
+        Inspect strategic profile {networkRow ? `(${networkRow.links} active mobility corridors)` : ''}
       </button>
     </article>
   );
@@ -763,6 +1345,9 @@ export const CityMapPage = function cityMapPage({
     rail: true,
     air: true,
   });
+  const [selectedModeKey, setSelectedModeKey] = useState('familyStability');
+  const [selectedPersonaKey, setSelectedPersonaKey] = useState('internationalFamily');
+  const [comparisonCityKey, setComparisonCityKey] = useState('');
   const [hoveredCityKey, setHoveredCityKey] = useState(null);
   const [zoom, setZoom] = useState(1);
   const [pan, setPan] = useState({ x: 0, y: 0 });
@@ -789,8 +1374,8 @@ export const CityMapPage = function cityMapPage({
   );
 
   const topCityRankByKey = useMemo(
-    () => new Map(connectivityRanking.map((cityRow, index) => [cityRow.key, index + 1])),
-    [connectivityRanking],
+    () => new Map(intelligenceRanking.map((cityRow, index) => [cityRow.key, index + 1])),
+    [intelligenceRanking],
   );
 
   const cityConnectionsByKey = useMemo(() => {
@@ -814,11 +1399,28 @@ export const CityMapPage = function cityMapPage({
     return map;
   }, [mappableCityOptions, connectivityRanking, cityConnectionsByKey]);
 
+  const intelligenceRanking = useMemo(
+    () => buildIntelligenceRanking(
+      mappableCityOptions,
+      cityDimensionByKey,
+      connectivityRanking,
+      selectedModeKey,
+      selectedPersonaKey,
+    ),
+    [cityDimensionByKey, connectivityRanking, mappableCityOptions, selectedModeKey, selectedPersonaKey],
+  );
+
+  const intelligenceByKey = useMemo(
+    () => new Map(intelligenceRanking.map((row) => [row.key, row])),
+    [intelligenceRanking],
+  );
+
   const rankingStripRows = useMemo(() => {
     const withDimensions = mappableCityOptions.map((city) => ({
       city,
       dimensions: cityDimensionByKey.get(city.key),
       network: connectivityRanking.find((row) => row.key === city.key),
+      intelligence: intelligenceByKey.get(city.key),
     }));
 
     const sortBy = (selector, direction = 'desc') => [...withDimensions]
@@ -836,20 +1438,48 @@ export const CityMapPage = function cityMapPage({
       .sort((left, right) => right.railCount - left.railCount)[0] ?? null;
 
     return [
-      { label: 'Top Connected', row: sortBy((candidate) => candidate.network?.connectivityScore ?? 0) },
-      { label: 'Best Family Mobility', row: sortBy((candidate) => candidate.dimensions?.family ?? 0) },
+      { label: 'Top Strategic Fit', row: sortBy((candidate) => candidate.intelligence?.strategicFit ?? 0) },
+      { label: 'Best Family Stability', row: sortBy((candidate) => candidate.intelligence?.signals?.familyReadiness ?? 0) },
       { label: 'Best Rail Networks', row: bestRail },
-      { label: 'Most Walkable', row: sortBy((candidate) => candidate.dimensions?.carFreeErrands ?? 0) },
+      { label: 'Most Walkable', row: sortBy((candidate) => candidate.intelligence?.signals?.walkability ?? 0) },
       { label: 'Lowest Commute Burden', row: sortBy((candidate) => candidate.dimensions?.commuteMinutes ?? 100, 'asc') },
     ];
-  }, [mappableCityOptions, cityDimensionByKey, connectivityRanking, cityConnectionsByKey]);
+  }, [mappableCityOptions, cityDimensionByKey, connectivityRanking, cityConnectionsByKey, intelligenceByKey]);
 
   const focusCity = focusCityKey
     ? mappableCityOptions.find((city) => city.key === focusCityKey) ?? null
     : null;
   const focusDimensions = focusCity ? cityDimensionByKey.get(focusCity.key) : null;
+  const focusIntel = focusCity ? intelligenceByKey.get(focusCity.key) ?? null : null;
   const focusConnections = focusCity ? cityConnectionsByKey.get(focusCity.key) ?? [] : [];
   const focusNeighborhoods = focusCity ? getNeighborhoodProfiles(focusCity.key).slice(0, 3) : [];
+  const selectedModeProfile = STRATEGIC_MODES[selectedModeKey] ?? STRATEGIC_MODES.familyStability;
+  const selectedPersonaProfile = PERSONA_PROFILES[selectedPersonaKey] ?? PERSONA_PROFILES.internationalFamily;
+  const comparisonCity = comparisonCityKey
+    ? mappableCityOptions.find((city) => city.key === comparisonCityKey) ?? null
+    : intelligenceRanking.find((row) => row.key !== focusCity?.key)?.city ?? null;
+  const comparisonIntel = comparisonCity ? intelligenceByKey.get(comparisonCity.key) ?? null : null;
+  const comparisonSignals = comparisonIntel?.signals ?? null;
+  const focusSignals = focusIntel?.signals ?? null;
+  const combinedLensWeights = useMemo(() => {
+    const merged = { ...selectedModeProfile.weights };
+    Object.entries(selectedPersonaProfile.weights).forEach(([key, weight]) => {
+      merged[key] = (merged[key] ?? 0) + weight;
+    });
+    return merged;
+  }, [selectedModeProfile.weights, selectedPersonaProfile.weights]);
+
+  const selectedCityTruthGood = focusIntel?.truthGood ?? [];
+  const selectedCityTruthBad = focusIntel?.truthBad ?? [];
+  const selectedUrbanDNA = focusCity ? buildUrbanDNA(focusCity, focusIntel?.signals ?? {}) : '';
+  const selectedWeeklyLife = focusCity ? buildWeeklyLifeSnapshot(focusCity, focusDimensions, focusIntel?.signals ?? {}) : [];
+  const selectedForecast = focusCity ? buildForecastSnapshot(focusIntel?.signals ?? {}, focusCity) : null;
+  const contrastLines = focusSignals && comparisonSignals
+    ? buildContrastLines(focusSignals, comparisonSignals, combinedLensWeights)
+    : [];
+  const explanationLines = focusIntel
+    ? [...selectedCityTruthGood.slice(0, 3), ...focusIntel.modeDrivers.slice(0, 2).map((item) => item.label)]
+    : [];
 
   const handleZoom = (direction) => {
     setZoom((previousZoom) => {
@@ -951,20 +1581,130 @@ export const CityMapPage = function cityMapPage({
             ))}
           </section>
 
-          <div className="city-map-toolbar">
-            <label className="city-map-toolbar__label" htmlFor="city-map-picker">Focus city</label>
-            <select
-              id="city-map-picker"
-              className="city-map-toolbar__select"
-              value={selectedCity?.key ?? ''}
-              onChange={(event) => onSelectCity(event.target.value || null)}
-            >
-              <option value="">Select a city...</option>
-              {mappableCityOptions.map((city) => (
-                <option key={city.key} value={city.key}>{city.city}, {city.country}</option>
-              ))}
-            </select>
+          <section className="city-map-control-grid" aria-label="Strategic relocation controls">
+            <div className="city-map-control-group">
+              <p className="city-map-control-group__label">Discover</p>
+              <label className="city-map-toolbar__label" htmlFor="city-map-picker-compact">Focus city</label>
+              <select
+                id="city-map-picker-compact"
+                className="city-map-toolbar__select"
+                value={selectedCity?.key ?? ''}
+                onChange={(event) => onSelectCity(event.target.value || null)}
+              >
+                <option value="">Select a city...</option>
+                {mappableCityOptions.map((city) => (
+                  <option key={city.key} value={city.key}>{city.city}, {city.country}</option>
+                ))}
+              </select>
+              <label className="city-map-neighbor-select-wrap" htmlFor="city-map-comparison-picker">
+                Compare with
+                <select
+                  id="city-map-comparison-picker"
+                  className="city-map-toolbar__select city-map-neighbor-select"
+                  value={comparisonCityKey}
+                  onChange={(event) => setComparisonCityKey(event.target.value)}
+                >
+                  <option value="">Auto</option>
+                  {mappableCityOptions
+                    .filter((city) => city.key !== selectedCityKey)
+                    .map((city) => (
+                      <option key={`compare-${city.key}`} value={city.key}>{city.city}, {city.country}</option>
+                    ))}
+                </select>
+              </label>
+            </div>
 
+            <div className="city-map-control-group">
+              <p className="city-map-control-group__label">Relocation priorities</p>
+              <div className="city-map-layer-switches">
+                {Object.entries(STRATEGIC_MODES).map(([modeKey, modeProfile]) => (
+                  <button
+                    key={modeKey}
+                    type="button"
+                    className={`city-map-layer-btn${selectedModeKey === modeKey ? ' city-map-layer-btn--active' : ''}`}
+                    onClick={() => setSelectedModeKey(modeKey)}
+                    aria-pressed={selectedModeKey === modeKey}
+                  >
+                    {modeProfile.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="city-map-control-group">
+              <p className="city-map-control-group__label">Personas</p>
+              <div className="city-map-layer-switches">
+                {Object.entries(PERSONA_PROFILES).map(([personaKey, personaProfile]) => (
+                  <button
+                    key={personaKey}
+                    type="button"
+                    className={`city-map-layer-btn${selectedPersonaKey === personaKey ? ' city-map-layer-btn--active' : ''}`}
+                    onClick={() => setSelectedPersonaKey(personaKey)}
+                    aria-pressed={selectedPersonaKey === personaKey}
+                  >
+                    {personaProfile.label}
+                  </button>
+                ))}
+              </div>
+              <p className="city-map-control-group__tone">{selectedPersonaProfile.tone}</p>
+            </div>
+
+            <div className="city-map-control-group">
+              <p className="city-map-control-group__label">Visualization</p>
+              <div className="city-map-layer-switches" role="group" aria-label="Map layers">
+                <button
+                  type="button"
+                  className={`city-map-layer-btn${showLabels ? ' city-map-layer-btn--active' : ''}`}
+                  onClick={() => setShowLabels((value) => !value)}
+                  aria-pressed={showLabels}
+                >
+                  Labels
+                </button>
+                <button
+                  type="button"
+                  className={`city-map-layer-btn${showConnections ? ' city-map-layer-btn--active' : ''}`}
+                  onClick={() => setShowConnections((value) => !value)}
+                  aria-pressed={showConnections}
+                >
+                  Active mobility corridors
+                </button>
+                <button
+                  type="button"
+                  className={`city-map-layer-btn${showHeat ? ' city-map-layer-btn--active' : ''}`}
+                  onClick={() => setShowHeat((value) => !value)}
+                  aria-pressed={showHeat}
+                >
+                  Heat zones
+                </button>
+                <button
+                  type="button"
+                  className={`city-map-layer-btn${showIsochrones ? ' city-map-layer-btn--active' : ''}`}
+                  onClick={() => setShowIsochrones((value) => !value)}
+                  aria-pressed={showIsochrones}
+                >
+                  Isochrones
+                </button>
+              </div>
+              <div className="city-map-layer-switches" role="group" aria-label="Transport mode filters">
+                {Object.entries(TRANSPORT_MODE_META).map(([mode, meta]) => (
+                  <button
+                    key={mode}
+                    type="button"
+                    className={`city-map-layer-btn${activeTransportModes[mode] ? ' city-map-layer-btn--active' : ''}`}
+                    onClick={() => setActiveTransportModes((previousModes) => ({
+                      ...previousModes,
+                      [mode]: !previousModes[mode],
+                    }))}
+                    aria-pressed={activeTransportModes[mode]}
+                  >
+                    {meta.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <div className="city-map-toolbar">
             <label className="city-map-neighbor-select-wrap" htmlFor="city-map-neighbor-count">
               Nearby links per city
               <select
@@ -979,58 +1719,6 @@ export const CityMapPage = function cityMapPage({
                 <option value={5}>5</option>
               </select>
             </label>
-          </div>
-
-          <div className="city-map-layer-switches" role="group" aria-label="Map layers">
-            <button
-              type="button"
-              className={`city-map-layer-btn${showLabels ? ' city-map-layer-btn--active' : ''}`}
-              onClick={() => setShowLabels((value) => !value)}
-              aria-pressed={showLabels}
-            >
-              Labels
-            </button>
-            <button
-              type="button"
-              className={`city-map-layer-btn${showConnections ? ' city-map-layer-btn--active' : ''}`}
-              onClick={() => setShowConnections((value) => !value)}
-              aria-pressed={showConnections}
-            >
-              Transport links
-            </button>
-            <button
-              type="button"
-              className={`city-map-layer-btn${showHeat ? ' city-map-layer-btn--active' : ''}`}
-              onClick={() => setShowHeat((value) => !value)}
-              aria-pressed={showHeat}
-            >
-              Heat zones
-            </button>
-            <button
-              type="button"
-              className={`city-map-layer-btn${showIsochrones ? ' city-map-layer-btn--active' : ''}`}
-              onClick={() => setShowIsochrones((value) => !value)}
-              aria-pressed={showIsochrones}
-            >
-              Isochrones
-            </button>
-          </div>
-
-          <div className="city-map-layer-switches" role="group" aria-label="Transport mode filters">
-            {Object.entries(TRANSPORT_MODE_META).map(([mode, meta]) => (
-              <button
-                key={mode}
-                type="button"
-                className={`city-map-layer-btn${activeTransportModes[mode] ? ' city-map-layer-btn--active' : ''}`}
-                onClick={() => setActiveTransportModes((previousModes) => ({
-                  ...previousModes,
-                  [mode]: !previousModes[mode],
-                }))}
-                aria-pressed={activeTransportModes[mode]}
-              >
-                {meta.label}
-              </button>
-            ))}
           </div>
 
           <div className="city-map-viewport-controls" role="group" aria-label="Map viewport controls">
@@ -1059,6 +1747,7 @@ export const CityMapPage = function cityMapPage({
                   activeTransportModes={activeTransportModes}
                   cityNetworkConnections={cityNetworkConnections}
                   cityDimensionByKey={cityDimensionByKey}
+                  cityIntelligenceByKey={intelligenceByKey}
                   topCityRankByKey={topCityRankByKey}
                   zoom={zoom}
                   pan={pan}
@@ -1071,10 +1760,23 @@ export const CityMapPage = function cityMapPage({
 
           <section className="city-map-intel-grid">
             <article className="city-map-selection city-map-selection--intel">
-              <p className="city-map-selection__eyebrow">If You Move Here...</p>
-              {focusCity && focusDimensions ? (
+              <p className="city-map-selection__eyebrow">Strategic profile</p>
+              {focusCity && focusDimensions && focusIntel ? (
                 <>
                   <h4>{focusCity.city}, {focusCity.country}</h4>
+                  <p className="city-map-selection__summary">
+                    {focusIntel.fitSummary}
+                  </p>
+                  <div className="city-map-selection__chips" aria-label="Active relocation lens">
+                    <span>{selectedModeProfile.label}</span>
+                    <span>{selectedPersonaProfile.label}</span>
+                    <span>{focusIntel.fitBand} fit</span>
+                  </div>
+                  {explanationLines.length > 0 && (
+                    <ul className="city-map-selection__bullets">
+                      {explanationLines.slice(0, 4).map((line) => <li key={line}>{line}</li>)}
+                    </ul>
+                  )}
                   <div className="city-map-intel-metrics">
                     <span>{focusDimensions.countriesReachableByRail} countries reachable by rail in one day</span>
                     <span>{focusDimensions.carFreeErrands}% errands can be done car-free</span>
@@ -1082,6 +1784,25 @@ export const CityMapPage = function cityMapPage({
                     <span>{focusDimensions.pediatricClinics} pediatric clinics in metro area</span>
                     <span>{focusDimensions.greenCoverage}% urban green coverage</span>
                   </div>
+                  {selectedCityTruthGood.length > 0 && (
+                    <div>
+                      <strong className="city-map-selection__headline">Why this city ranks highly</strong>
+                      <ul className="city-map-selection__bullets">
+                        {selectedCityTruthGood.slice(0, 3).map((line) => <li key={line}>{line}</li>)}
+                      </ul>
+                    </div>
+                  )}
+                  {selectedWeeklyLife.length > 0 && (
+                    <div>
+                      <strong className="city-map-selection__headline">A week living here</strong>
+                      <ul className="city-map-selection__bullets">
+                        {selectedWeeklyLife.map((line) => <li key={line}>{line}</li>)}
+                      </ul>
+                    </div>
+                  )}
+                  {selectedUrbanDNA && (
+                    <p className="city-map-selection__narrative">Urban DNA: {selectedUrbanDNA}</p>
+                  )}
                   {focusNeighborhoods.length > 0 && (
                     <ul className="city-map-intel-neighborhoods">
                       {focusNeighborhoods.map((profile) => (
@@ -1125,14 +1846,64 @@ export const CityMapPage = function cityMapPage({
             </article>
           </section>
 
+          <section className="city-map-deep-intel-grid" aria-label="Strategic intelligence details">
+            <article className="city-map-selection city-map-selection--contrast">
+              <p className="city-map-selection__eyebrow">Strategic contrast</p>
+              <strong className="city-map-selection__headline">
+                {comparisonCity ? `${focusCity?.city ?? 'Selected city'} compared with ${comparisonCity.city}` : 'No comparison selected'}
+              </strong>
+              {contrastLines.length > 0 ? (
+                <ul className="city-map-selection__bullets">
+                  {contrastLines.map((line) => <li key={line.key}>{line.text}</li>)}
+                </ul>
+              ) : (
+                <span>Choose a comparison city to expose the tradeoffs.</span>
+              )}
+              {selectedCityTruthBad.length > 0 && (
+                <>
+                  <strong className="city-map-selection__headline">Hidden friction</strong>
+                  <ul className="city-map-selection__bullets">
+                    {selectedCityTruthBad.slice(0, 3).map((line) => <li key={line}>{line}</li>)}
+                  </ul>
+                </>
+              )}
+            </article>
+
+            <article className="city-map-selection city-map-selection--forecast">
+              <p className="city-map-selection__eyebrow">Forecast layer</p>
+              {selectedForecast ? (
+                <>
+                  <strong className="city-map-selection__headline">Infrastructure evolution</strong>
+                  <ul className="city-map-timeline">
+                    {selectedForecast.timeline.map((item) => (
+                      <li key={item.year}>
+                        <span>{item.year}</span>
+                        <strong>{item.label}</strong>
+                        <small>{item.detail}</small>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="city-map-forecast-notes">
+                    <p>Projected rail integration: +{selectedForecast.railGrowth}% by 2035</p>
+                    <p>Climate resilience outlook: {selectedForecast.climateState}</p>
+                    <p>Affordability outlook: {selectedForecast.affordabilityState}</p>
+                    <p>{selectedForecast.infrastructureState}</p>
+                  </div>
+                  <div className="city-map-radar-wrap">
+                    <StrategicRadarChart selectedCity={focusCity} filteredRows={mappableCityOptions} size={360} />
+                  </div>
+                </>
+              ) : (
+                <span>Select a city to open the forecast layer.</span>
+              )}
+            </article>
+          </section>
+
           <section className="city-map-top-grid" aria-label="Strategic city cards">
-            {connectivityRanking.slice(0, 6).map((networkRow, index) => {
-              const city = mappableCityOptions.find((candidate) => candidate.key === networkRow.key);
-              if (!city) {
-                return null;
-              }
-              const dimensions = cityDimensionByKey.get(city.key);
-              if (!dimensions) {
+            {intelligenceRanking.slice(0, 6).map((rankingRow, index) => {
+              const city = rankingRow.city;
+              const dimensions = rankingRow.dimensions;
+              if (!city || !dimensions) {
                 return null;
               }
 
@@ -1141,8 +1912,11 @@ export const CityMapPage = function cityMapPage({
                   key={city.key}
                   city={city}
                   dimensions={dimensions}
-                  networkRow={networkRow}
+                  intelligenceRow={rankingRow}
+                  networkRow={rankingRow.networkRow}
                   rank={index + 1}
+                  modeLabel={selectedModeProfile.label}
+                  personaLabel={selectedPersonaProfile.label}
                   onOpen={() => onSelectCity(city.key)}
                 />
               );

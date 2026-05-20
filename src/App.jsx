@@ -328,8 +328,14 @@ const App = function app() {
     [filteredComparisonRows, selectedCityKey],
   );
   const selectedCity = useMemo(
-    () => selectedComparisonCity ?? comparisonRows.find((row) => row.key === selectedCityKey) ?? scoreRankingRows[0] ?? null,
-    [comparisonRows, scoreRankingRows, selectedComparisonCity, selectedCityKey],
+    () => {
+      if (!filteredComparisonRows.length) {
+        return null;
+      }
+
+      return selectedComparisonCity ?? comparisonRows.find((row) => row.key === selectedCityKey) ?? scoreRankingRows[0] ?? null;
+    },
+    [comparisonRows, filteredComparisonRows, scoreRankingRows, selectedComparisonCity, selectedCityKey],
   );
   const selectedExplorerCity = useMemo(() => {
     if (!selectedCity) {

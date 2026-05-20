@@ -403,7 +403,7 @@
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 8px;
-  padding: 14px 16px;
+  padding: 12px 14px;
   min-width: 220px;
 }
 
@@ -411,7 +411,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .threshold-sliders__title {
@@ -442,7 +442,7 @@
   grid-template-columns: 90px 1fr 52px;
   align-items: center;
   gap: 8px;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .threshold-slider-row__label {
@@ -470,8 +470,8 @@
    SIMULATION ENGINE
    ============================================================ */
 .simulation-engine {
-  margin: 28px 0;
-  padding: 22px 24px;
+  margin: 18px 0;
+  padding: 16px 18px;
   border-radius: 10px;
 }
 
@@ -480,7 +480,7 @@
   flex-wrap: wrap;
   align-items: baseline;
   gap: 10px;
-  margin-bottom: 18px;
+  margin-bottom: 12px;
 }
 
 .simulation-engine__title {
@@ -515,7 +515,7 @@
 .simulation-engine__sliders {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 14px 20px;
+  gap: 10px 14px;
 }
 
 .sim-slider-row {
@@ -524,7 +524,7 @@
   grid-template-rows: auto auto auto;
   gap: 2px 8px;
   align-items: center;
-  padding: 10px 12px;
+  padding: 8px 10px;
   border-radius: 6px;
   border: 1px solid transparent;
   background: rgba(0,0,0,0.02);
@@ -590,8 +590,8 @@
 }
 
 .simulation-engine__notice {
-  margin-top: 14px;
-  padding: 8px 14px;
+  margin-top: 10px;
+  padding: 7px 10px;
   background: var(--amber-soft);
   border-left: 3px solid var(--amber);
   border-radius: 4px;
@@ -1972,6 +1972,173 @@
   font-style: italic;
   margin: 0;
   line-height: 1.45;
+}
+
+.fin-assumptions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.015);
+}
+
+.fin-assumptions__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.residency-planner__meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 8px;
+}
+
+.residency-planner__meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.residency-planner__meta-item span {
+  font-size: 0.72rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.residency-planner__meta-item strong {
+  font-size: 0.86rem;
+  color: var(--ink);
+}
+
+.residency-planner__steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.residency-planner__step {
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.015);
+}
+
+.residency-planner__step label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.residency-planner__step-order {
+  color: var(--muted);
+  min-width: 20px;
+}
+
+.residency-planner__step p {
+  margin: 6px 0 0 26px;
+  font-size: 0.8rem;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+@media (max-width: 900px) {
+  .simulation-engine__sliders {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 8px 10px;
+  }
+
+  .threshold-slider-row {
+    grid-template-columns: 80px 1fr 46px;
+  }
+}
+
+@media (max-width: 640px) {
+  .simulation-engine {
+    margin: 12px 0;
+    padding: 12px;
+  }
+
+  .simulation-engine__header {
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+
+  .simulation-engine__title {
+    font-size: 0.96rem;
+  }
+
+  .simulation-engine__subtitle {
+    font-size: 0.76rem;
+    flex-basis: 100%;
+  }
+
+  .threshold-sliders {
+    padding: 10px;
+  }
+
+  .threshold-slider-row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+    margin-bottom: 8px;
+  }
+
+  .threshold-slider-row__value {
+    text-align: left;
+  }
+
+  .fin-mode-toggle {
+    width: 100%;
+  }
+
+  .fin-mode-btn {
+    flex: 1 1 0;
+    padding: 8px 10px;
+    font-size: 0.78rem;
+  }
+
+  .financing-panel {
+    gap: 12px;
+  }
+
+  .fin-controls {
+    gap: 10px;
+  }
+
+  .fin-results {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .fin-stat {
+    padding: 8px 9px;
+  }
+
+  .residency-planner__meta {
+    grid-template-columns: 1fr;
+  }
+
+  .residency-planner__step {
+    padding: 9px 10px;
+  }
+
+  .residency-planner__step p {
+    margin-left: 0;
+  }
 }
 
 

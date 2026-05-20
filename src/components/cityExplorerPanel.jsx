@@ -6,6 +6,8 @@ import { FinancingEnginePanel } from './FinancingEnginePanel.jsx';
 import { DecisionNotesPanel } from './DecisionNotesPanel.jsx';
 import { ChecklistPlannerPanel } from './ChecklistPlannerPanel.jsx';
 import { NeighborhoodTablePanel } from './NeighborhoodTablePanel.jsx';
+import { VisaResidencyPlannerPanel } from './VisaResidencyPlannerPanel.jsx';
+import { PillarThresholdSliders } from '../hooks/usePillarThresholds.jsx';
 
 /* ─── Searchable city combobox ───────────────────────────────────────────── */
 
@@ -99,6 +101,9 @@ export const CityExplorerPanel = function cityExplorerPanel({
   onYearChange,
   rankingRows,
   thresholds,
+  onThresholdChange,
+  onResetThresholds,
+  hasActiveThresholds,
 }) {
   const selectedIndex = useMemo(
     () => cityOptions.findIndex((city) => city.key === selectedCity?.key),
@@ -150,6 +155,15 @@ export const CityExplorerPanel = function cityExplorerPanel({
         </div>
       </div>
 
+      {thresholds && onThresholdChange && onResetThresholds && (
+        <PillarThresholdSliders
+          thresholds={thresholds}
+          onThresholdChange={onThresholdChange}
+          onReset={onResetThresholds}
+          hasActive={Boolean(hasActiveThresholds)}
+        />
+      )}
+
       {selectedCity && (
         <>
           <City360OverviewPanel
@@ -163,6 +177,8 @@ export const CityExplorerPanel = function cityExplorerPanel({
           />
 
           <SelectedCityVerificationPanel city={selectedCity} snapshot={selectedSnapshot} embedded />
+
+          <VisaResidencyPlannerPanel city={selectedCity} />
 
           <FinancingEnginePanel city={selectedCity} scenarioKey={scenarioKey} rankingRows={rankingRows} />
 

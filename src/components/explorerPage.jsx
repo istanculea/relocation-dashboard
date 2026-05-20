@@ -11,7 +11,11 @@ export const ExplorerPage = function explorerPage({
   rankingRows,
   onBack,
   onShare,
+  hasActiveSimulation,
   thresholds,
+  onThresholdChange,
+  onResetThresholds,
+  hasActiveThresholds,
 }) {
   return (
     <div className="app-shell explorer-page-shell">
@@ -23,6 +27,11 @@ export const ExplorerPage = function explorerPage({
         <div className="ws-header__divider" />
         <div style={{ flex: 1 }} />
         <div className="ws-header__actions">
+          {hasActiveSimulation && (
+            <span className="ws-header__badge" role="status" aria-live="polite">
+              Simulation Active
+            </span>
+          )}
           <button type="button" className="ws-icon-btn" onClick={onShare} title="Copy share link">
             Share
           </button>
@@ -43,6 +52,9 @@ export const ExplorerPage = function explorerPage({
           onYearChange={onYearChange}
           rankingRows={rankingRows}
           thresholds={thresholds}
+          onThresholdChange={onThresholdChange}
+          onResetThresholds={onResetThresholds}
+          hasActiveThresholds={hasActiveThresholds}
         />
       </main>
     </div>

@@ -1,17 +1,13 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { geoCentroid, geoMercator, geoPath } from 'd3-geo';
 import { feature } from 'topojson-client';
 import countriesTopology from 'world-atlas/countries-110m.json';
 import { cityGeoData, projectGeoPoint } from '../data/cityGeoData.js';
 import { getNeighborhoodProfiles } from '../data/neighborhoodProfiles.js';
+import { strategicBalanceWeights } from '../data/dashboardConfig.js';
 
 const VIEWBOX_WIDTH = 1180;
 const VIEWBOX_HEIGHT = 760;
-const OVERLAY_OFFSETS = [
-  { dx: 38, dy: -26 },
-  { dx: -42, dy: -16 },
-  { dx: 24, dy: 34 },
-];
 
 const EUROPE_EXTENTS = {
   minLon: -25,
@@ -20,8 +16,9 @@ const EUROPE_EXTENTS = {
   maxLat: 72,
 };
 
-const GRID_LATS = [38, 42, 46, 50, 54];
-const GRID_LONS = [-8, -2, 4, 10, 16, 22, 28];
+const GRID_LATS = [38, 42, 46, 50, 54, 58, 62];
+const GRID_LONS = [-8, -2, 4, 10, 16, 22, 28, 34];
+
 const TRANSPORT_MODE_META = {
   road: { label: 'Road', shortLabel: 'RD' },
   rail: { label: 'Rail', shortLabel: 'RL' },
@@ -84,7 +81,6 @@ const createEuropeMapGeometry = (width, height, padding = 24) => {
     paths: europeCountryFeatures
       .map((countryFeature, index) => ({
         key: `eu-country-${index}`,
-        featureIndex: index,
         d: pathBuilder(countryFeature),
       }))
       .filter((pathEntry) => Boolean(pathEntry.d)),
@@ -92,71 +88,6 @@ const createEuropeMapGeometry = (width, height, padding = 24) => {
 };
 
 const MAIN_EUROPE_MAP = createEuropeMapGeometry(VIEWBOX_WIDTH, VIEWBOX_HEIGHT, 26);
-const MINI_MAP_WIDTH = 280;
-const MINI_MAP_HEIGHT = 156;
-const MINI_EUROPE_MAP = createEuropeMapGeometry(MINI_MAP_WIDTH, MINI_MAP_HEIGHT, 10);
-
-const createCityFocusedMapGeometry = (cityGeo, width, height, padding = 10) => {
-  const lonSpan = 18;
-  const latSpan = 12;
-  const focusBounds = {
-    type: 'Feature',
-    geometry: {
-      type: 'Polygon',
-      coordinates: [[
-        [cityGeo.lon - lonSpan / 2, cityGeo.lat - latSpan / 2],
-        [cityGeo.lon + lonSpan / 2, cityGeo.lat - latSpan / 2],
-        [cityGeo.lon + lonSpan / 2, cityGeo.lat + latSpan / 2],
-        [cityGeo.lon - lonSpan / 2, cityGeo.lat + latSpan / 2],
-        [cityGeo.lon - lonSpan / 2, cityGeo.lat - latSpan / 2],
-      ]],
-    },
-  };
-  const mapProjection = geoMercator()
-    .fitExtent(
-      [[padding, padding], [width - padding, height - padding]],
-      focusBounds,
-    );
-  const pathBuilder = geoPath(mapProjection);
-
-  return {
-    projection: mapProjection,
-    paths: europeCountryFeatures
-      .map((countryFeature, index) => ({
-        key: `city-country-${index}`,
-        featureIndex: index,
-        d: pathBuilder(countryFeature),
-      }))
-      .filter((pathEntry) => Boolean(pathEntry.d)),
-  };
-};
-
-const findClosestCountryFeatureIndex = (cityGeo) => {
-  let closestFeatureIndex = null;
-  let minDistance = Number.POSITIVE_INFINITY;
-
-  europeCountryFeatures.forEach((countryFeature, featureIndex) => {
-    const [centroidLon, centroidLat] = geoCentroid(countryFeature);
-    const distance = computeDistanceKm(cityGeo, { lat: centroidLat, lon: centroidLon });
-
-    if (distance < minDistance) {
-      minDistance = distance;
-      closestFeatureIndex = featureIndex;
-    }
-  });
-
-  return closestFeatureIndex;
-};
-
-const projectEuropePoint = (geo, mapGeometry, width, height) => {
-  const projected = mapGeometry.projection([geo.lon, geo.lat]);
-
-  if (projected && Number.isFinite(projected[0]) && Number.isFinite(projected[1])) {
-    return { x: projected[0], y: projected[1] };
-  }
-
-  return projectGeoPoint(geo, width, height);
-};
 
 const toRadians = (value) => (value * Math.PI) / 180;
 
@@ -171,32 +102,25 @@ const computeDistanceKm = (fromGeo, toGeo) => {
   return 2 * earthRadiusKm * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 };
 
+const projectEuropePoint = (geo, mapGeometry, width, height) => {
+  const projected = mapGeometry.projection([geo.lon, geo.lat]);
+
+  if (projected && Number.isFinite(projected[0]) && Number.isFinite(projected[1])) {
+    return { x: projected[0], y: projected[1] };
+  }
+
+  return projectGeoPoint(geo, width, height);
+};
+
 const getScoreValue = (city) => {
   if (Number.isFinite(city?.activeWeightedScore)) {
     return city.activeWeightedScore;
   }
-
   if (Number.isFinite(city?.weightedScore)) {
     return city.weightedScore;
   }
-
   return Number.isFinite(city?.score) ? city.score : 0;
 };
-
-const getScoreTier = (score) => {
-  if (score >= 7.6) {
-    return 'standout';
-  }
-  if (score >= 7.2) {
-    return 'strong';
-  }
-  if (score >= 6.8) {
-    return 'solid';
-  }
-  return 'watch';
-};
-
-const formatDistance = (distanceKm) => `${Math.round(distanceKm).toLocaleString()} km`;
 
 const formatHoursLabel = (hoursValue) => {
   const wholeHours = Math.floor(hoursValue);
@@ -212,6 +136,8 @@ const formatHoursLabel = (hoursValue) => {
 
   return `${wholeHours}h ${minutes}m`;
 };
+
+const formatDistance = (distanceKm) => `${Math.round(distanceKm).toLocaleString()} km`;
 
 const estimateRoadTravelHours = (distanceKm) => {
   const band = ROAD_SPEED_BANDS.find((candidateBand) => distanceKm <= candidateBand.maxDistanceKm)
@@ -442,137 +368,140 @@ const buildConnectivityRanking = (cityOptions, networkConnections, topN = 5) => 
 
   return rankingRows.slice(0, topN).map((entry) => ({
     ...entry,
-    connectivityScore: Number(((entry.weightedScore / maxScore) * 72).toFixed(1)),
+    connectivityScore: Number(((entry.weightedScore / maxScore) * 100).toFixed(1)),
     modeCount: entry.modes.size,
   }));
 };
 
-const MapViewportControls = function mapViewportControls({
-  onZoomIn,
-  onZoomOut,
-  onReset,
-  onPanLeft,
-  onPanRight,
-  onPanUp,
-  onPanDown,
-}) {
-  return (
-    <div className="city-map-viewport-controls" role="group" aria-label="Map viewport controls">
-      <button type="button" className="city-map-mini-btn" onClick={onZoomIn}>+</button>
-      <button type="button" className="city-map-mini-btn" onClick={onZoomOut}>-</button>
-      <button type="button" className="city-map-mini-btn" onClick={onPanUp}>↑</button>
-      <button type="button" className="city-map-mini-btn" onClick={onPanDown}>↓</button>
-      <button type="button" className="city-map-mini-btn" onClick={onPanLeft}>←</button>
-      <button type="button" className="city-map-mini-btn" onClick={onPanRight}>→</button>
-      <button type="button" className="city-map-mini-btn city-map-mini-btn--reset" onClick={onReset}>Reset</button>
-    </div>
-  );
+const buildArcPath = (fromPoint, toPoint, curvature = 0.18) => {
+  const dx = toPoint.x - fromPoint.x;
+  const dy = toPoint.y - fromPoint.y;
+  const length = Math.hypot(dx, dy) || 1;
+  const normalX = -dy / length;
+  const normalY = dx / length;
+  const controlX = (fromPoint.x + toPoint.x) / 2 + normalX * length * curvature;
+  const controlY = (fromPoint.y + toPoint.y) / 2 + normalY * length * curvature;
+  return `M ${fromPoint.x} ${fromPoint.y} Q ${controlX} ${controlY} ${toPoint.x} ${toPoint.y}`;
 };
 
-const CityMapLegend = function cityMapLegend() {
-  const items = [
-    { key: 'standout', label: 'Standout score', score: '≥ 7.6' },
-    { key: 'strong', label: 'Strong fit', score: '7.2 - 7.59' },
-    { key: 'solid', label: 'Solid fit', score: '6.8 - 7.19' },
-    { key: 'watch', label: 'Watchlist', score: '< 6.8' },
-  ];
+const normalizeScore = (value) => clampValue(value, 0, 10);
 
-  return (
-    <div className="city-map-legend" role="list" aria-label="Map legend">
-      {items.map((item) => (
-        <div key={item.key} className="city-map-legend__item" role="listitem">
-          <span className={`city-map-legend__dot city-map-legend__dot--${item.key}`} aria-hidden="true" />
-          <span className="city-map-legend__text">
-            <strong>{item.label}</strong>
-            <small>{item.score}</small>
-          </span>
-        </div>
-      ))}
-    </div>
-  );
+const STRATEGIC_DIMENSION_PILLARS = {
+  connectivity: ['euRegistration', 'diplomaRecognition', 'economyJobsTaxes', 'locationInfra'],
+  family: ['childcareEducation', 'healthMedical', 'criminalityStreetSafe', 'socialCapital', 'locationInfra'],
+  resilience: ['climateResilience', 'envPollution', 'mobilityLogistics', 'healthMedical', 'criminalityStreetSafe'],
+  affordability: ['rentalMarket', 'homeOwnership', 'cleanBasket', 'economyJobsTaxes', 'realEstateHousing'],
+  mobility: ['mobilityLogistics', 'locationInfra', 'envPollution', 'climateResilience'],
 };
 
-const ConnectivityMiniMap = function connectivityMiniMap({ cityKey, cityLabel }) {
-  const geo = cityGeoData[cityKey];
-  const miniMapGeometry = useMemo(
-    () => (geo ? createCityFocusedMapGeometry(geo, MINI_MAP_WIDTH, MINI_MAP_HEIGHT, 10) : MINI_EUROPE_MAP),
-    [geo],
-  );
-  const point = geo ? projectEuropePoint(geo, miniMapGeometry, MINI_MAP_WIDTH, MINI_MAP_HEIGHT) : null;
-  const highlightedFeatureIndex = useMemo(
-    () => (geo ? findClosestCountryFeatureIndex(geo) : null),
-    [geo],
-  );
+const sumDimensionPillarWeights = (pillarKeys) => pillarKeys
+  .reduce((total, pillarKey) => total + (strategicBalanceWeights[pillarKey] ?? 0), 0);
 
-  return (
-    <svg
-      className="city-map-mini-svg"
-      viewBox={`0 0 ${MINI_MAP_WIDTH} ${MINI_MAP_HEIGHT}`}
-      role="img"
-      aria-label="Mini map preview"
-    >
-      <rect x="0" y="0" width={MINI_MAP_WIDTH} height={MINI_MAP_HEIGHT} rx="10" />
-      <g className="city-map-mini-svg__countries">
-        {miniMapGeometry.paths.map((countryPath) => (
-          <path
-            key={countryPath.key}
-            className={countryPath.featureIndex === highlightedFeatureIndex ? 'city-map-mini-svg__country--active' : ''}
-            d={countryPath.d}
-          />
-        ))}
-      </g>
-      {point && (
-        <g className="city-map-mini-svg__city">
-          <circle cx={point.x} cy={point.y} r="6" />
-          <circle cx={point.x} cy={point.y} r="11" />
-        </g>
-      )}
-      {point && (
-        <text className="city-map-mini-svg__label" x="10" y={MINI_MAP_HEIGHT - 10}>
-          {cityLabel}
-        </text>
-      )}
-    </svg>
-  );
+const STRATEGIC_DIMENSION_WEIGHT_TOTALS = {
+  connectivity: sumDimensionPillarWeights(STRATEGIC_DIMENSION_PILLARS.connectivity),
+  family: sumDimensionPillarWeights(STRATEGIC_DIMENSION_PILLARS.family),
+  resilience: sumDimensionPillarWeights(STRATEGIC_DIMENSION_PILLARS.resilience),
+  affordability: sumDimensionPillarWeights(STRATEGIC_DIMENSION_PILLARS.affordability),
+  mobility: sumDimensionPillarWeights(STRATEGIC_DIMENSION_PILLARS.mobility),
 };
 
-const ConnectivityCard = function connectivityCard({ cityRow, rank, onOpen }) {
-  return (
-    <article className="city-map-connectivity-tile">
-      <div className="city-map-connectivity-tile__header">
-        <div>
-          <h5>{cityRow.city}</h5>
-          <p>{cityRow.country}</p>
-        </div>
-        <span className="city-map-connectivity-tile__rank">{rank}</span>
-      </div>
+const STRATEGIC_DIMENSION_WEIGHT_SUM = Object.values(STRATEGIC_DIMENSION_WEIGHT_TOTALS)
+  .reduce((total, weightValue) => total + weightValue, 0);
 
-      <ConnectivityMiniMap cityKey={cityRow.key} cityLabel={cityRow.city} />
+const weightedPillarAverage = (pillarScoresByKey, pillarKeys) => {
+  let weightedTotal = 0;
+  let totalWeight = 0;
 
-      <dl className="city-map-connectivity-tile__metrics">
-        <div>
-          <dt>Transport links</dt>
-          <dd>{cityRow.links}</dd>
-        </div>
-        <div>
-          <dt>Mode diversity</dt>
-          <dd>{cityRow.modeCount}</dd>
-        </div>
-        <div>
-          <dt>Avg fastest trip</dt>
-          <dd>{cityRow.avgFastestHours ? formatHoursLabel(cityRow.avgFastestHours) : 'N/A'}</dd>
-        </div>
-      </dl>
+  pillarKeys.forEach((pillarKey) => {
+    const score = pillarScoresByKey.get(pillarKey);
+    const weight = strategicBalanceWeights[pillarKey] ?? 0;
 
-      <button
-        type="button"
-        className="city-map-connectivity-tile__cta"
-        onClick={onOpen}
-      >
-        Connectivity score {cityRow.connectivityScore}
-      </button>
-    </article>
+    if (Number.isFinite(score) && weight > 0) {
+      weightedTotal += score * weight;
+      totalWeight += weight;
+    }
+  });
+
+  if (totalWeight <= 0) {
+    return null;
+  }
+
+  return weightedTotal / totalWeight;
+};
+
+const budgetToAffordabilityScore = (budget) => {
+  if (!Number.isFinite(budget) || budget <= 0) {
+    return 6;
+  }
+  return clampValue(12 - budget / 550, 2.2, 9.6);
+};
+
+const buildCityDimensions = (city, networkRow, closestConnections) => {
+  const baseScore = getScoreValue(city);
+  const scores = city?.scores ?? {};
+  const pillarScoresByKey = new Map((city?.strategicBalance?.pillars ?? [])
+    .map((pillar) => [pillar.key, pillar.score]));
+  const housingScore = Number.isFinite(scores.housing) ? scores.housing : baseScore;
+  const childcareScore = Number.isFinite(scores.childcare) ? scores.childcare : baseScore;
+  const environmentScore = Number.isFinite(scores.environment) ? scores.environment : baseScore;
+  const safetyScore = Number.isFinite(scores.safety) ? scores.safety : baseScore;
+  const healthcareScore = Number.isFinite(scores.healthcare) ? scores.healthcare : baseScore;
+  const familyFromModel = weightedPillarAverage(pillarScoresByKey, STRATEGIC_DIMENSION_PILLARS.family);
+  const resilienceFromModel = weightedPillarAverage(pillarScoresByKey, STRATEGIC_DIMENSION_PILLARS.resilience);
+  const affordabilityFromModel = weightedPillarAverage(pillarScoresByKey, STRATEGIC_DIMENSION_PILLARS.affordability);
+  const affordability = normalizeScore(
+    ((affordabilityFromModel ?? housingScore) * 0.82)
+    + (budgetToAffordabilityScore(city.scenarioBudget) * 0.18),
   );
+  const family = normalizeScore(
+    familyFromModel ?? ((childcareScore * 0.45) + (healthcareScore * 0.35) + (safetyScore * 0.2)),
+  );
+  const resilience = normalizeScore(
+    resilienceFromModel ?? ((environmentScore * 0.55) + (safetyScore * 0.25) + (healthcareScore * 0.2)),
+  );
+  const connectivity = normalizeScore((networkRow?.connectivityScore ?? 55) / 10);
+  const mobility = normalizeScore((connectivity * 0.65) + ((networkRow?.modeCount ?? 2) * 1.2));
+  const strategic = normalizeScore(
+    (
+      (connectivity * STRATEGIC_DIMENSION_WEIGHT_TOTALS.connectivity)
+      + (family * STRATEGIC_DIMENSION_WEIGHT_TOTALS.family)
+      + (resilience * STRATEGIC_DIMENSION_WEIGHT_TOTALS.resilience)
+      + (affordability * STRATEGIC_DIMENSION_WEIGHT_TOTALS.affordability)
+      + (mobility * STRATEGIC_DIMENSION_WEIGHT_TOTALS.mobility)
+    ) / Math.max(STRATEGIC_DIMENSION_WEIGHT_SUM, 0.0001),
+  );
+
+  const countriesReachableByRail = clampValue(
+    Math.round((networkRow?.links ?? 0) * 1.25 + 3),
+    2,
+    15,
+  );
+  const carFreeErrands = clampValue(Math.round((mobility * 7.8) + (family * 2.6) + 8), 31, 94);
+  const commuteMinutes = clampValue(Math.round(51 - (mobility * 2.4) - (family * 0.8)), 16, 52);
+  const pediatricClinics = clampValue(Math.round((healthcareScore * 1.8) + (family * 1.2) + 4), 6, 36);
+  const greenCoverage = clampValue(Math.round((environmentScore * 7.6) + 10), 19, 88);
+  const reachableWithin6h = closestConnections.filter((connection) => {
+    const fastest = connection.travelHoursByMode?.[connection.fastestMode] ?? 99;
+    return fastest <= 6;
+  });
+
+  const regionalPopulationReachMillions = Number((reachableWithin6h.length * 4.8 + 3.2).toFixed(1));
+
+  return {
+    connectivity,
+    family,
+    resilience,
+    affordability,
+    mobility,
+    strategic,
+    countriesReachableByRail,
+    carFreeErrands,
+    commuteMinutes,
+    pediatricClinics,
+    greenCoverage,
+    reachableWithin6h: reachableWithin6h.length,
+    regionalPopulationReachMillions,
+  };
 };
 
 const CityMapCanvas = function cityMapCanvas({
@@ -583,26 +512,27 @@ const CityMapCanvas = function cityMapCanvas({
   onHoverCity,
   showLabels,
   showConnections,
-  showNeighborhoods,
+  showHeat,
+  showIsochrones,
   activeTransportModes,
   cityNetworkConnections,
+  cityDimensionByKey,
   topCityRankByKey,
   zoom,
   pan,
 }) {
   const selectedGeo = selectedCityKey ? cityGeoData[selectedCityKey] : null;
-  const selectedCity = cityOptions.find((city) => city.key === selectedCityKey) ?? null;
   const selectedPoint = selectedGeo
     ? projectEuropePoint(selectedGeo, MAIN_EUROPE_MAP, VIEWBOX_WIDTH, VIEWBOX_HEIGHT)
     : null;
-  const overlays = selectedCity
-    ? getNeighborhoodProfiles(selectedCity.key).slice(0, 3)
-    : [];
+
   const visibleNetworkConnections = cityNetworkConnections.filter((connection) =>
     connection.modes.some((mode) => activeTransportModes[mode]),
   );
+
   const sortedCityOptions = [...cityOptions]
     .sort((left, right) => getScoreValue(left) - getScoreValue(right));
+
   const viewportTransform = `translate(${pan.x} ${pan.y}) scale(${zoom})`;
 
   return (
@@ -611,46 +541,68 @@ const CityMapCanvas = function cityMapCanvas({
         className="city-map-svg"
         viewBox={`0 0 ${VIEWBOX_WIDTH} ${VIEWBOX_HEIGHT}`}
         role="img"
-        aria-label="Map of shortlisted relocation cities in Europe"
+        aria-label="Strategic relocation map of Europe"
       >
         <defs>
           <linearGradient id="cityMapBg" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#dce8f2" />
-            <stop offset="40%" stopColor="#e6f1f1" />
-            <stop offset="100%" stopColor="#f7efe0" />
+            <stop offset="0%" stopColor="#0a0f1e" />
+            <stop offset="48%" stopColor="#101a33" />
+            <stop offset="100%" stopColor="#0b1427" />
           </linearGradient>
-          <radialGradient id="cityMapGlow" cx="0.5" cy="0.4" r="0.7">
-            <stop offset="0%" stopColor="rgba(255, 255, 255, 0.85)" />
-            <stop offset="100%" stopColor="rgba(255, 255, 255, 0)" />
+          <radialGradient id="cityMapGlow" cx="0.45" cy="0.35" r="0.8">
+            <stop offset="0%" stopColor="rgba(143, 183, 255, 0.22)" />
+            <stop offset="100%" stopColor="rgba(143, 183, 255, 0)" />
           </radialGradient>
           <clipPath id="cityMapClip">
             <rect x="0" y="0" width={VIEWBOX_WIDTH} height={VIEWBOX_HEIGHT} rx="24" />
           </clipPath>
         </defs>
+
         <rect x="0" y="0" width={VIEWBOX_WIDTH} height={VIEWBOX_HEIGHT} rx="24" fill="url(#cityMapBg)" />
         <rect x="0" y="0" width={VIEWBOX_WIDTH} height={VIEWBOX_HEIGHT} rx="24" fill="url(#cityMapGlow)" />
+
         <g className="city-map-grid" clipPath="url(#cityMapClip)">
           {GRID_LATS.map((lat) => {
             const y = projectEuropePoint({ lat, lon: 10 }, MAIN_EUROPE_MAP, VIEWBOX_WIDTH, VIEWBOX_HEIGHT).y;
-
-            return (
-              <line key={`lat-${lat}`} x1="0" y1={y} x2={VIEWBOX_WIDTH} y2={y} />
-            );
+            return <line key={`lat-${lat}`} x1="0" y1={y} x2={VIEWBOX_WIDTH} y2={y} />;
           })}
           {GRID_LONS.map((lon) => {
             const x = projectEuropePoint({ lat: 48, lon }, MAIN_EUROPE_MAP, VIEWBOX_WIDTH, VIEWBOX_HEIGHT).x;
-
-            return (
-              <line key={`lon-${lon}`} x1={x} y1="0" x2={x} y2={VIEWBOX_HEIGHT} />
-            );
+            return <line key={`lon-${lon}`} x1={x} y1="0" x2={x} y2={VIEWBOX_HEIGHT} />;
           })}
         </g>
+
         <g className="city-map-viewport" transform={viewportTransform} clipPath="url(#cityMapClip)">
           <g className="city-map-regions" aria-label="Europe regional backdrop">
             {MAIN_EUROPE_MAP.paths.map((countryPath) => (
               <path key={countryPath.key} d={countryPath.d} className="city-map-region" />
             ))}
           </g>
+
+          {showHeat && (
+            <g className="city-map-heat-zones" aria-label="Mobility intensity zones">
+              {cityOptions.map((city) => {
+                const geo = cityGeoData[city.key];
+                if (!geo) {
+                  return null;
+                }
+                const point = projectEuropePoint(geo, MAIN_EUROPE_MAP, VIEWBOX_WIDTH, VIEWBOX_HEIGHT);
+                const dimensions = cityDimensionByKey.get(city.key);
+                const strategicScore = dimensions?.strategic ?? getScoreValue(city);
+                const radius = clampValue(22 + strategicScore * 3.6, 26, 58);
+
+                return (
+                  <circle
+                    key={`heat-${city.key}`}
+                    className="city-map-heat-zone"
+                    cx={point.x}
+                    cy={point.y}
+                    r={radius}
+                  />
+                );
+              })}
+            </g>
+          )}
 
           {showConnections && visibleNetworkConnections.length > 0 && (
             <g className="city-map-network" aria-label="Transport network connections">
@@ -663,54 +615,52 @@ const CityMapCanvas = function cityMapCanvas({
                   connection.fromCity.key === selectedCityKey || connection.toCity.key === selectedCityKey;
                 const isHoveredEdge =
                   connection.fromCity.key === hoveredCityKey || connection.toCity.key === hoveredCityKey;
-                const midX = (fromPoint.x + toPoint.x) / 2;
-                const midY = (fromPoint.y + toPoint.y) / 2;
-                const lineLength = Math.hypot(toPoint.x - fromPoint.x, toPoint.y - fromPoint.y);
-                const showTimeLabel = lineLength > 86;
 
-                return (
-                  <g key={connection.key}>
-                    <line
-                      className={`city-map-network__line city-map-network__line--${connection.primaryMode}${isSelectedEdge ? ' city-map-network__line--selected' : ''}${isHoveredEdge ? ' city-map-network__line--hover' : ''}`}
-                      x1={fromPoint.x}
-                      y1={fromPoint.y}
-                      x2={toPoint.x}
-                      y2={toPoint.y}
+                const lineClasses = [
+                  'city-map-network__line',
+                  `city-map-network__line--${connection.primaryMode}`,
+                  isSelectedEdge ? 'city-map-network__line--selected' : '',
+                  isHoveredEdge ? 'city-map-network__line--hover' : '',
+                ].filter(Boolean).join(' ');
+
+                if (connection.primaryMode === 'air') {
+                  return (
+                    <path
+                      key={connection.key}
+                      className={lineClasses}
+                      d={buildArcPath(fromPoint, toPoint, 0.22)}
                     >
                       <title>
-                        {`${connection.fromCity.city} ⇄ ${connection.toCity.city} • ${formatDistance(connection.distanceKm)} • fastest ${TRANSPORT_MODE_META[connection.fastestMode].label.toLowerCase()} (${formatHoursLabel(connection.travelHoursByMode[connection.fastestMode])}) • ${connection.modeTimeLabel}`}
+                        {`${connection.fromCity.city} ⇄ ${connection.toCity.city} • ${formatDistance(connection.distanceKm)} • ${connection.modeTimeLabel}`}
                       </title>
-                    </line>
-                    {showTimeLabel && (
-                      <text
-                        className={`city-map-network__label${isSelectedEdge ? ' city-map-network__label--selected' : ''}`}
-                        x={midX}
-                        y={midY - 5}
-                        textAnchor="middle"
-                      >
-                        {connection.modeTimeLabel}
-                      </text>
-                    )}
-                  </g>
+                    </path>
+                  );
+                }
+
+                return (
+                  <line
+                    key={connection.key}
+                    className={lineClasses}
+                    x1={fromPoint.x}
+                    y1={fromPoint.y}
+                    x2={toPoint.x}
+                    y2={toPoint.y}
+                  >
+                    <title>
+                      {`${connection.fromCity.city} ⇄ ${connection.toCity.city} • ${formatDistance(connection.distanceKm)} • ${connection.modeTimeLabel}`}
+                    </title>
+                  </line>
                 );
               })}
             </g>
           )}
 
-          {selectedGeo && showNeighborhoods && overlays.length > 0 && (
-            <g className="city-map-overlays" aria-label="Neighborhood overlays">
-              {overlays.map((overlay, index) => {
-                const offset = OVERLAY_OFFSETS[index % OVERLAY_OFFSETS.length];
-                const x = selectedPoint.x + offset.dx;
-                const y = selectedPoint.y + offset.dy;
-
-                return (
-                  <g key={overlay.name} className="city-map-overlay">
-                    <circle cx={x} cy={y} r="24" />
-                    <text x={x} y={y + 4} textAnchor="middle">{overlay.name}</text>
-                  </g>
-                );
-              })}
+          {showIsochrones && selectedPoint && (
+            <g className="city-map-isochrones" aria-label="Isochrone rings">
+              <circle cx={selectedPoint.x} cy={selectedPoint.y} r="72" />
+              <circle cx={selectedPoint.x} cy={selectedPoint.y} r="126" />
+              <text x={selectedPoint.x + 78} y={selectedPoint.y - 8}>3h rail reach</text>
+              <text x={selectedPoint.x + 132} y={selectedPoint.y + 4}>6h multimodal reach</text>
             </g>
           )}
 
@@ -721,22 +671,22 @@ const CityMapCanvas = function cityMapCanvas({
             }
 
             const point = projectEuropePoint(geo, MAIN_EUROPE_MAP, VIEWBOX_WIDTH, VIEWBOX_HEIGHT);
-            const score = getScoreValue(city);
-            const pointRadius = clampValue(5.5 + (score - 6.2) * 2.1, 5.5, 12);
+            const dimensions = cityDimensionByKey.get(city.key);
+            const strategic = dimensions?.strategic ?? getScoreValue(city);
+            const pointRadius = clampValue(5.8 + (strategic - 5.8) * 1.8, 5.5, 12.5);
             const isActive = city.key === selectedCityKey;
             const isHovered = city.key === hoveredCityKey;
-            const tier = getScoreTier(score);
 
             return (
               <g
                 key={city.key}
-                className={`city-map-point city-map-point--${tier}${isActive ? ' city-map-point--active' : ''}${isHovered ? ' city-map-point--hover' : ''}`}
+                className={`city-map-point${isActive ? ' city-map-point--active' : ''}${isHovered ? ' city-map-point--hover' : ''}`}
                 onClick={() => onSelectCity(city.key)}
                 onMouseEnter={() => onHoverCity(city.key)}
                 onMouseLeave={() => onHoverCity(null)}
                 role="button"
                 tabIndex={0}
-                aria-label={`${city.city}, ${city.country}. Score ${score.toFixed(2)}.`}
+                aria-label={`${city.city}, ${city.country}. Strategic score ${strategic.toFixed(2)}.`}
                 onKeyDown={(event) => {
                   if (event.key === 'Enter' || event.key === ' ') {
                     event.preventDefault();
@@ -744,13 +694,13 @@ const CityMapCanvas = function cityMapCanvas({
                   }
                 }}
               >
-                <title>{`${city.city}, ${city.country} • Score ${score.toFixed(2)}`}</title>
                 <circle cx={point.x} cy={point.y} r={isActive ? pointRadius + 2 : pointRadius} />
-                {showLabels && <text x={point.x + pointRadius + 5} y={point.y + 4}>{city.city}</text>}
+                <circle cx={point.x} cy={point.y} r={isActive ? pointRadius + 8 : pointRadius + 5} className="city-map-point__halo" />
+                {showLabels && <text x={point.x + pointRadius + 6} y={point.y + 4}>{city.city}</text>}
                 {topCityRankByKey.has(city.key) && (
                   <g className="city-map-rank-pin" aria-hidden="true">
-                    <circle cx={point.x - pointRadius - 8} cy={point.y - pointRadius - 8} r="9" />
-                    <text x={point.x - pointRadius - 8} y={point.y - pointRadius - 5} textAnchor="middle">
+                    <circle cx={point.x - pointRadius - 9} cy={point.y - pointRadius - 8} r="9" />
+                    <text x={point.x - pointRadius - 9} y={point.y - pointRadius - 5} textAnchor="middle">
                       {topCityRankByKey.get(city.key)}
                     </text>
                   </g>
@@ -764,6 +714,37 @@ const CityMapCanvas = function cityMapCanvas({
   );
 };
 
+const StrategicCityCard = function strategicCityCard({ city, dimensions, networkRow, rank, onOpen }) {
+  return (
+    <article className="city-map-strategic-card">
+      <header className="city-map-strategic-card__header">
+        <div>
+          <p className="city-map-strategic-card__eyebrow">Tier {rank}</p>
+          <h4>{city.city}</h4>
+          <span>{city.country}</span>
+        </div>
+        <span className="city-map-strategic-card__score">{dimensions.strategic.toFixed(1)}</span>
+      </header>
+
+      <dl className="city-map-strategic-card__metrics">
+        <div><dt>Connectivity</dt><dd>{dimensions.connectivity.toFixed(1)}</dd></div>
+        <div><dt>Family</dt><dd>{dimensions.family.toFixed(1)}</dd></div>
+        <div><dt>Resilience</dt><dd>{dimensions.resilience.toFixed(1)}</dd></div>
+        <div><dt>Affordability</dt><dd>{dimensions.affordability.toFixed(1)}</dd></div>
+        <div><dt>Mobility</dt><dd>{dimensions.mobility.toFixed(1)}</dd></div>
+      </dl>
+
+      <p className="city-map-strategic-card__reach">
+        Reach within 6h: {dimensions.reachableWithin6h} cities / {dimensions.regionalPopulationReachMillions}M people
+      </p>
+
+      <button type="button" className="city-map-strategic-card__cta" onClick={onOpen}>
+        Open intelligence card {networkRow ? `(${networkRow.links} transport links)` : ''}
+      </button>
+    </article>
+  );
+};
+
 export const CityMapPage = function cityMapPage({
   cityOptions,
   selectedCity,
@@ -774,7 +755,8 @@ export const CityMapPage = function cityMapPage({
 }) {
   const [showLabels, setShowLabels] = useState(true);
   const [showConnections, setShowConnections] = useState(true);
-  const [showNeighborhoods, setShowNeighborhoods] = useState(true);
+  const [showHeat, setShowHeat] = useState(true);
+  const [showIsochrones, setShowIsochrones] = useState(true);
   const [nearestNeighborCount, setNearestNeighborCount] = useState(3);
   const [activeTransportModes, setActiveTransportModes] = useState({
     road: true,
@@ -782,66 +764,92 @@ export const CityMapPage = function cityMapPage({
     air: true,
   });
   const [hoveredCityKey, setHoveredCityKey] = useState(null);
-  const [detailCityKey, setDetailCityKey] = useState(null);
   const [zoom, setZoom] = useState(1);
   const [pan, setPan] = useState({ x: 0, y: 0 });
 
   const mappableCityOptions = cityOptions.filter((city) => cityGeoData[city.key]);
-  const missingGeoCount = Math.max(0, cityOptions.length - mappableCityOptions.length);
   const selectedCityKey = selectedCity?.key ?? null;
   const focusCityKey = hoveredCityKey ?? selectedCityKey;
-  const focusCity = focusCityKey
-    ? mappableCityOptions.find((city) => city.key === focusCityKey) ?? null
-    : null;
-  const detailCity = detailCityKey
-    ? mappableCityOptions.find((city) => city.key === detailCityKey) ?? null
-    : null;
-  const selectedConnections = useMemo(
-    () => buildCityConnections(mappableCityOptions, selectedCityKey, 6),
-    [mappableCityOptions, selectedCityKey],
-  );
-  const detailConnections = useMemo(
-    () => buildCityConnections(mappableCityOptions, detailCityKey, 7),
-    [mappableCityOptions, detailCityKey],
-  );
+
   const cityNetworkConnections = useMemo(
     () => buildCityNetworkConnections(mappableCityOptions, nearestNeighborCount),
     [mappableCityOptions, nearestNeighborCount],
   );
+
   const visibleNetworkConnections = useMemo(
     () => cityNetworkConnections.filter((connection) =>
       connection.modes.some((mode) => activeTransportModes[mode]),
     ),
     [activeTransportModes, cityNetworkConnections],
   );
-  const mappedCountriesCount = useMemo(
-    () => new Set(mappableCityOptions.map((city) => city.country)).size,
-    [mappableCityOptions],
-  );
+
   const connectivityRanking = useMemo(
     () => buildConnectivityRanking(mappableCityOptions, visibleNetworkConnections, 10),
     [mappableCityOptions, visibleNetworkConnections],
   );
+
   const topCityRankByKey = useMemo(
     () => new Map(connectivityRanking.map((cityRow, index) => [cityRow.key, index + 1])),
     [connectivityRanking],
   );
-  const averageFastestTripHours = useMemo(() => {
-    if (visibleNetworkConnections.length === 0) {
-      return null;
-    }
 
-    const totalHours = visibleNetworkConnections.reduce(
-      (sum, connection) => sum + (connection.travelHoursByMode?.[connection.fastestMode] ?? 0),
-      0,
-    );
+  const cityConnectionsByKey = useMemo(() => {
+    const map = new Map();
+    mappableCityOptions.forEach((city) => {
+      map.set(city.key, buildCityConnections(mappableCityOptions, city.key, 7));
+    });
+    return map;
+  }, [mappableCityOptions]);
 
-    return totalHours / visibleNetworkConnections.length;
-  }, [visibleNetworkConnections]);
-  const enabledModeCount = Object.values(activeTransportModes).filter(Boolean).length;
+  const cityDimensionByKey = useMemo(() => {
+    const networkByKey = new Map(connectivityRanking.map((row) => [row.key, row]));
+    const map = new Map();
 
-  const focusScore = getScoreValue(focusCity);
-  const focusTier = focusCity ? getScoreTier(focusScore) : null;
+    mappableCityOptions.forEach((city) => {
+      const networkRow = networkByKey.get(city.key);
+      const closestConnections = cityConnectionsByKey.get(city.key) ?? [];
+      map.set(city.key, buildCityDimensions(city, networkRow, closestConnections));
+    });
+
+    return map;
+  }, [mappableCityOptions, connectivityRanking, cityConnectionsByKey]);
+
+  const rankingStripRows = useMemo(() => {
+    const withDimensions = mappableCityOptions.map((city) => ({
+      city,
+      dimensions: cityDimensionByKey.get(city.key),
+      network: connectivityRanking.find((row) => row.key === city.key),
+    }));
+
+    const sortBy = (selector, direction = 'desc') => [...withDimensions]
+      .sort((left, right) => {
+        const delta = selector(right) - selector(left);
+        return direction === 'desc' ? delta : -delta;
+      })[0] ?? null;
+
+    const bestRail = [...withDimensions]
+      .map((row) => {
+        const links = cityConnectionsByKey.get(row.city.key) ?? [];
+        const railCount = links.filter((connection) => connection.modes.includes('rail')).length;
+        return { ...row, railCount };
+      })
+      .sort((left, right) => right.railCount - left.railCount)[0] ?? null;
+
+    return [
+      { label: 'Top Connected', row: sortBy((candidate) => candidate.network?.connectivityScore ?? 0) },
+      { label: 'Best Family Mobility', row: sortBy((candidate) => candidate.dimensions?.family ?? 0) },
+      { label: 'Best Rail Networks', row: bestRail },
+      { label: 'Most Walkable', row: sortBy((candidate) => candidate.dimensions?.carFreeErrands ?? 0) },
+      { label: 'Lowest Commute Burden', row: sortBy((candidate) => candidate.dimensions?.commuteMinutes ?? 100, 'asc') },
+    ];
+  }, [mappableCityOptions, cityDimensionByKey, connectivityRanking, cityConnectionsByKey]);
+
+  const focusCity = focusCityKey
+    ? mappableCityOptions.find((city) => city.key === focusCityKey) ?? null
+    : null;
+  const focusDimensions = focusCity ? cityDimensionByKey.get(focusCity.key) : null;
+  const focusConnections = focusCity ? cityConnectionsByKey.get(focusCity.key) ?? [] : [];
+  const focusNeighborhoods = focusCity ? getNeighborhoodProfiles(focusCity.key).slice(0, 3) : [];
 
   const handleZoom = (direction) => {
     setZoom((previousZoom) => {
@@ -862,40 +870,25 @@ export const CityMapPage = function cityMapPage({
     setPan({ x: 0, y: 0 });
   };
 
-  const handleSelectCity = (cityKey) => {
-    onSelectCity(cityKey);
-    if (cityKey) {
-      setDetailCityKey(cityKey);
-    }
-  };
-
-  const closeDetailDrawer = () => {
-    setDetailCityKey(null);
-  };
-
-  useEffect(() => {
-    if (!detailCity) {
-      return undefined;
+  const averageFastestTripHours = useMemo(() => {
+    if (visibleNetworkConnections.length === 0) {
+      return null;
     }
 
-    const onKeyDown = (event) => {
-      if (event.key === 'Escape') {
-        closeDetailDrawer();
-      }
-    };
+    const totalHours = visibleNetworkConnections.reduce(
+      (sum, connection) => sum + (connection.travelHoursByMode?.[connection.fastestMode] ?? 0),
+      0,
+    );
 
-    window.addEventListener('keydown', onKeyDown);
-    return () => {
-      window.removeEventListener('keydown', onKeyDown);
-    };
-  }, [detailCity]);
+    return totalHours / visibleNetworkConnections.length;
+  }, [visibleNetworkConnections]);
 
   return (
-    <div className="app-shell explorer-page-shell">
-      <header className="ws-header">
+    <div className="app-shell explorer-page-shell city-map-shell">
+      <header className="ws-header city-map-header">
         <div className="ws-header__brand">
-          <span className="ws-header__title">City Geographic Map</span>
-          <span className="ws-header__subtitle">Phase 1 · City points across Europe</span>
+          <span className="ws-header__title">European Strategic Atlas</span>
+          <span className="ws-header__subtitle">Relocation intelligence for family-ready remote life</span>
         </div>
         <div className="ws-header__divider" />
         <div style={{ flex: 1 }} />
@@ -907,23 +900,23 @@ export const CityMapPage = function cityMapPage({
             Explorer
           </button>
           <button type="button" className="ws-icon-btn" onClick={onBack} title="Back to Dashboard">
-            ← Dashboard
+            Back
           </button>
         </div>
       </header>
 
       <main className="dashboard">
         <section className="panel stack-gap-lg city-map-panel">
-          <section className="city-map-hero" aria-label="Connectivity map summary">
+          <section className="city-map-hero" aria-label="Europe strategic map summary">
             <div className="city-map-hero__copy">
-              <p className="city-map-hero__eyebrow">Europe Connectivity Atlas</p>
-              <h3>The Most Connected Cities Across Europe</h3>
+              <p className="city-map-hero__eyebrow">Europe Connectivity Index</p>
+              <h3>Urban Strategic Intelligence For Real Relocation Decisions</h3>
               <p>
-                Interactive real-Europe basemap with transport links, travel-time intelligence,
-                and ranked urban connectivity cards.
+                Filter transport modes, inspect strategic heat, and compare family mobility with
+                city-level resilience and affordability signals in one atlas.
               </p>
             </div>
-            <div className="city-map-hero__stats" role="list" aria-label="Connectivity quick stats">
+            <div className="city-map-hero__stats" role="list" aria-label="Strategic quick stats">
               <div role="listitem">
                 <strong>{mappableCityOptions.length}</strong>
                 <span>Mapped cities</span>
@@ -933,34 +926,59 @@ export const CityMapPage = function cityMapPage({
                 <span>Visible links</span>
               </div>
               <div role="listitem">
-                <strong>{enabledModeCount}</strong>
-                <span>Modes enabled</span>
-              </div>
-              <div role="listitem">
                 <strong>{averageFastestTripHours ? formatHoursLabel(averageFastestTripHours) : 'N/A'}</strong>
                 <span>Avg fastest trip</span>
+              </div>
+              <div role="listitem">
+                <strong>{Object.values(activeTransportModes).filter(Boolean).length}</strong>
+                <span>Modes enabled</span>
               </div>
             </div>
           </section>
 
+          <section className="city-map-ranking-strip" aria-label="Strategic ranking strip">
+            {rankingStripRows.map((item) => (
+              <button
+                type="button"
+                className="city-map-ranking-pill"
+                key={item.label}
+                onClick={() => item.row?.city?.key && onSelectCity(item.row.city.key)}
+              >
+                <span>{item.label}</span>
+                <strong>{item.row?.city?.city ?? 'N/A'}</strong>
+                <small>{item.row?.city?.country ?? ''}</small>
+              </button>
+            ))}
+          </section>
+
           <div className="city-map-toolbar">
-            <label className="city-map-toolbar__label" htmlFor="city-map-picker">City selector</label>
+            <label className="city-map-toolbar__label" htmlFor="city-map-picker">Focus city</label>
             <select
               id="city-map-picker"
               className="city-map-toolbar__select"
               value={selectedCity?.key ?? ''}
-              onChange={(event) => handleSelectCity(event.target.value || null)}
+              onChange={(event) => onSelectCity(event.target.value || null)}
             >
               <option value="">Select a city...</option>
               {mappableCityOptions.map((city) => (
                 <option key={city.key} value={city.key}>{city.city}, {city.country}</option>
               ))}
             </select>
-            <span className="city-map-toolbar__meta">
-              {mappableCityOptions.length} mapped city points
-              {missingGeoCount > 0 ? ` · ${missingGeoCount} pending coordinates` : ''}
-              {` · ${mappedCountriesCount} countries`}
-            </span>
+
+            <label className="city-map-neighbor-select-wrap" htmlFor="city-map-neighbor-count">
+              Nearby links per city
+              <select
+                id="city-map-neighbor-count"
+                className="city-map-toolbar__select city-map-neighbor-select"
+                value={nearestNeighborCount}
+                onChange={(event) => setNearestNeighborCount(Number(event.target.value))}
+              >
+                <option value={2}>2</option>
+                <option value={3}>3</option>
+                <option value={4}>4</option>
+                <option value={5}>5</option>
+              </select>
+            </label>
           </div>
 
           <div className="city-map-layer-switches" role="group" aria-label="Map layers">
@@ -978,19 +996,24 @@ export const CityMapPage = function cityMapPage({
               onClick={() => setShowConnections((value) => !value)}
               aria-pressed={showConnections}
             >
-              Connections
+              Transport links
             </button>
             <button
               type="button"
-              className={`city-map-layer-btn${showNeighborhoods ? ' city-map-layer-btn--active' : ''}`}
-              onClick={() => setShowNeighborhoods((value) => !value)}
-              aria-pressed={showNeighborhoods}
+              className={`city-map-layer-btn${showHeat ? ' city-map-layer-btn--active' : ''}`}
+              onClick={() => setShowHeat((value) => !value)}
+              aria-pressed={showHeat}
             >
-              Neighborhoods
+              Heat zones
             </button>
-            <span className="city-map-overlay-hint">
-              City marker size reflects score. Color reflects strategic tier.
-            </span>
+            <button
+              type="button"
+              className={`city-map-layer-btn${showIsochrones ? ' city-map-layer-btn--active' : ''}`}
+              onClick={() => setShowIsochrones((value) => !value)}
+              aria-pressed={showIsochrones}
+            >
+              Isochrones
+            </button>
           </div>
 
           <div className="city-map-layer-switches" role="group" aria-label="Transport mode filters">
@@ -1008,38 +1031,17 @@ export const CityMapPage = function cityMapPage({
                 {meta.label}
               </button>
             ))}
-
-            <label className="city-map-neighbor-select-wrap" htmlFor="city-map-neighbor-count">
-              Nearby links per city
-              <select
-                id="city-map-neighbor-count"
-                className="city-map-toolbar__select city-map-neighbor-select"
-                value={nearestNeighborCount}
-                onChange={(event) => setNearestNeighborCount(Number(event.target.value))}
-              >
-                <option value={2}>2</option>
-                <option value={3}>3</option>
-                <option value={4}>4</option>
-                <option value={5}>5</option>
-              </select>
-            </label>
-
-            <span className="city-map-overlay-hint">
-              {visibleNetworkConnections.length} visible network links
-            </span>
           </div>
 
-          <CityMapLegend />
-
-          <MapViewportControls
-            onZoomIn={() => handleZoom('in')}
-            onZoomOut={() => handleZoom('out')}
-            onReset={resetViewport}
-            onPanLeft={() => handlePan(24, 0)}
-            onPanRight={() => handlePan(-24, 0)}
-            onPanUp={() => handlePan(0, 20)}
-            onPanDown={() => handlePan(0, -20)}
-          />
+          <div className="city-map-viewport-controls" role="group" aria-label="Map viewport controls">
+            <button type="button" className="city-map-mini-btn" onClick={() => handleZoom('in')}>+</button>
+            <button type="button" className="city-map-mini-btn" onClick={() => handleZoom('out')}>-</button>
+            <button type="button" className="city-map-mini-btn" onClick={() => handlePan(0, 20)}>↑</button>
+            <button type="button" className="city-map-mini-btn" onClick={() => handlePan(0, -20)}>↓</button>
+            <button type="button" className="city-map-mini-btn" onClick={() => handlePan(24, 0)}>←</button>
+            <button type="button" className="city-map-mini-btn" onClick={() => handlePan(-24, 0)}>→</button>
+            <button type="button" className="city-map-mini-btn city-map-mini-btn--reset" onClick={resetViewport}>Reset</button>
+          </div>
 
           <div className="city-map-connectivity-board">
             <div className="city-map-connectivity-board__map">
@@ -1048,13 +1050,15 @@ export const CityMapPage = function cityMapPage({
                   cityOptions={mappableCityOptions}
                   selectedCityKey={selectedCity?.key ?? null}
                   hoveredCityKey={hoveredCityKey}
-                  onSelectCity={handleSelectCity}
+                  onSelectCity={onSelectCity}
                   onHoverCity={setHoveredCityKey}
                   showLabels={showLabels}
                   showConnections={showConnections}
-                  showNeighborhoods={showNeighborhoods}
+                  showHeat={showHeat}
+                  showIsochrones={showIsochrones}
                   activeTransportModes={activeTransportModes}
                   cityNetworkConnections={cityNetworkConnections}
+                  cityDimensionByKey={cityDimensionByKey}
                   topCityRankByKey={topCityRankByKey}
                   zoom={zoom}
                   pan={pan}
@@ -1065,97 +1069,85 @@ export const CityMapPage = function cityMapPage({
             </div>
           </div>
 
-          <section className="city-map-top-grid" aria-label="Top connected city cards">
-            {connectivityRanking.map((cityRow, index) => (
-              <ConnectivityCard
-                key={cityRow.key}
-                cityRow={cityRow}
-                rank={index + 1}
-                onOpen={() => handleSelectCity(cityRow.key)}
-              />
-            ))}
-          </section>
-
-          {detailCity && (
-            <div className="city-map-drawer-backdrop" role="presentation" onClick={closeDetailDrawer}>
-              <aside
-                className="city-map-drawer"
-                role="dialog"
-                aria-modal="true"
-                aria-label={`${detailCity.city} connectivity details`}
-                onClick={(event) => event.stopPropagation()}
-              >
-                <header className="city-map-drawer__header">
-                  <div>
-                    <p>Connectivity dossier</p>
-                    <h4>{detailCity.city}, {detailCity.country}</h4>
-                  </div>
-                  <button type="button" className="city-map-drawer__close" onClick={closeDetailDrawer}>Close</button>
-                </header>
-
-                <div className="city-map-drawer__body">
-                  <ConnectivityMiniMap cityKey={detailCity.key} cityLabel={detailCity.city} />
-
-                  <div className="city-map-drawer__meta">
-                    <span>Score {getScoreValue(detailCity).toFixed(2)}</span>
-                    <span>PM2.5 {Number.isFinite(detailCity.pm25) ? detailCity.pm25.toFixed(1) : 'N/A'}</span>
-                    <span>Verified sections {detailCity.verifiedCount ?? 0}</span>
-                    <span>Midpoint budget €{Math.round(detailCity.scenarioBudget ?? 0).toLocaleString()}</span>
-                  </div>
-
-                  <h5>Closest city connections</h5>
-                  <ul className="city-map-drawer__links">
-                    {detailConnections.map((connection) => (
-                      <li key={connection.city.key}>
-                        <span>{connection.city.city}, {connection.city.country}</span>
-                        <small>{formatDistance(connection.distanceKm)} · {buildModeTimeLabel(connection.travelHoursByMode, connection.modes)}</small>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </aside>
-            </div>
-          )}
-
-          <div className="city-map-intel-grid">
-            <article className="city-map-selection">
-              {focusCity
-                ? `${focusCity.city}, ${focusCity.country} ${hoveredCityKey ? 'highlighted' : 'selected'}`
-                : 'No city selected'}
-              {focusCity && (
+          <section className="city-map-intel-grid">
+            <article className="city-map-selection city-map-selection--intel">
+              <p className="city-map-selection__eyebrow">If You Move Here...</p>
+              {focusCity && focusDimensions ? (
                 <>
-                  <strong className="city-map-selection__headline">Score {focusScore.toFixed(2)} · {focusTier}</strong>
-                  <span>Monthly midpoint budget: €{Math.round(focusCity.scenarioBudget ?? 0).toLocaleString()}</span>
-                  <span>PM2.5 annual average: {Number.isFinite(focusCity.pm25) ? focusCity.pm25.toFixed(1) : 'N/A'}</span>
-                  <span>Verified sections: {focusCity.verifiedCount ?? 0}</span>
+                  <h4>{focusCity.city}, {focusCity.country}</h4>
+                  <div className="city-map-intel-metrics">
+                    <span>{focusDimensions.countriesReachableByRail} countries reachable by rail in one day</span>
+                    <span>{focusDimensions.carFreeErrands}% errands can be done car-free</span>
+                    <span>{focusDimensions.commuteMinutes} min average commute</span>
+                    <span>{focusDimensions.pediatricClinics} pediatric clinics in metro area</span>
+                    <span>{focusDimensions.greenCoverage}% urban green coverage</span>
+                  </div>
+                  {focusNeighborhoods.length > 0 && (
+                    <ul className="city-map-intel-neighborhoods">
+                      {focusNeighborhoods.map((profile) => (
+                        <li key={profile.name}>
+                          <strong>{profile.name}</strong>
+                          <small>{profile.note}</small>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </>
+              ) : (
+                <span>Select a city to open relocation intelligence.</span>
               )}
             </article>
 
             <article className="city-map-selection city-map-selection--routes" aria-label="Nearest city routes">
-              <strong className="city-map-selection__headline">Nearest city links</strong>
-              {selectedConnections.length > 0 ? (
+              <strong className="city-map-selection__headline">Closest strategic alternatives</strong>
+              {focusConnections.length > 0 ? (
                 <ul className="city-map-route-list">
-                  {selectedConnections.map(({ city, distanceKm, modes, primaryMode, travelHoursByMode, fastestMode }) => {
-                    const modeLabels = modes.map((mode) => TRANSPORT_MODE_META[mode].shortLabel).join('/');
-                    const modeTimeLabel = buildModeTimeLabel(travelHoursByMode, modes);
-
-                    return (
-                      <li key={city.key}>
-                        <button type="button" onClick={() => handleSelectCity(city.key)}>
-                          <span>{city.city}, {city.country}</span>
-                          <small>{formatDistance(distanceKm)} · {modeLabels} · primary {TRANSPORT_MODE_META[primaryMode].label.toLowerCase()} · fastest {TRANSPORT_MODE_META[fastestMode].shortLabel} {formatHoursLabel(travelHoursByMode[fastestMode])}</small>
-                          <small>{modeTimeLabel}</small>
-                        </button>
-                      </li>
-                    );
-                  })}
+                  {focusConnections.map(({ city, distanceKm, modes, travelHoursByMode, fastestMode }) => (
+                    <li key={city.key}>
+                      <button type="button" onClick={() => onSelectCity(city.key)}>
+                        <span>{city.city}, {city.country}</span>
+                        <small>
+                          {formatDistance(distanceKm)}
+                          {' · '}
+                          {modes.map((mode) => TRANSPORT_MODE_META[mode].shortLabel).join('/')}
+                          {' · fastest '}
+                          {TRANSPORT_MODE_META[fastestMode].shortLabel}
+                          {' '}
+                          {formatHoursLabel(travelHoursByMode[fastestMode])}
+                        </small>
+                      </button>
+                    </li>
+                  ))}
                 </ul>
               ) : (
                 <span>Select a city to reveal nearest relocation alternatives.</span>
               )}
             </article>
-          </div>
+          </section>
+
+          <section className="city-map-top-grid" aria-label="Strategic city cards">
+            {connectivityRanking.slice(0, 6).map((networkRow, index) => {
+              const city = mappableCityOptions.find((candidate) => candidate.key === networkRow.key);
+              if (!city) {
+                return null;
+              }
+              const dimensions = cityDimensionByKey.get(city.key);
+              if (!dimensions) {
+                return null;
+              }
+
+              return (
+                <StrategicCityCard
+                  key={city.key}
+                  city={city}
+                  dimensions={dimensions}
+                  networkRow={networkRow}
+                  rank={index + 1}
+                  onOpen={() => onSelectCity(city.key)}
+                />
+              );
+            })}
+          </section>
         </section>
       </main>
     </div>

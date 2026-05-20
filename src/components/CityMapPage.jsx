@@ -607,6 +607,34 @@ const CONTRAST_PHRASES = {
   frictionEase: 'less hidden friction',
 };
 
+const CONTRAST_PHRASE_REPLACEMENTS = {
+  better: 'worse',
+  stronger: 'weaker',
+  higher: 'lower',
+  more: 'less',
+  lighter: 'heavier',
+  lower: 'higher',
+  less: 'more',
+  easier: 'harder',
+  faster: 'slower',
+  quieter: 'noisier',
+  wider: 'narrower',
+};
+
+const CONTRAST_PHRASE_PATTERN = new RegExp(`\\b(${Object.keys(CONTRAST_PHRASE_REPLACEMENTS).join('|')})\\b`, 'i');
+
+const invertContrastPhrase = (phrase) => {
+  const match = phrase.match(CONTRAST_PHRASE_PATTERN);
+
+  if (!match) {
+    return `weaker ${phrase}`;
+  }
+
+  const matchedWord = match[1];
+  const replacement = CONTRAST_PHRASE_REPLACEMENTS[matchedWord.toLowerCase()] ?? matchedWord;
+  return `${phrase.slice(0, match.index)}${replacement}${phrase.slice(match.index + matchedWord.length)}`;
+};
+
 const describeScoreBand = (score) => {
   if (score >= 8.6) {
     return 'Exceptional';
@@ -854,31 +882,6 @@ const buildIntelligenceRanking = (cityOptions, cityDimensionByKey, connectivityR
 };
 
 const buildContrastLines = (focusSignals, compareSignals, weights) => {
-  const invertContrastPhrase = (phrase) => {
-    const replacements = {
-      better: 'worse',
-      stronger: 'weaker',
-      higher: 'lower',
-      more: 'less',
-      lighter: 'heavier',
-      lower: 'higher',
-      less: 'more',
-      easier: 'harder',
-      faster: 'slower',
-      quieter: 'noisier',
-      wider: 'narrower',
-    };
-    const match = phrase.match(/\b(better|stronger|higher|more|lighter|lower|less|easier|faster|quieter|wider)\b/i);
-
-    if (!match) {
-      return `weaker ${phrase}`;
-    }
-
-    const matchedWord = match[1];
-    const replacement = replacements[matchedWord.toLowerCase()] ?? matchedWord;
-    return `${phrase.slice(0, match.index)}${replacement}${phrase.slice((match.index ?? 0) + matchedWord.length)}`;
-  };
-
   const contrastRows = Object.entries(weights)
     .map(([key, weight]) => ({
       key,
@@ -891,9 +894,10 @@ const buildContrastLines = (focusSignals, compareSignals, weights) => {
 
   return contrastRows.map((row) => ({
     key: row.key,
-    text: `${row.delta >= 0 ? '+' : '-'} ${row.delta >= 0
-      ? (CONTRAST_PHRASES[row.key] ?? SIGNAL_LABELS[row.key] ?? row.key)
-      : invertContrastPhrase(CONTRAST_PHRASES[row.key] ?? SIGNAL_LABELS[row.key] ?? row.key)}`,
+    text: (() => {
+      const phrase = CONTRAST_PHRASES[row.key] ?? SIGNAL_LABELS[row.key] ?? row.key;
+      return `${row.delta >= 0 ? '+' : '-'} ${row.delta >= 0 ? phrase : invertContrastPhrase(phrase)}`;
+    })(),
   }));
 };
 
@@ -1446,7 +1450,7 @@ export const CityMapPage = function cityMapPage({
     if (comparisonCityKey && comparisonCityKey === selectedCityKey) {
       setComparisonCityKey('');
     }
-  }, [comparisonCityKey, selectedCityKey]);
+  }, [comparisonCityKey, selectedCityKey, setComparisonCityKey]);
 
   const rankingStripRows = useMemo(() => {
     const withDimensions = mappableCityOptions.map((city) => ({

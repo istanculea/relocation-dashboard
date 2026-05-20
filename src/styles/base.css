@@ -34,13 +34,21 @@
 body {
   margin: 0;
   min-width: 320px;
-  background: #f4f0e8;
+  background:
+    radial-gradient(circle at 0% 0%, rgba(47, 127, 98, 0.08), transparent 28%),
+    radial-gradient(circle at 100% 0%, rgba(197, 124, 42, 0.07), transparent 24%),
+    linear-gradient(180deg, #f6f2eb 0%, #f1ede4 58%, #eef2ec 100%);
   color: var(--ink);
   font-size: 16px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: rgba(47, 127, 98, 0.18);
+  color: var(--ink);
 }
 
 button,
@@ -69,7 +77,8 @@ select {
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 28px;
-  box-shadow: var(--shadow);
+  box-shadow: 0 18px 44px rgba(84, 72, 56, 0.12);
+  -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
   padding: 32px;
 }
@@ -86,6 +95,8 @@ select {
     radial-gradient(ellipse at 100% 100%, rgba(197, 124, 42, 0.08), transparent 50%),
     linear-gradient(120deg, rgba(255, 248, 234, 0.98), rgba(240, 250, 245, 0.94)),
     var(--panel-strong);
+  border: 1px solid rgba(31, 42, 46, 0.08);
+  box-shadow: 0 18px 46px rgba(84, 72, 56, 0.1);
 }
 
 .hero__copy {
@@ -220,6 +231,31 @@ select {
   background: rgba(55, 106, 146, 0.14);
   border-color: rgba(55, 106, 146, 0.35);
   color: var(--blue);
+}
+
+.toggle,
+.summary-card,
+.quality-card,
+.lens-mini-card,
+.summary-pill,
+.quality-legend__item,
+.city-card,
+.score-card,
+.threshold-card {
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease, background-color 160ms ease;
+}
+
+.toggle:hover,
+.summary-card:hover,
+.quality-card:hover,
+.lens-mini-card:hover,
+.summary-pill:hover,
+.quality-legend__item:hover,
+.city-card:hover,
+.score-card:hover,
+.threshold-card:hover {
+  border-color: rgba(47, 127, 98, 0.22);
+  box-shadow: 0 18px 34px rgba(84, 72, 56, 0.1);
 }
 
 /* ── Explorer page shell ───────────────────────────────────── */

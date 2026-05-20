@@ -1117,13 +1117,13 @@ const CityMapCanvas = function cityMapCanvas({
       >
         <defs>
           <linearGradient id="cityMapBg" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#0a0f1e" />
-            <stop offset="48%" stopColor="#101a33" />
-            <stop offset="100%" stopColor="#0b1427" />
+            <stop offset="0%" stopColor="#fffaf0" />
+            <stop offset="52%" stopColor="#eef6ef" />
+            <stop offset="100%" stopColor="#edf3f8" />
           </linearGradient>
           <radialGradient id="cityMapGlow" cx="0.45" cy="0.35" r="0.8">
-            <stop offset="0%" stopColor="rgba(143, 183, 255, 0.22)" />
-            <stop offset="100%" stopColor="rgba(143, 183, 255, 0)" />
+            <stop offset="0%" stopColor="rgba(47, 127, 98, 0.16)" />
+            <stop offset="100%" stopColor="rgba(47, 127, 98, 0)" />
           </radialGradient>
           <clipPath id="cityMapClip">
             <rect x="0" y="0" width={VIEWBOX_WIDTH} height={VIEWBOX_HEIGHT} rx="24" />

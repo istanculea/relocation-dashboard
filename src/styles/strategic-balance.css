@@ -28,8 +28,8 @@
   padding: 7px 12px;
   background: var(--bg);
   border-right: 1px solid rgba(31, 42, 46, 0.1);
-  font-size: 0.8rem;
-  line-height: 1.35;
+  font-size: 0.78rem;
+  line-height: 1.42;
   white-space: normal;
 }
 
@@ -61,7 +61,7 @@
 }
 
 .matrix-city-label strong {
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   font-weight: 700;
   white-space: nowrap;
   overflow: hidden;
@@ -84,7 +84,7 @@
 .matrix-cell {
   text-align: center;
   padding: 6px 3px;
-  font-size: 0.79rem;
+  font-size: 0.76rem;
   font-weight: 700;
   min-width: 72px;
   transition: opacity 180ms ease;
@@ -149,8 +149,8 @@
 
 .balance-score-card small {
   color: var(--muted);
-  font-size: 0.8rem;
-  line-height: 1.45;
+  font-size: 0.78rem;
+  line-height: 1.5;
 }
 
 .balance-score-card--total {

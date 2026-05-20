@@ -14,8 +14,6 @@
   gap: 8px;
   overflow-x: auto;
   padding: 4px 2px 10px;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(47, 127, 98, 0.25) transparent;
 }
 
 .city-ranking-strip::-webkit-scrollbar {
@@ -348,6 +346,15 @@
   color: var(--ink);
   font-size: 0.78rem;
   font-weight: 700;
+  letter-spacing: 0.01em;
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease, background-color 160ms ease;
+}
+
+.filter-chip:hover,
+.signal-pill:hover {
+  transform: translateY(-1px);
+  border-color: rgba(47, 127, 98, 0.2);
+  box-shadow: 0 12px 24px rgba(84, 72, 56, 0.08);
 }
 
 .filter-chip--muted {
@@ -502,9 +509,9 @@
 
 .relocation-matrix th,
 .relocation-matrix td {
-  padding: 15px 14px;
-  font-size: 0.92rem;
-  line-height: 1.5;
+  padding: 13px 14px;
+  font-size: 0.88rem;
+  line-height: 1.45;
 }
 
 .relocation-matrix thead th {
@@ -545,13 +552,13 @@
 }
 
 .relocation-matrix .table-row-button strong {
-  font-size: 1rem;
-  line-height: 1.3;
+  font-size: 0.96rem;
+  line-height: 1.25;
 }
 
 .relocation-matrix .table-row-button span {
-  font-size: 0.83rem;
-  line-height: 1.45;
+  font-size: 0.8rem;
+  line-height: 1.42;
 }
 
 .relocation-matrix .cell-list {
@@ -876,7 +883,7 @@
 .matrix-card__city {
   display: block;
   font-family: 'Fraunces', serif;
-  font-size: 1.18rem;
+  font-size: 1.08rem;
   line-height: 1.15;
   color: var(--ink);
 }
@@ -890,10 +897,10 @@
 
 .matrix-card__tagline {
   margin: 0;
-  font-size: 0.87rem;
+  font-size: 0.84rem;
   font-weight: 600;
   color: var(--ink);
-  line-height: 1.5;
+  line-height: 1.45;
 }
 
 .matrix-card__score-wrap {
@@ -905,7 +912,7 @@
 }
 
 .matrix-card__score {
-  font-size: 1.45rem;
+  font-size: 1.28rem;
   color: var(--green);
   line-height: 1;
 }

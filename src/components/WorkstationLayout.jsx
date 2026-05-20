@@ -5,6 +5,7 @@ import { useShortlist } from '../context/DashboardContext.jsx';
 import { Scatterplot } from './WorkstationScatterplot.jsx';
 import { formatEuro } from '../utils/formatters.js';
 import { WatchlistAlertsPanel } from './WatchlistAlertsPanel.jsx';
+import { SimulationEngine } from './SimulationEngine.jsx';
 
 // ── Inline SVG icons ─────────────────────────────────────────────────────────
 const IconPdf = () => (
@@ -715,6 +716,7 @@ export function WorkstationLayout({
           sortPillarKey={sortPillarLabel}
         />
         <div className="ws-main">
+          <SimulationEngine />
           <WatchlistAlertsPanel
             rows={localFiltered}
             scenarioKey={scenarioKey}

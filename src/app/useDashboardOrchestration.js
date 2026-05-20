@@ -204,7 +204,7 @@ export const useDashboardOrchestration = ({ simulationModifiers }) => {
     );
 
     return sortRows(matchingRows, sortKey);
-  }, [comparisonRows, searchValue, thresholds, simulationModifiers, sortKey, verificationFilter, budgetFilter, mobilityFilter, airFilter]);
+  }, [comparisonRows, matchesSearch, matchesThresholds, simulationModifiers, sortKey, verificationFilter, budgetFilter, mobilityFilter, airFilter]);
 
   const sortLabel = useMemo(
     () => sortOptions.find((option) => option.key === sortKey)?.label ?? sortOptions[0].label,

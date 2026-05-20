@@ -2026,17 +2026,58 @@
   }
 
   .ws-shell {
+    min-height: 100dvh;
+    height: auto;
+    overflow: auto;
     font-size: 14px;
     line-height: 1.45;
   }
 
   .ws-header {
-    padding: 0 8px;
+    height: auto;
+    min-height: var(--ws-header-h);
+    padding: 8px;
+    gap: 8px;
+    align-items: stretch;
+    flex-wrap: wrap;
+    overflow: visible;
+  }
+
+  .ws-header__brand,
+  .ws-header__center {
+    width: 100%;
+  }
+
+  .ws-header__center {
+    justify-content: flex-start;
+  }
+
+  .ws-header__actions {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 2px;
+  }
+
+  .ws-header__actions,
+  .ws-statusbar {
+    scrollbar-width: thin;
+    scrollbar-color: var(--ws-border-strong) transparent;
+  }
+
+  .ws-header__actions::-webkit-scrollbar,
+  .ws-statusbar::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .ws-header__actions::-webkit-scrollbar-thumb,
+  .ws-statusbar::-webkit-scrollbar-thumb {
+    background: var(--ws-border-strong);
+    border-radius: 999px;
   }
 
   .ws-header__divider {
-    margin: 0 8px;
-    height: 20px;
+    display: none;
   }
 
   .ws-header__title {
@@ -2072,6 +2113,26 @@
 
   .ws-pane__body {
     padding: 8px;
+  }
+
+  .ws-body {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    overflow: visible;
+  }
+
+  .ws-pane--sidebar {
+    border-right: none;
+    border-bottom: 2px solid var(--ws-border-strong);
+  }
+
+  .ws-main {
+    overflow: visible;
+  }
+
+  .ws-statusbar {
+    overflow-x: auto;
+    overflow-y: hidden;
   }
 
   .ws-control-group {
@@ -2216,5 +2277,3 @@
     animation: none;
   }
 }
-
-

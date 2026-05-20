@@ -58,13 +58,67 @@ export const clampValue = (value, min, max) => Math.max(min, Math.min(max, value
 
 const countriesFeatureCollection = feature(countriesTopology, countriesTopology.objects.countries);
 
+const MAINLAND_FRAGMENT_EXTENTS = {
+  minLon: -15,
+  maxLon: 45,
+  minLat: 33,
+  maxLat: 72,
+};
+
+const isMainlandPolygon = (polygonCoordinates) => {
+  const [longitude, latitude] = geoCentroid({
+    type: 'Feature',
+    geometry: {
+      type: 'Polygon',
+      coordinates: polygonCoordinates,
+    },
+  });
+
+  return longitude >= MAINLAND_FRAGMENT_EXTENTS.minLon
+    && longitude <= MAINLAND_FRAGMENT_EXTENTS.maxLon
+    && latitude >= MAINLAND_FRAGMENT_EXTENTS.minLat
+    && latitude <= MAINLAND_FRAGMENT_EXTENTS.maxLat;
+};
+
+const trimCountryGeometry = (countryFeature) => {
+  const geometry = countryFeature.geometry;
+  if (!geometry) {
+    return null;
+  }
+
+  if (geometry.type === 'Polygon') {
+    return isMainlandPolygon(geometry.coordinates)
+      ? countryFeature
+      : null;
+  }
+
+  if (geometry.type === 'MultiPolygon') {
+    const mainlandPolygons = geometry.coordinates.filter((polygonCoordinates) => isMainlandPolygon(polygonCoordinates));
+    if (!mainlandPolygons.length) {
+      return null;
+    }
+
+    return {
+      ...countryFeature,
+      geometry: {
+        ...geometry,
+        coordinates: mainlandPolygons,
+      },
+    };
+  }
+
+  return countryFeature;
+};
+
 const europeCountryFeatures = countriesFeatureCollection.features.filter((countryFeature) => {
   const [longitude, latitude] = geoCentroid(countryFeature);
   return longitude >= EUROPE_EXTENTS.minLon
     && longitude <= EUROPE_EXTENTS.maxLon
     && latitude >= EUROPE_EXTENTS.minLat
     && latitude <= EUROPE_EXTENTS.maxLat;
-});
+})
+  .map(trimCountryGeometry)
+  .filter(Boolean);
 
 const createEuropeMapGeometry = (width, height, padding = 24) => {
   const mapProjection = geoMercator()

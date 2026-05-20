@@ -3,20 +3,20 @@ import { formatEuro } from '../utils/formatters.js';
 
 // ── Zone metadata ─────────────────────────────────────────────────────────────
 const ZONE_META = {
-  'Good Value': { color: '#2f7f62', bg: 'rgba(47,127,98,0.12)',   dot: '#2f7f62' },
-  'Premium':    { color: '#376a92', bg: 'rgba(55,106,146,0.12)',  dot: '#376a92' },
-  'Cheap':      { color: '#78788c', bg: 'rgba(120,120,140,0.09)', dot: '#78788c' },
-  'Poor Value': { color: '#c57c2a', bg: 'rgba(197,124,42,0.12)',  dot: '#c57c2a' },
+  'Good Value': { color: '#1f6d52', bg: 'rgba(47,127,98,0.16)', dot: '#2f7f62' },
+  'Premium':    { color: '#2f6287', bg: 'rgba(55,106,146,0.15)', dot: '#376a92' },
+  'Cheap':      { color: '#666677', bg: 'rgba(120,120,140,0.11)', dot: '#78788c' },
+  'Poor Value': { color: '#a65e18', bg: 'rgba(197,124,42,0.15)', dot: '#c57c2a' },
 };
 
 // Fixed margins in px (SVG user units = screen px with dynamic viewBox)
 const ML = 68, MR = 22, MT = 24, MB = 52;
 
 const DOT_RADIUS = {
-  selected: 11,
-  hovered: 10,
-  filtered: 8,
-  dimmed: 6,
+  selected: 12.5,
+  hovered: 10.5,
+  filtered: 8.5,
+  dimmed: 6.5,
 };
 
 function medianOf(arr) {
@@ -126,12 +126,15 @@ function ScatterDotLabel({ row, isFiltered, isSelected, isHovered, zoneMeta, cx,
       <text
         x={cx}
         y={cy - dotR - 4}
-        fontSize="10"
+        fontSize="10.5"
         fontFamily="IBM Plex Sans, sans-serif"
         textAnchor="middle"
         fill={zoneMeta.color}
         opacity="0.9"
         fontWeight="600"
+        stroke="rgba(255, 252, 246, 0.92)"
+        strokeWidth="3"
+        paintOrder="stroke"
         style={{ pointerEvents: 'none' }}
       >
         {row.city}
@@ -144,11 +147,14 @@ function ScatterDotLabel({ row, isFiltered, isSelected, isHovered, zoneMeta, cx,
       <text
         x={cx}
         y={cy - dotR - 7}
-        fontSize="12.5"
+        fontSize="13.5"
         fontFamily="IBM Plex Sans, sans-serif"
         textAnchor="middle"
         fill={zoneMeta.color}
         fontWeight="700"
+        stroke="rgba(255, 252, 246, 0.96)"
+        strokeWidth="3.5"
+        paintOrder="stroke"
         style={{ pointerEvents: 'none' }}
       >
         {row.city}
@@ -214,35 +220,35 @@ function ScatterTooltip({ row, svgX, svgY, plotBounds }) {
   const cx = svgX(row.budget);
   const cy = svgY(row.score);
   const tw = 186;
-  const th = 90;
+  const th = 96;
   const { tx, ty } = getTooltipPosition({ cx, cy, tw, th, plotBounds });
 
   return (
     <g style={{ pointerEvents: 'none' }}>
-      <rect x={tx + 2} y={ty + 2} width={tw} height={th} rx="6" fill="rgba(0,0,0,0.12)" />
+      <rect x={tx + 2} y={ty + 2} width={tw} height={th} rx="8" fill="rgba(0,0,0,0.10)" />
       <rect
         x={tx}
         y={ty}
         width={tw}
         height={th}
-        rx="6"
-        fill="var(--ws-surface-2)"
+        rx="8"
+        fill="rgba(255, 252, 246, 0.96)"
         stroke={zoneMeta.dot}
-        strokeWidth="1.5"
-        strokeOpacity="0.35"
+        strokeWidth="1.4"
+        strokeOpacity="0.32"
       />
-      <rect x={tx} y={ty} width={tw} height={4} rx="6" fill={zoneMeta.dot} opacity="0.7" />
-      <text x={tx + 12} y={ty + 23} fontSize="13.5" fontFamily="IBM Plex Sans, sans-serif" fontWeight="700" fill="var(--ws-ink)">
+      <rect x={tx} y={ty} width={tw} height={5} rx="8" fill={zoneMeta.dot} opacity="0.72" />
+      <text x={tx + 12} y={ty + 24} fontSize="13.5" fontFamily="IBM Plex Sans, sans-serif" fontWeight="700" fill="var(--ws-ink)">
         {row.city}, {row.country}
       </text>
-      <text x={tx + 12} y={ty + 43} fontSize="11" fontFamily="IBM Plex Sans, sans-serif" fill="var(--ws-ink-2)">
+      <text x={tx + 12} y={ty + 45} fontSize="11.2" fontFamily="IBM Plex Sans, sans-serif" fill="var(--ws-ink-2)">
         {'Score '}<tspan fontWeight="700" fill="var(--ws-ink)">{row.score.toFixed(2)}</tspan>
         {'  ·  Zone: '}<tspan fontWeight="700" fill={zoneMeta.color}>{row.zone}</tspan>
       </text>
-      <text x={tx + 12} y={ty + 62} fontSize="11" fontFamily="IBM Plex Sans, sans-serif" fill="var(--ws-ink-2)">
+      <text x={tx + 12} y={ty + 65} fontSize="11.2" fontFamily="IBM Plex Sans, sans-serif" fill="var(--ws-ink-2)">
         {'Budget '}<tspan fontWeight="700" fill="var(--ws-ink)">{formatEuro(row.budget)}/mo</tspan>
       </text>
-      <text x={tx + 12} y={ty + 80} fontSize="10" fontFamily="IBM Plex Sans, sans-serif" fill="var(--ws-ink-3)">
+      <text x={tx + 12} y={ty + 84} fontSize="10.3" fontFamily="IBM Plex Sans, sans-serif" fill="var(--ws-ink-3)">
         Click to open city profile
       </text>
     </g>
@@ -328,22 +334,22 @@ export function AffordabilityScatterplot({
         {/* Light gridlines */}
         {xTicks.map((v, i) => (
           <line key={`gx${i}`} x1={svgX(v)} y1={MT} x2={svgX(v)} y2={MT + PH}
-            stroke="var(--ws-border)" strokeWidth="0.8" opacity="0.5" />
+            stroke="var(--ws-border)" strokeWidth="0.9" opacity="0.58" />
         ))}
         {yTicks.map((v, i) => (
           <line key={`gy${i}`} x1={ML} y1={svgY(v)} x2={ML + PW} y2={svgY(v)}
-            stroke="var(--ws-border)" strokeWidth="0.8" opacity="0.5" />
+            stroke="var(--ws-border)" strokeWidth="0.9" opacity="0.58" />
         ))}
 
         {/* Median divider lines */}
         <line x1={mX} y1={MT} x2={mX} y2={MT + PH}
-          stroke="var(--ws-border-strong)" strokeWidth="1.8" strokeDasharray="7 4" opacity="0.7" />
+          stroke="var(--ws-border-strong)" strokeWidth="1.9" strokeDasharray="7 4" opacity="0.75" />
         <line x1={ML} y1={mY} x2={ML + PW} y2={mY}
-          stroke="var(--ws-border-strong)" strokeWidth="1.8" strokeDasharray="7 4" opacity="0.7" />
+          stroke="var(--ws-border-strong)" strokeWidth="1.9" strokeDasharray="7 4" opacity="0.75" />
 
         {/* Plot border */}
         <rect x={ML} y={MT} width={PW} height={PH} fill="none"
-          stroke="var(--ws-border-strong)" strokeWidth="1" opacity="0.5" />
+          stroke="var(--ws-border-strong)" strokeWidth="1.1" opacity="0.58" />
 
         {/* Quadrant corner labels */}
         <text x={ML + 10}      y={MT + 20}      fontSize="10.5" fontFamily="IBM Plex Sans, sans-serif" fill={ZONE_META['Good Value'].color} opacity="0.7" fontWeight="700" letterSpacing="0.9">GOOD VALUE</text>

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { geoCentroid, geoMercator, geoPath } from 'd3-geo';
 import { feature } from 'topojson-client';
 import countriesTopology from 'world-atlas/countries-110m.json';
@@ -607,6 +607,34 @@ const CONTRAST_PHRASES = {
   frictionEase: 'less hidden friction',
 };
 
+const CONTRAST_PHRASE_REPLACEMENTS = {
+  better: 'worse',
+  stronger: 'weaker',
+  higher: 'lower',
+  more: 'less',
+  lighter: 'heavier',
+  lower: 'higher',
+  less: 'more',
+  easier: 'harder',
+  faster: 'slower',
+  quieter: 'noisier',
+  wider: 'narrower',
+};
+
+const CONTRAST_PHRASE_PATTERN = new RegExp(`\\b(${Object.keys(CONTRAST_PHRASE_REPLACEMENTS).join('|')})\\b`, 'i');
+
+const invertContrastPhrase = (phrase) => {
+  const match = phrase.match(CONTRAST_PHRASE_PATTERN);
+
+  if (!match) {
+    return `weaker ${phrase}`;
+  }
+
+  const matchedWord = match[1];
+  const replacement = CONTRAST_PHRASE_REPLACEMENTS[matchedWord.toLowerCase()] ?? matchedWord;
+  return `${phrase.slice(0, match.index)}${replacement}${phrase.slice(match.index + matchedWord.length)}`;
+};
+
 const describeScoreBand = (score) => {
   if (score >= 8.6) {
     return 'Exceptional';
@@ -866,7 +894,10 @@ const buildContrastLines = (focusSignals, compareSignals, weights) => {
 
   return contrastRows.map((row) => ({
     key: row.key,
-    text: `${row.delta >= 0 ? '+' : '-'} ${CONTRAST_PHRASES[row.key] ?? SIGNAL_LABELS[row.key] ?? row.key}`,
+    text: (() => {
+      const phrase = CONTRAST_PHRASES[row.key] ?? SIGNAL_LABELS[row.key] ?? row.key;
+      return `${row.delta >= 0 ? '+' : '-'} ${row.delta >= 0 ? phrase : invertContrastPhrase(phrase)}`;
+    })(),
   }));
 };
 
@@ -911,7 +942,7 @@ const buildForecastSnapshot = (signals, city) => {
   };
 };
 
-const buildUrbanDNA = (city, signals) => CITY_DNA[city?.key] ?? `${city?.city ?? 'This city'} is a ${describeScoreBand(signals?.strategic ?? 0).toLowerCase()} relocation fit with a distinct urban rhythm.`;
+const buildUrbanDNA = (city, strategicFit = 0) => CITY_DNA[city?.key] ?? `${city?.city ?? 'This city'} is a ${describeScoreBand(strategicFit).toLowerCase()} relocation fit with a distinct urban rhythm.`;
 
 const buildArcPath = (fromPoint, toPoint, curvature = 0.18) => {
   const dx = toPoint.x - fromPoint.x;
@@ -1373,11 +1404,6 @@ export const CityMapPage = function cityMapPage({
     [mappableCityOptions, visibleNetworkConnections],
   );
 
-  const topCityRankByKey = useMemo(
-    () => new Map(intelligenceRanking.map((cityRow, index) => [cityRow.key, index + 1])),
-    [intelligenceRanking],
-  );
-
   const cityConnectionsByKey = useMemo(() => {
     const map = new Map();
     mappableCityOptions.forEach((city) => {
@@ -1414,6 +1440,17 @@ export const CityMapPage = function cityMapPage({
     () => new Map(intelligenceRanking.map((row) => [row.key, row])),
     [intelligenceRanking],
   );
+
+  const topCityRankByKey = useMemo(
+    () => new Map(intelligenceRanking.map((cityRow, index) => [cityRow.key, index + 1])),
+    [intelligenceRanking],
+  );
+
+  useEffect(() => {
+    if (comparisonCityKey && comparisonCityKey === selectedCityKey) {
+      setComparisonCityKey('');
+    }
+  }, [comparisonCityKey, selectedCityKey, setComparisonCityKey]);
 
   const rankingStripRows = useMemo(() => {
     const withDimensions = mappableCityOptions.map((city) => ({
@@ -1471,7 +1508,7 @@ export const CityMapPage = function cityMapPage({
 
   const selectedCityTruthGood = focusIntel?.truthGood ?? [];
   const selectedCityTruthBad = focusIntel?.truthBad ?? [];
-  const selectedUrbanDNA = focusCity ? buildUrbanDNA(focusCity, focusIntel?.signals ?? {}) : '';
+  const selectedUrbanDNA = focusCity ? buildUrbanDNA(focusCity, focusIntel?.strategicFit ?? 0) : '';
   const selectedWeeklyLife = focusCity ? buildWeeklyLifeSnapshot(focusCity, focusDimensions, focusIntel?.signals ?? {}) : [];
   const selectedForecast = focusCity ? buildForecastSnapshot(focusIntel?.signals ?? {}, focusCity) : null;
   const contrastLines = focusSignals && comparisonSignals

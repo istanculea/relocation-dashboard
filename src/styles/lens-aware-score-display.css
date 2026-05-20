@@ -137,15 +137,15 @@
 /* ─── Lens Aware Score Breakdown ────────────────────────────────────── */
 
 .lens-aware-score-breakdown {
-  padding: 20px;
+  padding: 14px;
   background: var(--ws-surface, #f8fafc);
   border: 1px solid var(--ws-border, #e2e8f0);
   border-radius: 8px;
 }
 
 .lens-aware-score-breakdown__header {
-  margin-bottom: 20px;
-  padding-bottom: 16px;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
   border-bottom: 2px solid var(--ws-border, #e2e8f0);
 }
 
@@ -165,13 +165,13 @@
 .lens-aware-score-breakdown__content {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 12px;
 }
 
 .lens-aware-score-breakdown__section {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
 }
 
 .lens-aware-score-breakdown__section h4 {
@@ -247,6 +247,38 @@
 .lens-aware-score-breakdown__weight {
   font-size: 0.8rem;
   color: var(--color-text-muted, #64748b);
+}
+
+@media (max-width: 640px) {
+  .lens-aware-score-breakdown {
+    padding: 10px;
+  }
+
+  .lens-aware-score-breakdown__header {
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+  }
+
+  .lens-aware-score-breakdown__header h3 {
+    font-size: 1rem;
+  }
+
+  .lens-aware-score-breakdown__content {
+    gap: 8px;
+  }
+
+  .lens-aware-score-breakdown__section {
+    gap: 6px;
+  }
+
+  .lens-aware-score-breakdown__top-pillars {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .lens-aware-score-breakdown__pillar-item {
+    padding: 9px;
+  }
 }
 
 /* ─── Pillar Lens Relevance ────────────────────────────────────────── */

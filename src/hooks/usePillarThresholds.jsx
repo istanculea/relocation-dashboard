@@ -129,14 +129,14 @@ export const PillarThresholdSliders = ({
 }) => (
   <div className="threshold-sliders" aria-label="Minimum pillar score filters">
     <div className="threshold-sliders__header">
-      <span className="threshold-sliders__title">Minimum pillar scores</span>
+      <span className="threshold-sliders__title">Minimum Score Gates</span>
       {hasActive && (
         <button
           type="button"
           className="threshold-sliders__reset"
           onClick={onReset}
         >
-          Reset
+          Reset Gates
         </button>
       )}
     </div>
@@ -158,7 +158,7 @@ export const PillarThresholdSliders = ({
             aria-label={`Minimum ${label} score: ${value}`}
           />
           <span className="threshold-slider-row__value">
-            {value > 0 ? `≥ ${value.toFixed(1)}` : 'Any'}
+            {value > 0 ? `≥ ${value.toFixed(1)}` : 'Off'}
           </span>
         </label>
       );

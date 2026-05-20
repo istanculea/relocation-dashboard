@@ -69,7 +69,7 @@ export const PillarScoreGrid = ({
   finalScore,
   hideWeights = false,
   compact = false,
-  title = 'Pillar Score Breakdown',
+  title = '15-Pillar Score Grid',
 }) => {
   if (!pillars || !weights) {
     return null;

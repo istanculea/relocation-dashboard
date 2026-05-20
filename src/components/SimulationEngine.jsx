@@ -118,9 +118,9 @@ export const SimulationEngine = () => {
   return (
     <section className="simulation-engine panel" aria-label="What-If lifestyle inflation simulator">
       <header className="simulation-engine__header">
-        <h3 className="simulation-engine__title">What-If Simulator</h3>
+        <h3 className="simulation-engine__title">Scenario Stress Test</h3>
         <p className="simulation-engine__subtitle">
-          Adjust global cost modifiers to see how projected living costs shift across all cities.
+          Apply global cost shifts to pressure-test rankings and monthly budgets.
         </p>
         {isModified && (
           <button
@@ -188,7 +188,7 @@ export const SimulationEngine = () => {
 
       {isModified && (
         <p className="simulation-engine__notice" role="status" aria-live="polite">
-          Simulation active — budget midpoints and comparison scores reflect your modifiers.
+          Simulation active: scores and budget midpoints include these modifiers.
         </p>
       )}
     </section>

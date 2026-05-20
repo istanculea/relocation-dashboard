@@ -108,7 +108,7 @@ export const LensAwareScoreBreakdown = ({
   return (
     <div className="lens-aware-score-breakdown">
       <div className="lens-aware-score-breakdown__header">
-        <h3>Score Explained</h3>
+        <h3>Lens Scoring Summary</h3>
         <p className="lens-aware-score-breakdown__preset">
           <strong>Active Lens:</strong> {preset.label}
         </p>
@@ -116,21 +116,20 @@ export const LensAwareScoreBreakdown = ({
 
       <div className="lens-aware-score-breakdown__content">
         <div className="lens-aware-score-breakdown__section">
-          <h4>How This Score Was Calculated</h4>
+          <h4>Score Method</h4>
           
           {isMcdaBased && (
             <p className="lens-aware-score-breakdown__explanation">
-              This score uses the <strong>Balanced 15-pillar MCDA</strong> system, weighting all life factors equally. 
-              All 15 pillars contribute: childcare, housing, healthcare, jobs, environment, safety, mobility, and more.
+              Uses the <strong>Balanced 15-pillar MCDA</strong> model where all pillars contribute to the final score.
             </p>
           )}
           
           {isPillarBased && (
             <p className="lens-aware-score-breakdown__explanation">
-              This score prioritizes <strong>{preset.label.toLowerCase()}</strong>. 
+              Uses a priority lens focused on <strong>{preset.label.toLowerCase()}</strong>. 
               {topPillars.length > 0 && (
                 <>
-                  {' '}The top contributors are: <strong>{topPillars.map(p => p.label).join(', ')}</strong>.
+                  {' '}Top weighted contributors: <strong>{topPillars.map(p => p.label).join(', ')}</strong>.
                 </>
               )}
             </p>
@@ -138,7 +137,7 @@ export const LensAwareScoreBreakdown = ({
           
           {!isMcdaBased && !isPillarBased && (
             <p className="lens-aware-score-breakdown__explanation">
-              This score uses the classic 5-pillar system with custom weights.
+              Uses the classic 5-pillar model with custom weights.
             </p>
           )}
         </div>
@@ -153,7 +152,7 @@ export const LensAwareScoreBreakdown = ({
 
         {topPillars.length > 0 && (
           <div className="lens-aware-score-breakdown__section">
-            <h4>Highest Impact Pillars</h4>
+            <h4>Top Weighted Pillars</h4>
             <div className="lens-aware-score-breakdown__top-pillars">
               {topPillars.map((p, idx) => (
                 <div key={p.key} className="lens-aware-score-breakdown__pillar-item">

@@ -2131,6 +2131,15 @@
     scrollbar-color: var(--ws-border-strong) transparent;
   }
 
+  .ws-statusbar::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .ws-statusbar::-webkit-scrollbar-thumb {
+    background: var(--ws-border-strong);
+    border-radius: 999px;
+  }
+
   .ws-control-group {
     gap: 6px;
     padding-bottom: 11px;

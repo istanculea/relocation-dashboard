@@ -1,10 +1,10 @@
-import { computeNetSalary } from './financingEngine.js';
+import { DEFAULT_FINANCING_ASSUMPTIONS, computeNetSalary } from './financingEngine.js';
 
 const MAX_GROSS_SEARCH = 50000;
 
 const resolveBudgetMidpoint = (city, scenarioKey) => city?.budgets?.[scenarioKey]?.midpoint ?? null;
 
-const solveGrossForNet = (targetNet, country) => {
+const solveGrossForNet = (targetNet, country, assumptions = DEFAULT_FINANCING_ASSUMPTIONS) => {
   if (!Number.isFinite(targetNet) || targetNet <= 0) {
     return 0;
   }
@@ -12,7 +12,7 @@ const solveGrossForNet = (targetNet, country) => {
   let low = Math.max(0, targetNet);
   let high = Math.max(1000, targetNet * 2.5);
 
-  while (computeNetSalary(high, country) < targetNet && high < MAX_GROSS_SEARCH) {
+  while (computeNetSalary(high, country, assumptions) < targetNet && high < MAX_GROSS_SEARCH) {
     high *= 1.35;
   }
 
@@ -20,7 +20,7 @@ const solveGrossForNet = (targetNet, country) => {
 
   for (let index = 0; index < 32; index += 1) {
     const mid = (low + high) / 2;
-    const net = computeNetSalary(mid, country);
+    const net = computeNetSalary(mid, country, assumptions);
 
     if (net >= targetNet) {
       high = mid;
@@ -37,6 +37,7 @@ export const computeSalaryEquivalence = ({
   targetCity,
   scenarioKey = 'oneParent',
   sourceNetSpend,
+  assumptions = DEFAULT_FINANCING_ASSUMPTIONS,
 }) => {
   const sourceBudget = resolveBudgetMidpoint(sourceCity, scenarioKey);
   const targetBudget = resolveBudgetMidpoint(targetCity, scenarioKey);
@@ -52,7 +53,7 @@ export const computeSalaryEquivalence = ({
 
   const discretionary = normalizedSpend - sourceBudget;
   const requiredTargetNet = Math.max(0, Math.round(targetBudget + discretionary));
-  const equivalentTargetGross = solveGrossForNet(requiredTargetNet, targetCity?.country ?? '');
+  const equivalentTargetGross = solveGrossForNet(requiredTargetNet, targetCity?.country ?? '', assumptions);
   const deltaAbsolute = requiredTargetNet - normalizedSpend;
   const deltaPercent = normalizedSpend > 0 ? (deltaAbsolute / normalizedSpend) * 100 : 0;
 
@@ -68,5 +69,6 @@ export const computeSalaryEquivalence = ({
     equivalentTargetGross,
     deltaAbsolute,
     deltaPercent,
+    assumptions,
   };
 };

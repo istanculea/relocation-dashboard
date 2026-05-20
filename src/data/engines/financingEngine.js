@@ -44,6 +44,13 @@ export const SECTOR_BASELINES = {
 
 export const SECTOR_KEYS = Object.keys(SECTOR_BASELINES);
 
+export const DEFAULT_FINANCING_ASSUMPTIONS = {
+  taxReliefPct: 0,
+  socialContributionPct: 0,
+  relocationBufferPct: 0,
+  childcareSupportPct: 0,
+};
+
 const COUNTRY_TAX_BRACKETS = [
   {
     countries: ['germany', 'austria'],
@@ -73,6 +80,17 @@ const COUNTRY_TAX_BRACKETS = [
 
 const DEFAULT_TAX_BRACKETS = [[2000, 0.24], [3500, 0.33], [5000, 0.40], [Infinity, 0.46]];
 
+const clampRate = (value) => Math.min(0.65, Math.max(0, value));
+
+const toNumberOr = (value, fallback) => (Number.isFinite(Number(value)) ? Number(value) : fallback);
+
+const normalizeAssumptions = (assumptions = {}) => ({
+  taxReliefPct: toNumberOr(assumptions.taxReliefPct, DEFAULT_FINANCING_ASSUMPTIONS.taxReliefPct),
+  socialContributionPct: toNumberOr(assumptions.socialContributionPct, DEFAULT_FINANCING_ASSUMPTIONS.socialContributionPct),
+  relocationBufferPct: toNumberOr(assumptions.relocationBufferPct, DEFAULT_FINANCING_ASSUMPTIONS.relocationBufferPct),
+  childcareSupportPct: toNumberOr(assumptions.childcareSupportPct, DEFAULT_FINANCING_ASSUMPTIONS.childcareSupportPct),
+});
+
 // ---------------------------------------------------------------------------
 // Tax approximation
 // ---------------------------------------------------------------------------
@@ -88,23 +106,51 @@ const DEFAULT_TAX_BRACKETS = [[2000, 0.24], [3500, 0.33], [5000, 0.40], [Infinit
  * @param {string} country       — city country name
  * @returns {number}             — effective rate as a decimal (0–1)
  */
-export const estimateEffectiveTaxRate = (grossMonthly, country = '') => {
+export const estimateEffectiveTaxRate = (grossMonthly, country = '', assumptions = DEFAULT_FINANCING_ASSUMPTIONS) => {
   const gross = Number(grossMonthly) || 0;
   const normalizedCountry = country.toLowerCase();
   const brackets = COUNTRY_TAX_BRACKETS.find(({ countries }) =>
     countries.some((name) => normalizedCountry.includes(name)))?.brackets ?? DEFAULT_TAX_BRACKETS;
-  const rate = brackets.find(([limit]) => gross < limit)?.[1] ?? DEFAULT_TAX_BRACKETS[DEFAULT_TAX_BRACKETS.length - 1][1];
+  const baseRate = brackets.find(([limit]) => gross < limit)?.[1] ?? DEFAULT_TAX_BRACKETS[DEFAULT_TAX_BRACKETS.length - 1][1];
+  const normalizedAssumptions = normalizeAssumptions(assumptions);
+  const adjustedRate = baseRate
+    + (normalizedAssumptions.socialContributionPct / 100)
+    - (normalizedAssumptions.taxReliefPct / 100);
 
-  return Math.min(0.65, Math.max(0, rate));
+  return clampRate(adjustedRate);
 };
 
 /**
  * Compute net monthly take-home from gross.
  */
-export const computeNetSalary = (grossMonthly, country) => {
-  const rate = estimateEffectiveTaxRate(grossMonthly, country);
+export const computeNetSalary = (grossMonthly, country, assumptions = DEFAULT_FINANCING_ASSUMPTIONS) => {
+  const rate = estimateEffectiveTaxRate(grossMonthly, country, assumptions);
 
   return Math.round(grossMonthly * (1 - rate));
+};
+
+export const computeAssumptionAdjustedBudget = (cityRow, scenarioKey, assumptions = DEFAULT_FINANCING_ASSUMPTIONS) => {
+  const normalizedAssumptions = normalizeAssumptions(assumptions);
+  const baseMidpoint = cityRow?.budgets?.[scenarioKey]?.midpoint ?? 3000;
+  const components = cityRow?.budgetComponents?.[scenarioKey];
+
+  const relocationFactor = 1 + (normalizedAssumptions.relocationBufferPct / 100);
+  const childcareSupportFactor = 1 - (normalizedAssumptions.childcareSupportPct / 100);
+
+  if (!components) {
+    const fallbackReduction = normalizedAssumptions.childcareSupportPct * 0.0018;
+    const fallbackFactor = Math.max(0.7, relocationFactor - fallbackReduction);
+    return Math.round(baseMidpoint * fallbackFactor);
+  }
+
+  const childcare = Math.max(0, (components.childcare ?? 0) * childcareSupportFactor);
+  const componentAdjusted = {
+    ...components,
+    childcare,
+  };
+
+  const subtotal = Object.values(componentAdjusted).reduce((sum, value) => sum + (Number(value) || 0), 0);
+  return Math.round(subtotal * relocationFactor);
 };
 
 // ---------------------------------------------------------------------------
@@ -186,23 +232,30 @@ export const getMedianSalaryForSector = (city, sector) => {
  * @param {{ sector: string, grossSalary: number, scenarioKey?: string, grossSalary2?: number }} opts
  * @returns {object}  — shallow-cloned city row with updated strategicBalance
  */
-export const applyFinancingAdjustment = (cityRow, { sector, grossSalary, scenarioKey = 'oneParent', grossSalary2 }) => {
+export const applyFinancingAdjustment = (cityRow, {
+  sector,
+  grossSalary,
+  scenarioKey = 'oneParent',
+  grossSalary2,
+  assumptions = DEFAULT_FINANCING_ASSUMPTIONS,
+}) => {
   if (!grossSalary || !cityRow?.strategicBalance?.pillars?.length) {
     return cityRow;
   }
 
+  const normalizedAssumptions = normalizeAssumptions(assumptions);
   const isDual        = typeof grossSalary2 === 'number' && grossSalary2 > 0;
   const resolvedKey   = isDual ? 'bothWorking' : scenarioKey;
 
   const gross         = Number(grossSalary);
   const country       = cityRow.country ?? '';
-  const netSalary     = computeNetSalary(gross, country);
-  const netSalary2    = isDual ? computeNetSalary(Number(grossSalary2), country) : 0;
+  const netSalary     = computeNetSalary(gross, country, normalizedAssumptions);
+  const netSalary2    = isDual ? computeNetSalary(Number(grossSalary2), country, normalizedAssumptions) : 0;
   const combinedNet   = netSalary + netSalary2;
-  const budgetMidpoint = cityRow.budgets?.[resolvedKey]?.midpoint ?? 3000;
+  const budgetMidpoint = computeAssumptionAdjustedBudget(cityRow, resolvedKey, normalizedAssumptions);
   const discretionary = computeDiscretionaryIncome(combinedNet, budgetMidpoint);
   const delta         = discretionaryScoreAdjustment(discretionary);
-  const effectiveTaxRate = estimateEffectiveTaxRate(gross, country);
+  const effectiveTaxRate = estimateEffectiveTaxRate(gross, country, normalizedAssumptions);
 
   // Clone pillars, adjust Tier-1 (Housing & Living Costs)
   const adjustedPillars = cityRow.strategicBalance.pillars.map((pillar, idx) => {
@@ -237,6 +290,7 @@ export const applyFinancingAdjustment = (cityRow, { sector, grossSalary, scenari
       budgetMidpoint,
       discretionaryIncome: discretionary,
       effectiveTaxRate:  Math.round(effectiveTaxRate * 100),
+      assumptions: normalizedAssumptions,
       adjusted:          Math.abs(delta) > 0.01,
     },
   };

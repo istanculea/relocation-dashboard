@@ -8,10 +8,12 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import {
+  DEFAULT_FINANCING_ASSUMPTIONS,
   SECTOR_BASELINES,
   SECTOR_KEYS,
   computeNetSalary,
   computeDiscretionaryIncome,
+  computeAssumptionAdjustedBudget,
   applyFinancingAdjustment,
 } from '../data/engines/financingEngine.js';
 import { computeSalaryEquivalence } from '../data/engines/salaryEquivalenceEngine.js';
@@ -116,7 +118,76 @@ function SalaryInputGroup({ label, sector, grossSalary, onSectorChange, onSalary
   );
 }
 
-function SalaryEquivalencePanel({ city, scenarioKey, rankingRows }) {
+function FinancingAssumptionsPanel({ assumptions, onAssumptionChange, onResetAssumptions }) {
+  return (
+    <div className="fin-assumptions" aria-label="Financing assumptions">
+      <div className="fin-assumptions__header">
+        <p className="fin-salary-group__label">Assumptions</p>
+        <button type="button" className="ws-icon-btn" onClick={onResetAssumptions}>Reset assumptions</button>
+      </div>
+
+      <div className="fin-controls">
+        <label className="selector-field fin-field">
+          <span>Tax relief (%)</span>
+          <input
+            type="range"
+            min="0"
+            max="12"
+            step="1"
+            value={assumptions.taxReliefPct}
+            onChange={(event) => onAssumptionChange('taxReliefPct', Number(event.target.value))}
+            className="fin-input"
+          />
+          <small>{assumptions.taxReliefPct}%</small>
+        </label>
+
+        <label className="selector-field fin-field">
+          <span>Social contribution add-on (%)</span>
+          <input
+            type="range"
+            min="0"
+            max="12"
+            step="1"
+            value={assumptions.socialContributionPct}
+            onChange={(event) => onAssumptionChange('socialContributionPct', Number(event.target.value))}
+            className="fin-input"
+          />
+          <small>{assumptions.socialContributionPct}%</small>
+        </label>
+
+        <label className="selector-field fin-field">
+          <span>Relocation buffer (%)</span>
+          <input
+            type="range"
+            min="0"
+            max="25"
+            step="1"
+            value={assumptions.relocationBufferPct}
+            onChange={(event) => onAssumptionChange('relocationBufferPct', Number(event.target.value))}
+            className="fin-input"
+          />
+          <small>{assumptions.relocationBufferPct}%</small>
+        </label>
+
+        <label className="selector-field fin-field">
+          <span>Childcare support (%)</span>
+          <input
+            type="range"
+            min="0"
+            max="35"
+            step="1"
+            value={assumptions.childcareSupportPct}
+            onChange={(event) => onAssumptionChange('childcareSupportPct', Number(event.target.value))}
+            className="fin-input"
+          />
+          <small>{assumptions.childcareSupportPct}%</small>
+        </label>
+      </div>
+    </div>
+  );
+}
+
+function SalaryEquivalencePanel({ city, scenarioKey, rankingRows, assumptions }) {
   const sourceCities = useMemo(
     () => rankingRows.filter((row) => row.key !== city.key).sort((left, right) => left.city.localeCompare(right.city)),
     [city.key, rankingRows],
@@ -149,8 +220,9 @@ function SalaryEquivalencePanel({ city, scenarioKey, rankingRows }) {
         targetCity: city,
         scenarioKey,
         sourceNetSpend,
+        assumptions,
       }),
-    [city, scenarioKey, selectedSourceCity, sourceNetSpend],
+    [assumptions, city, scenarioKey, selectedSourceCity, sourceNetSpend],
   );
 
   if (!selectedSourceCity) {
@@ -259,6 +331,7 @@ export const FinancingEnginePanel = function financingEnginePanel({ city, scenar
 
   const [sector2, setSector2] = useState('Tech');
   const [grossSalary2, setGrossSalary2] = useState(() => SECTOR_BASELINES.Tech?.median ?? 3000);
+  const [assumptions, setAssumptions] = useState(() => ({ ...DEFAULT_FINANCING_ASSUMPTIONS }));
 
   const isDual = incomeMode === 'dual';
   const budgetKey = isDual ? 'bothWorking' : 'oneParent';
@@ -271,19 +344,24 @@ export const FinancingEnginePanel = function financingEnginePanel({ city, scenar
       grossSalary: grossSalary1,
       scenarioKey: budgetKey,
       grossSalary2: isDual ? grossSalary2 : undefined,
+      assumptions,
     });
-  }, [city, sector1, grossSalary1, grossSalary2, isDual, budgetKey]);
+  }, [city, sector1, grossSalary1, grossSalary2, isDual, budgetKey, assumptions]);
 
   const country = city.country ?? '';
-  const net1 = computeNetSalary(grossSalary1, country);
-  const net2 = isDual ? computeNetSalary(grossSalary2, country) : 0;
+  const net1 = computeNetSalary(grossSalary1, country, assumptions);
+  const net2 = isDual ? computeNetSalary(grossSalary2, country, assumptions) : 0;
   const combinedNet = net1 + net2;
-  const budgetMidpoint = city.budgets?.[budgetKey]?.midpoint ?? 3000;
+  const budgetMidpoint = computeAssumptionAdjustedBudget(city, budgetKey, assumptions);
   const discretionary = computeDiscretionaryIncome(combinedNet, budgetMidpoint);
 
   const originalPillar = city.strategicBalance?.pillars?.[0]?.score ?? 0;
   const adjustedPillar = result.strategicBalance?.pillars?.[0]?.score ?? originalPillar;
   const delta = adjustedPillar - originalPillar;
+
+  const handleAssumptionChange = (key, value) => {
+    setAssumptions((previous) => ({ ...previous, [key]: value }));
+  };
 
   return (
     <section className="panel financing-panel" aria-label={`Affordability calculator for ${city.city}`}>
@@ -314,7 +392,7 @@ export const FinancingEnginePanel = function financingEnginePanel({ city, scenar
       </div>
 
       {calculatorMode === 'equivalence' ? (
-        <SalaryEquivalencePanel city={city} scenarioKey={scenarioKey} rankingRows={rankingRows} />
+        <SalaryEquivalencePanel city={city} scenarioKey={scenarioKey} rankingRows={rankingRows} assumptions={assumptions} />
       ) : (
         <>
           <div className="fin-mode-toggle" role="group" aria-label="Income mode">
@@ -353,6 +431,12 @@ export const FinancingEnginePanel = function financingEnginePanel({ city, scenar
               country={country}
             />
           ) : null}
+
+          <FinancingAssumptionsPanel
+            assumptions={assumptions}
+            onAssumptionChange={handleAssumptionChange}
+            onResetAssumptions={() => setAssumptions({ ...DEFAULT_FINANCING_ASSUMPTIONS })}
+          />
 
           <div className="fin-results">
             {isDual ? (

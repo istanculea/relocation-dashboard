@@ -13,6 +13,39 @@ import { PillarTierSummary } from './PillarScoreDisplay.jsx';
 
 const formatScore = (value) => Number(value).toFixed(2);
 
+const getLensDeltaState = (currentScore, balancedScore) => {
+  const diff = currentScore - balancedScore;
+  const diffAbs = Math.abs(diff);
+
+  if (diff > 0.1) {
+    return {
+      diff,
+      diffAbs,
+      direction: '↑',
+      directionClass: 'boost',
+      fitNote: 'better',
+    };
+  }
+
+  if (diff < -0.1) {
+    return {
+      diff,
+      diffAbs,
+      direction: '↓',
+      directionClass: 'penalty',
+      fitNote: 'worse',
+    };
+  }
+
+  return {
+    diff,
+    diffAbs,
+    direction: '→',
+    directionClass: 'neutral',
+    fitNote: null,
+  };
+};
+
 /**
  * LensLabel — shows active lens with icon and description
  */
@@ -51,10 +84,9 @@ export const LensScoreImpact = ({
     return null;
   }
 
-  const diff = currentScore - balancedScore;
-  const diffAbs = Math.abs(diff);
-  const direction = diff > 0.1 ? '↑' : diff < -0.1 ? '↓' : '→';
-  const directionClass = diff > 0.1 ? 'boost' : diff < -0.1 ? 'penalty' : 'neutral';
+  const { diffAbs, direction, directionClass, fitNote } = getLensDeltaState(currentScore, balancedScore);
+  const shouldShowComparison = showDetails && balancedScore !== undefined;
+  const shouldShowDeltaNote = diffAbs > 0.1 && fitNote;
   
   return (
     <div className={`lens-score-impact lens-score-impact--${directionClass}`}>
@@ -67,12 +99,12 @@ export const LensScoreImpact = ({
         </div>
       </div>
       
-      {showDetails && balancedScore !== undefined && (
+      {shouldShowComparison && (
         <div className="lens-score-impact__comparison">
           <span className="lens-score-impact__label">vs Balanced:</span>
           <span className={`lens-score-impact__delta lens-score-impact__delta--${directionClass}`}>
             {direction} {formatScore(diffAbs)}
-            {diffAbs > 0.1 && <span className="lens-score-impact__delta-note"> ({diff > 0 ? 'better' : 'worse'} fit)</span>}
+            {shouldShowDeltaNote && <span className="lens-score-impact__delta-note"> ({fitNote} fit)</span>}
           </span>
         </div>
       )}

@@ -31,5 +31,5 @@ export const loadDashboardData = () => {
 };
 
 export const pickAllowed = (value, options, fallback) => (
-  options.some((option) => option.value === value) ? value : fallback
+  options.some((option) => option.key === value || option.value === value) ? value : fallback
 );

@@ -155,10 +155,15 @@ export const downloadExportFile = (filename, content, mimeType) => {
   anchor.rel = 'noopener';
   anchor.style.display = 'none';
   document.body.appendChild(anchor);
-  anchor.click();
-  anchor.remove();
+  let revokeTimerId;
 
-  window.setTimeout(() => {
-    window.URL.revokeObjectURL(url);
-  }, 0);
+  try {
+    anchor.click();
+  } finally {
+    anchor.remove();
+    revokeTimerId = window.setTimeout(() => {
+      window.URL.revokeObjectURL(url);
+      window.clearTimeout(revokeTimerId);
+    }, 0);
+  }
 };

@@ -1,0 +1,152 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://esmip.dev/schemas/subject_snapshot_response.schema.json",
+  "title": "SubjectSnapshotResponse",
+  "type": "object",
+  "required": ["request_id", "data", "meta"],
+  "properties": {
+    "request_id": { "type": "string", "minLength": 1 },
+    "data": {
+      "type": "object",
+      "required": [
+        "subject",
+        "metrics",
+        "forecast_highlights",
+        "life_rhythm",
+        "confidence"
+      ],
+      "properties": {
+        "subject": {
+          "type": "object",
+          "required": ["type", "id", "name"],
+          "properties": {
+            "type": { "enum": ["city", "region", "corridor", "cluster"] },
+            "id": { "type": "string", "minLength": 1 },
+            "name": { "type": "string", "minLength": 1 }
+          },
+          "additionalProperties": false
+        },
+        "metrics": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "metric_key",
+              "value",
+              "unit",
+              "directionality",
+              "source_class",
+              "confidence"
+            ],
+            "properties": {
+              "metric_key": { "type": "string", "minLength": 1 },
+              "value": { "type": "number" },
+              "unit": { "type": "string", "minLength": 1 },
+              "directionality": {
+                "enum": ["higher_better", "lower_better", "target_band"]
+              },
+              "source_class": {
+                "enum": ["source_backed", "composite", "inferential"]
+              },
+              "confidence": {
+                "$ref": "#/$defs/confidenceSurface"
+              },
+              "lineage_id": { "type": "string" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "forecast_highlights": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["metric_key", "horizon", "value", "lower", "upper", "volatility"],
+            "properties": {
+              "metric_key": { "type": "string" },
+              "horizon": { "enum": ["h5", "h10", "long"] },
+              "value": { "type": "number" },
+              "lower": { "type": "number" },
+              "upper": { "type": "number" },
+              "volatility": { "type": "number", "minimum": 0, "maximum": 1 },
+              "confidence_trend": {
+                "enum": ["improving", "stable", "deteriorating"]
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "life_rhythm": {
+          "type": "object",
+          "required": [
+            "calmness_index",
+            "sensory_load_index",
+            "bureaucracy_friction_index",
+            "child_autonomy_index",
+            "green_recovery_access_index",
+            "overstimulation_risk"
+          ],
+          "properties": {
+            "calmness_index": { "type": "number", "minimum": 0, "maximum": 10 },
+            "sensory_load_index": { "type": "number", "minimum": 0, "maximum": 10 },
+            "bureaucracy_friction_index": { "type": "number", "minimum": 0, "maximum": 10 },
+            "child_autonomy_index": { "type": "number", "minimum": 0, "maximum": 10 },
+            "green_recovery_access_index": { "type": "number", "minimum": 0, "maximum": 10 },
+            "social_tempo": { "enum": ["slow", "balanced", "fast"] },
+            "overstimulation_risk": { "type": "number", "minimum": 0, "maximum": 10 }
+          },
+          "additionalProperties": false
+        },
+        "confidence": {
+          "$ref": "#/$defs/confidenceSurface"
+        }
+      },
+      "additionalProperties": false
+    },
+    "meta": {
+      "type": "object",
+      "required": ["generated_at", "contract_version"],
+      "properties": {
+        "generated_at": { "type": "string", "format": "date-time" },
+        "contract_version": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["code", "message"],
+        "properties": {
+          "code": { "type": "string" },
+          "message": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "$defs": {
+    "confidenceSurface": {
+      "type": "object",
+      "required": [
+        "class",
+        "score",
+        "freshness_days",
+        "source_diversity",
+        "evidence_depth",
+        "assumptions_count"
+      ],
+      "properties": {
+        "class": {
+          "enum": ["source_backed", "composite", "inferential"]
+        },
+        "score": { "type": "number", "minimum": 0, "maximum": 1 },
+        "freshness_days": { "type": "integer", "minimum": 0 },
+        "source_diversity": { "type": "number", "minimum": 0, "maximum": 1 },
+        "evidence_depth": { "type": "number", "minimum": 0, "maximum": 1 },
+        "assumptions_count": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

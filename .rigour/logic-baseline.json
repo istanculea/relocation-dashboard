@@ -1,301 +1,285 @@
 {
   "functions": [
     {
-      "name": "buildMobilityShareState",
-      "file": "src/utils/mobilityShareState.js",
-      "line": 15,
+      "name": "loadManifest",
+      "file": "apps/worker/src/migrations/postgresMigrationRunner.js",
+      "line": 9,
       "comparisonOps": [
-        ">",
-        ">",
-        "==="
-      ],
-      "branchCount": 2,
-      "returnCount": 2,
-      "callSequence": [
-        "reduce",
-        "includes"
-      ],
-      "bodyHash": "5e67dc5c4e6314833ea26e65582b61d5"
-    },
-    {
-      "name": "readMobilityShareState",
-      "file": "src/utils/mobilityShareState.js",
-      "line": 31,
-      "comparisonOps": [
-        ">",
-        ">",
-        "===",
-        "===",
-        "==="
-      ],
-      "branchCount": 5,
-      "returnCount": 4,
-      "callSequence": [
-        "isPlainObject",
-        "includes",
-        "isPlainObject",
-        "reduce",
-        "keys"
-      ],
-      "bodyHash": "dab3e84dfcd6998467dd7b6467dfcca3"
-    },
-    {
-      "name": "exportJsonSnapshot",
-      "file": "src/app/exportActions.js",
-      "line": 12,
-      "comparisonOps": [
-        ">",
-        ">",
-        "==",
-        ">",
-        ">",
-        ">",
-        ">",
-        "==",
         ">"
       ],
-      "branchCount": 6,
-      "returnCount": 0,
+      "branchCount": 0,
+      "returnCount": 1,
       "callSequence": [
-        "some",
-        "import",
-        "all",
-        "map",
-        "loadCityTrendDetail",
-        "Map",
-        "map",
-        "get",
-        "some",
-        "some",
-        "import",
-        "map",
-        "downloadExportFile",
-        "buildExportFileName",
-        "stringify"
+        "resolve",
+        "readFile",
+        "parse"
       ],
-      "bodyHash": "3cdbdd59235d294788e715d9a0eae543"
+      "bodyHash": "29a051ba74624f4751fdb57e0cf1359f"
     },
     {
-      "name": "exportCsvSnapshot",
-      "file": "src/app/exportActions.js",
-      "line": 50,
+      "name": "describeSchema",
+      "file": "apps/worker/src/migrations/postgresMigrationRunner.js",
+      "line": 21,
+      "comparisonOps": [
+        ">"
+      ],
+      "branchCount": 0,
+      "returnCount": 1,
+      "callSequence": [
+        "resolve",
+        "readFile",
+        "countStatements",
+        "byteLength",
+        "buildDigest"
+      ],
+      "bodyHash": "c52d2d80ff3b741d440f0aad68416028"
+    },
+    {
+      "name": "defaultClientFactory",
+      "file": "apps/worker/src/migrations/postgresMigrationRunner.js",
+      "line": 33,
+      "comparisonOps": [
+        ">"
+      ],
+      "branchCount": 0,
+      "returnCount": 1,
+      "callSequence": [
+        "import",
+        "Client"
+      ],
+      "bodyHash": "b1f5e1b43ed393285549aac96881f3a6"
+    },
+    {
+      "name": "ensureMigrationLogTable",
+      "file": "apps/worker/src/migrations/postgresMigrationRunner.js",
+      "line": 38,
       "comparisonOps": [
         ">"
       ],
       "branchCount": 0,
       "returnCount": 0,
       "callSequence": [
-        "downloadExportFile",
-        "buildExportFileName",
-        "buildCsvDocument"
+        "query",
+        "now"
       ],
-      "bodyHash": "956692a999813873c7b65d60bacecf79"
+      "bodyHash": "76a29e50e67847b15621cc39ee89137e"
     },
     {
-      "name": "printDashboardSnapshot",
-      "file": "src/app/exportActions.js",
-      "line": 76,
+      "name": "hasDigestApplied",
+      "file": "apps/worker/src/migrations/postgresMigrationRunner.js",
+      "line": 49,
       "comparisonOps": [
         ">",
+        ">"
+      ],
+      "branchCount": 0,
+      "returnCount": 1,
+      "callSequence": [
+        "query"
+      ],
+      "bodyHash": "9110b5cfa767fa9aa8cb63b97ce1501d"
+    },
+    {
+      "name": "printJson",
+      "file": "apps/worker/src/index.js",
+      "line": 12,
+      "comparisonOps": [
+        ">"
+      ],
+      "branchCount": 0,
+      "returnCount": 0,
+      "callSequence": [
+        "log",
+        "stringify"
+      ],
+      "bodyHash": "809f02461247708ce28ac8ccb4c65d09"
+    },
+    {
+      "name": "run",
+      "file": "apps/worker/src/index.js",
+      "line": 30,
+      "comparisonOps": [
         ">",
+        "===",
+        "===",
+        "===",
+        "===",
+        "===",
+        "===",
+        "===",
+        "==="
+      ],
+      "branchCount": 18,
+      "returnCount": 8,
+      "callSequence": [
+        "parseOptions",
+        "slice",
+        "loadJobsModule",
+        "log",
+        "log",
+        "join",
+        "loadJobsModule",
+        "printJson",
+        "Error",
+        "loadJobsModule",
+        "runJob",
+        "printJson",
+        "loadJobsModule",
+        "runRegisteredJobs",
+        "printJson",
+        "loadBootstrapModule",
+        "describeDomainSchema",
+        "printJson",
+        "loadBootstrapModule",
+        "bootstrapDomainSchema",
+        "printJson",
+        "loadApplyModule",
+        "applyDomainSchemaMigration",
+        "isMigrationApplyEnabled",
+        "resolveMigrationConnectionString",
+        "printJson",
+        "loadBootstrapModule",
+        "loadApplyModule",
+        "bootstrapDomainSchema",
+        "applyDomainSchemaMigration",
+        "isMigrationApplyEnabled",
+        "resolveMigrationConnectionString",
+        "printJson",
+        "Error"
+      ],
+      "bodyHash": "db3e9ebb84843c4f7437f6dbcb2dcf52"
+    },
+    {
+      "name": "maybeStartFromCli",
+      "file": "apps/web/service/runtimeServer.js",
+      "line": 19,
+      "comparisonOps": [
         ">",
+        "==="
+      ],
+      "branchCount": 2,
+      "returnCount": 1,
+      "callSequence": [
+        "importModule",
+        "pathToFileURL",
+        "startWebServiceRuntime"
+      ],
+      "bodyHash": "2b92eecb9f1a48cc9548a35d16bff435"
+    },
+    {
+      "name": "stableId",
+      "file": "packages/shared/contracts/api/v1Handlers.js",
+      "line": 82,
+      "comparisonOps": [
+        ">"
+      ],
+      "branchCount": 0,
+      "returnCount": 1,
+      "callSequence": [
+        "createHash",
+        "update",
+        "stringify",
+        "digest",
+        "slice"
+      ],
+      "bodyHash": "9d6af66ad393daeabf14dfae363b40c8"
+    },
+    {
+      "name": "createSimulationRun",
+      "file": "packages/shared/contracts/api/v1Handlers.js",
+      "line": 191,
+      "comparisonOps": [
+        ">"
+      ],
+      "branchCount": 2,
+      "returnCount": 1,
+      "callSequence": [
+        "stableId",
+        "set",
+        "buildRequestId"
+      ],
+      "bodyHash": "5af3c03fd9bb5f5571a2dea984c80f2d"
+    },
+    {
+      "name": "getSimulationRun",
+      "file": "packages/shared/contracts/api/v1Handlers.js",
+      "line": 217,
+      "comparisonOps": [
         ">"
       ],
       "branchCount": 1,
       "returnCount": 1,
       "callSequence": [
-        "setIsPrinting",
-        "requestAnimationFrame",
-        "requestAnimationFrame",
-        "querySelectorAll",
-        "forEach",
-        "print",
-        "setIsPrinting"
+        "get",
+        "withEnvelope"
       ],
-      "bodyHash": "33588bca03ead1c6a6a0f8b98e49213b"
+      "bodyHash": "e0e9254b2b76f99f5fb6e06405b7886d"
     },
     {
-      "name": "resolveMobilityMapForPage",
-      "file": "src/app/useDashboardOrchestration.js",
-      "line": 31,
+      "name": "patchCandidateSet",
+      "file": "packages/shared/contracts/api/v1Handlers.js",
+      "line": 267,
+      "comparisonOps": [
+        ">"
+      ],
+      "branchCount": 1,
+      "returnCount": 1,
+      "callSequence": [
+        "get",
+        "set",
+        "withEnvelope"
+      ],
+      "bodyHash": "098bf7d244c90190e1cac69e200b4840"
+    },
+    {
+      "name": "readJsonBody",
+      "file": "packages/shared/contracts/api/httpRouteAdapter.js",
+      "line": 8,
       "comparisonOps": [
         ">",
-        "===",
-        "==="
+        ">",
+        ">"
       ],
-      "branchCount": 2,
+      "branchCount": 5,
+      "returnCount": 4,
+      "callSequence": [
+        "includes",
+        "push",
+        "reduce",
+        "Error",
+        "concat",
+        "toString",
+        "trim",
+        "parse"
+      ],
+      "bodyHash": "8914deec7bb4839ad2ca9ca6ff6166f9"
+    },
+    {
+      "name": "dispatchApiRequest",
+      "file": "packages/shared/contracts/api/httpRouteAdapter.js",
+      "line": 82,
+      "comparisonOps": [
+        ">",
+        ">",
+        "===",
+        "!=="
+      ],
+      "branchCount": 5,
       "returnCount": 3,
-      "callSequence": [],
-      "bodyHash": "15fc49c42e8f4168448403dae2db40ca"
-    },
-    {
-      "name": "navigateTo",
-      "file": "src/app/useDashboardOrchestration.js",
-      "line": 154,
-      "comparisonOps": [
-        ">"
-      ],
-      "branchCount": 1,
-      "returnCount": 0,
       "callSequence": [
-        "setPage",
-        "mobilityDispatch",
-        "resolveMobilityMapForPage",
-        "buildDashboardShareState",
-        "buildHashWithShareState",
-        "scrollTo"
+        "find",
+        "test",
+        "createNotFoundBody",
+        "createNotImplementedBody",
+        "exec",
+        "slice",
+        "mapParams",
+        "handler"
       ],
-      "bodyHash": "79436353d700caa98a88e9b1823d0278"
-    },
-    {
-      "name": "app",
-      "file": "src/App.jsx",
-      "line": 22,
-      "comparisonOps": [
-        ">",
-        ">",
-        ">",
-        ">",
-        ">",
-        "<",
-        ">",
-        "<",
-        ">",
-        "===",
-        "<",
-        "<",
-        ">",
-        ">",
-        "<",
-        ">",
-        ">",
-        "<",
-        ">",
-        "===",
-        "<",
-        "<",
-        ">",
-        ">",
-        "<",
-        ">",
-        ">",
-        ">",
-        "<",
-        ">",
-        "<",
-        ">",
-        ">",
-        ">",
-        ">"
-      ],
-      "branchCount": 8,
-      "returnCount": 5,
-      "callSequence": [
-        "app",
-        "useDashboardState",
-        "useMobilityState",
-        "useMobilityDispatch",
-        "useState",
-        "useDashboardOrchestration",
-        "exportJsonSnapshot",
-        "alert",
-        "printDashboardSnapshot",
-        "alert",
-        "exportCsvSnapshot",
-        "alert",
-        "exportXlsSnapshot",
-        "alert",
-        "shareDashboardSnapshot",
-        "navigateTo",
-        "navigateTo",
-        "navigateTo",
-        "setSearchValue",
-        "setSortKey",
-        "setVerificationFilter",
-        "setBudgetFilter",
-        "setMobilityFilter",
-        "setAirFilter",
-        "navigateTo",
-        "navigateTo"
-      ],
-      "bodyHash": "77ae43135a5066ad991e560dd3fe5151"
-    },
-    {
-      "name": "handleJsonExport",
-      "file": "src/App.jsx",
-      "line": 70,
-      "comparisonOps": [
-        ">"
-      ],
-      "branchCount": 1,
-      "returnCount": 0,
-      "callSequence": [
-        "exportJsonSnapshot",
-        "alert"
-      ],
-      "bodyHash": "c9acc91cdfe29483b009f3f68ce9fe7c"
-    },
-    {
-      "name": "handlePrint",
-      "file": "src/App.jsx",
-      "line": 80,
-      "comparisonOps": [
-        ">"
-      ],
-      "branchCount": 1,
-      "returnCount": 0,
-      "callSequence": [
-        "printDashboardSnapshot",
-        "alert"
-      ],
-      "bodyHash": "5bf68f1ecb1cc52b4a07a46e70527302"
-    },
-    {
-      "name": "handleCsvExport",
-      "file": "src/App.jsx",
-      "line": 90,
-      "comparisonOps": [
-        ">"
-      ],
-      "branchCount": 1,
-      "returnCount": 0,
-      "callSequence": [
-        "exportCsvSnapshot",
-        "alert"
-      ],
-      "bodyHash": "9509fb8faf01a1b3834a33769e80f495"
-    },
-    {
-      "name": "handleXlsExport",
-      "file": "src/App.jsx",
-      "line": 100,
-      "comparisonOps": [
-        ">"
-      ],
-      "branchCount": 1,
-      "returnCount": 0,
-      "callSequence": [
-        "exportXlsSnapshot",
-        "alert"
-      ],
-      "bodyHash": "4645af5f71eeb5a8a4e66f5fe1b82211"
-    },
-    {
-      "name": "handleShare",
-      "file": "src/App.jsx",
-      "line": 116,
-      "comparisonOps": [
-        ">"
-      ],
-      "branchCount": 0,
-      "returnCount": 0,
-      "callSequence": [
-        "shareDashboardSnapshot"
-      ],
-      "bodyHash": "dbabf1d2c4895026d74c276ac8440fbf"
+      "bodyHash": "fcb69c4a695af8cd5bceb21d8b719416"
     }
   ],
-  "createdAt": "2026-04-17T09:27:29.502Z",
-  "lastUpdated": "2026-05-20T20:56:43.886Z",
-  "scanCount": 217
+  "createdAt": "2026-05-21T19:53:09.765Z",
+  "lastUpdated": "2026-05-21T19:54:43.729Z",
+  "scanCount": 9
 }

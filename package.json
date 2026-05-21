@@ -14,8 +14,16 @@
     "dashboard:test:visual": "npm run dashboard:build && playwright test --config playwright.visual.config.js",
     "dashboard:test:visual:update": "npm run dashboard:build && playwright test --config playwright.visual.config.js --update-snapshots",
     "apps:web:dev": "npm run dashboard:dev",
+    "apps:web:service:serve": "node apps/web/service/runtimeServer.js",
     "apps:admin:check": "node apps/admin/src/index.js --check",
+    "apps:admin:api:contracts:list": "node apps/admin/src/index.js api:contracts:list",
+    "apps:admin:serve": "node apps/admin/src/server.js",
     "apps:worker:check": "node apps/worker/src/index.js --check",
+    "apps:worker:migrations:describe": "node apps/worker/src/index.js migrations:describe",
+    "apps:worker:migrations:bootstrap": "node apps/worker/src/index.js migrations:bootstrap",
+    "apps:worker:migrations:apply": "node apps/worker/src/index.js migrations:apply",
+    "apps:worker:migrations:bootstrap-and-apply": "node apps/worker/src/index.js migrations:bootstrap-and-apply",
+    "platform:test:contracts": "vitest run --root . apps/admin/src/api/v1/handlers.contracts.test.js apps/worker/src/migrations/domainSchemaBootstrap.test.js apps/worker/src/migrations/postgresMigrationRunner.test.js packages/shared/contracts/api/httpRouteAdapter.test.js apps/worker/src/index.test.js",
     "packages:check": "node scripts/check-package-exports.mjs",
     "phase5:check": "npm run packages:check && npm run apps:admin:check && npm run apps:worker:check",
     "rigour:init": "node scripts/rigour-init.cjs"
@@ -30,6 +38,7 @@
   },
   "dependencies": {
     "d3-geo": "^3.1.1",
+    "pg": "^8.16.3",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "topojson-client": "^3.1.0",
@@ -38,8 +47,11 @@
   "devDependencies": {
     "@playwright/test": "^1.60.0",
     "@vitejs/plugin-react": "^5.1.0",
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1",
     "jsdom": "^29.1.1",
     "rigour-cli-shim": "file:tools/rigour-cli",
+    "yaml": "^2.8.1",
     "vite": "^7.1.12",
     "vitest": "^4.1.6"
   }

@@ -1,5 +1,3 @@
-import { runJob, runRegisteredJobs, WORKER_JOBS } from './jobs/jobRunner.js';
-
 const args = process.argv.slice(2);
 const command = args[0] ?? '--check';
 
@@ -15,16 +13,32 @@ const printJson = (value) => {
   console.log(JSON.stringify(value, null, 2));
 };
 
+const isMigrationApplyEnabled = () => String(process.env.ENABLE_DB_MIGRATIONS ?? '').toLowerCase() === 'true';
+
+const resolveMigrationConnectionString = (explicitConnectionString) => (
+  explicitConnectionString
+  ?? process.env.DATABASE_URL
+  ?? process.env.PG_CONNECTION_STRING
+  ?? undefined
+);
+
+const importModule = (specifier) => Function('s', 'return import(s);')(specifier);
+const loadJobsModule = () => importModule('./jobs/jobRunner.js');
+const loadBootstrapModule = () => importModule('./migrations/domainSchemaBootstrap.js');
+const loadApplyModule = () => importModule('./migrations/postgresMigrationRunner.js');
+
 const run = async () => {
   const options = parseOptions(args.slice(1));
 
   if (command === '--check') {
+    const { WORKER_JOBS } = await loadJobsModule();
     console.log('worker app feature slice OK');
     console.log(`registeredJobs: ${WORKER_JOBS.join(', ')}`);
     return;
   }
 
   if (command === 'jobs:list') {
+    const { WORKER_JOBS } = await loadJobsModule();
     printJson(WORKER_JOBS);
     return;
   }
@@ -34,14 +48,64 @@ const run = async () => {
       throw new Error('Missing required --id for jobs:run');
     }
 
+    const { runJob } = await loadJobsModule();
     const output = await runJob(options.id);
     printJson(output);
     return;
   }
 
   if (command === 'jobs:run-all') {
+    const { runRegisteredJobs } = await loadJobsModule();
     const output = await runRegisteredJobs();
     printJson(output);
+    return;
+  }
+
+  if (command === 'migrations:describe') {
+    const { describeDomainSchema } = await loadBootstrapModule();
+    const output = await describeDomainSchema(options.schema ?? undefined);
+    printJson(output);
+    return;
+  }
+
+  if (command === 'migrations:bootstrap') {
+    const { bootstrapDomainSchema } = await loadBootstrapModule();
+    const output = await bootstrapDomainSchema({
+      schemaFilePath: options.schema ?? undefined,
+      outDir: options.outDir ?? undefined,
+    });
+    printJson(output);
+    return;
+  }
+
+  if (command === 'migrations:apply') {
+    const { applyDomainSchemaMigration } = await loadApplyModule();
+    const output = await applyDomainSchemaMigration({
+      manifestPath: options.manifest ?? undefined,
+      schemaFilePath: options.schema ?? undefined,
+      migrationApplyEnabled: isMigrationApplyEnabled(),
+      connectionString: resolveMigrationConnectionString(options.connectionString ?? undefined),
+    });
+    printJson(output);
+    return;
+  }
+
+  if (command === 'migrations:bootstrap-and-apply') {
+    const { bootstrapDomainSchema } = await loadBootstrapModule();
+    const { applyDomainSchemaMigration } = await loadApplyModule();
+    const manifest = await bootstrapDomainSchema({
+      schemaFilePath: options.schema ?? undefined,
+      outDir: options.outDir ?? undefined,
+    });
+
+    const applyResult = await applyDomainSchemaMigration({
+      manifestPath: manifest.outputPath,
+      schemaFilePath: manifest.schema.schemaFilePath,
+      migrationApplyEnabled: isMigrationApplyEnabled(),
+      connectionString: resolveMigrationConnectionString(options.connectionString ?? undefined),
+    });
+
+    printJson({ manifest, applyResult });
     return;
   }
 

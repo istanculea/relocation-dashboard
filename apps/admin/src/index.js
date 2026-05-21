@@ -4,6 +4,8 @@ import {
   updateOverrideStatus,
 } from './overrides/overrideStore.js';
 import { listPendingReviewQueue } from './reviews/reviewQueue.js';
+import { apiV1Handlers } from './api/v1/index.js';
+import { startAdminApiServer } from './server.js';
 
 const args = process.argv.slice(2);
 const command = args[0] ?? '--check';
@@ -63,6 +65,19 @@ const run = async () => {
   if (command === 'reviews:queue') {
     const queue = await listPendingReviewQueue();
     printJson(queue);
+    return;
+  }
+
+  if (command === 'api:contracts:list') {
+    printJson(Object.keys(apiV1Handlers));
+    return;
+  }
+
+  if (command === 'serve') {
+    await startAdminApiServer({
+      port: Number(options.port ?? process.env.ADMIN_API_PORT ?? 4070),
+      host: String(options.host ?? process.env.ADMIN_API_HOST ?? '127.0.0.1'),
+    });
     return;
   }
 

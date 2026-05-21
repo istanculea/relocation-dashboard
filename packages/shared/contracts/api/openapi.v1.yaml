@@ -1,0 +1,758 @@
+openapi: 3.1.0
+info:
+  title: European Strategic Mobility Intelligence Platform API
+  version: 1.0.0
+  description: Deterministic, confidence-aware contracts for atlas, compare, forecast, rhythm, simulation, and evidence.
+servers:
+  - url: https://api.esmip.example.com
+
+tags:
+  - name: Atlas
+  - name: Subjects
+  - name: Compare
+  - name: Forecast
+  - name: Rhythm
+  - name: Simulations
+  - name: Evidence
+  - name: CandidateSets
+  - name: Exports
+
+paths:
+  /v1/atlas/layers/query:
+    post:
+      tags: [Atlas]
+      summary: Query composited atlas layers by viewport and filters
+      operationId: queryAtlasLayers
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AtlasLayerQueryRequest'
+      responses:
+        '200':
+          description: Layer payload for rendering
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AtlasLayerQueryResponse'
+
+  /v1/subjects/{subjectType}/{subjectId}/snapshot:
+    get:
+      tags: [Subjects]
+      summary: Get strategic snapshot for one subject
+      operationId: getSubjectSnapshot
+      parameters:
+        - $ref: '#/components/parameters/SubjectTypePath'
+        - $ref: '#/components/parameters/SubjectIdPath'
+        - in: query
+          name: horizon
+          schema:
+            $ref: '#/components/schemas/Horizon'
+      responses:
+        '200':
+          description: Subject snapshot
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubjectSnapshotResponse'
+
+  /v1/compare:
+    post:
+      tags: [Compare]
+      summary: Compare regions, corridors, clusters, and cities
+      operationId: compareSubjects
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompareRequest'
+      responses:
+        '200':
+          description: Strategic comparison output
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompareResponse'
+
+  /v1/forecast/query:
+    post:
+      tags: [Forecast]
+      summary: Query confidence-aware forecast series
+      operationId: queryForecast
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForecastQueryRequest'
+      responses:
+        '200':
+          description: Forecast series payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForecastQueryResponse'
+
+  /v1/rhythm/query:
+    post:
+      tags: [Rhythm]
+      summary: Evaluate life-rhythm compatibility for selected subjects
+      operationId: queryRhythm
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RhythmQueryRequest'
+      responses:
+        '200':
+          description: Life rhythm result payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RhythmQueryResponse'
+
+  /v1/simulations/runs:
+    post:
+      tags: [Simulations]
+      summary: Start a deterministic simulation run
+      operationId: createSimulationRun
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SimulationRunCreateRequest'
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SimulationRunAcceptedResponse'
+
+  /v1/simulations/runs/{runId}:
+    get:
+      tags: [Simulations]
+      summary: Get simulation run status and results
+      operationId: getSimulationRun
+      parameters:
+        - in: path
+          required: true
+          name: runId
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Simulation run state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SimulationRunResponse'
+
+  /v1/evidence/observations/{observationId}:
+    get:
+      tags: [Evidence]
+      summary: Get evidence and lineage for one observation
+      operationId: getObservationEvidence
+      parameters:
+        - in: path
+          required: true
+          name: observationId
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Evidence trace payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EvidenceObservationResponse'
+
+  /v1/candidate-sets:
+    post:
+      tags: [CandidateSets]
+      summary: Create candidate collection
+      operationId: createCandidateSet
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CandidateSetCreateRequest'
+      responses:
+        '201':
+          description: Candidate set created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CandidateSetResponse'
+
+  /v1/candidate-sets/{candidateSetId}:
+    get:
+      tags: [CandidateSets]
+      summary: Get one candidate set
+      operationId: getCandidateSet
+      parameters:
+        - in: path
+          required: true
+          name: candidateSetId
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Candidate set
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CandidateSetResponse'
+
+    patch:
+      tags: [CandidateSets]
+      summary: Patch one candidate set
+      operationId: patchCandidateSet
+      parameters:
+        - in: path
+          required: true
+          name: candidateSetId
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CandidateSetPatchRequest'
+      responses:
+        '200':
+          description: Candidate set updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CandidateSetResponse'
+
+  /v1/exports:
+    post:
+      tags: [Exports]
+      summary: Create export job from current workspace state
+      operationId: createExport
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExportCreateRequest'
+      responses:
+        '202':
+          description: Export accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExportAcceptedResponse'
+
+components:
+  parameters:
+    SubjectTypePath:
+      in: path
+      required: true
+      name: subjectType
+      schema:
+        type: string
+        enum: [city, region, corridor, cluster]
+    SubjectIdPath:
+      in: path
+      required: true
+      name: subjectId
+      schema:
+        type: string
+
+  schemas:
+    EnvelopeMeta:
+      type: object
+      required: [generated_at, contract_version]
+      properties:
+        generated_at:
+          type: string
+          format: date-time
+        contract_version:
+          type: string
+
+    ConfidenceSurface:
+      type: object
+      required: [class, score, freshness_days, source_diversity, evidence_depth, assumptions_count]
+      properties:
+        class:
+          type: string
+          enum: [source_backed, composite, inferential]
+        score:
+          type: number
+          minimum: 0
+          maximum: 1
+        freshness_days:
+          type: integer
+          minimum: 0
+        source_diversity:
+          type: number
+          minimum: 0
+          maximum: 1
+        evidence_depth:
+          type: number
+          minimum: 0
+          maximum: 1
+        assumptions_count:
+          type: integer
+          minimum: 0
+
+    SubjectRef:
+      type: object
+      required: [type, id, name]
+      properties:
+        type:
+          type: string
+          enum: [city, region, corridor, cluster]
+        id:
+          type: string
+        name:
+          type: string
+
+    Horizon:
+      type: string
+      enum: [current, h5, h10, long]
+
+    AtlasLayerQueryRequest:
+      type: object
+      required: [bbox, zoom, layers]
+      properties:
+        bbox:
+          type: array
+          items: { type: number }
+          minItems: 4
+          maxItems: 4
+        zoom:
+          type: number
+        layers:
+          type: array
+          items: { type: string }
+        filters:
+          type: object
+          additionalProperties: true
+        horizon:
+          $ref: '#/components/schemas/Horizon'
+        scenario_id:
+          type: string
+
+    AtlasLayerQueryResponse:
+      type: object
+      required: [request_id, data, meta]
+      properties:
+        request_id:
+          type: string
+        data:
+          type: object
+          required: [features, confidence_overlays]
+          properties:
+            features:
+              type: array
+              items:
+                type: object
+                additionalProperties: true
+            confidence_overlays:
+              type: array
+              items:
+                type: object
+                properties:
+                  layer:
+                    type: string
+                  confidence:
+                    $ref: '#/components/schemas/ConfidenceSurface'
+        meta:
+          $ref: '#/components/schemas/EnvelopeMeta'
+
+    SubjectSnapshotResponse:
+      type: object
+      required: [request_id, data, meta]
+      properties:
+        request_id:
+          type: string
+        data:
+          type: object
+          required: [subject, metrics, forecast_highlights, life_rhythm, confidence]
+          properties:
+            subject:
+              $ref: '#/components/schemas/SubjectRef'
+            metrics:
+              type: array
+              items:
+                type: object
+                required: [metric_key, value, unit, confidence]
+                properties:
+                  metric_key: { type: string }
+                  value: { type: number }
+                  unit: { type: string }
+                  confidence:
+                    $ref: '#/components/schemas/ConfidenceSurface'
+            forecast_highlights:
+              type: array
+              items:
+                type: object
+                properties:
+                  metric_key: { type: string }
+                  horizon: { $ref: '#/components/schemas/Horizon' }
+                  value: { type: number }
+                  lower: { type: number }
+                  upper: { type: number }
+                  volatility: { type: number, minimum: 0, maximum: 1 }
+            life_rhythm:
+              type: object
+              properties:
+                calmness_index: { type: number }
+                sensory_load_index: { type: number }
+                bureaucracy_friction_index: { type: number }
+                child_autonomy_index: { type: number }
+                green_recovery_access_index: { type: number }
+                overstimulation_risk: { type: number }
+            confidence:
+              $ref: '#/components/schemas/ConfidenceSurface'
+        meta:
+          $ref: '#/components/schemas/EnvelopeMeta'
+
+    CompareRequest:
+      type: object
+      required: [subjects, lens, horizon]
+      properties:
+        subjects:
+          type: array
+          minItems: 2
+          maxItems: 8
+          items:
+            $ref: '#/components/schemas/SubjectRef'
+        lens:
+          type: string
+          enum: [family_resilience, mobility_access, affordability_resilience, climate_durability]
+        horizon:
+          $ref: '#/components/schemas/Horizon'
+        scenario_id:
+          type: string
+
+    CompareResponse:
+      type: object
+      required: [request_id, data, meta]
+      properties:
+        request_id: { type: string }
+        data:
+          type: object
+          required: [subjects, lens, horizon, strengths, tradeoffs, confidence_matrix]
+          properties:
+            subjects:
+              type: array
+              items:
+                $ref: '#/components/schemas/SubjectRef'
+            lens:
+              type: string
+            horizon:
+              $ref: '#/components/schemas/Horizon'
+            strengths:
+              type: array
+              items:
+                type: object
+                properties:
+                  subject_id: { type: string }
+                  narrative: { type: string }
+                  drivers:
+                    type: array
+                    items: { type: string }
+            tradeoffs:
+              type: array
+              items:
+                type: object
+                properties:
+                  subject_id: { type: string }
+                  narrative: { type: string }
+                  risk_factors:
+                    type: array
+                    items: { type: string }
+            confidence_matrix:
+              type: array
+              items:
+                type: object
+                properties:
+                  subject_id: { type: string }
+                  metric_key: { type: string }
+                  class:
+                    type: string
+                    enum: [source_backed, composite, inferential]
+                  score:
+                    type: number
+                    minimum: 0
+                    maximum: 1
+        meta:
+          $ref: '#/components/schemas/EnvelopeMeta'
+
+    ForecastQueryRequest:
+      type: object
+      required: [subjects, metric_keys, horizon]
+      properties:
+        subjects:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubjectRef'
+        metric_keys:
+          type: array
+          items: { type: string }
+        horizon:
+          $ref: '#/components/schemas/Horizon'
+        scenario_id:
+          type: string
+
+    ForecastQueryResponse:
+      type: object
+      required: [request_id, data, meta]
+      properties:
+        request_id: { type: string }
+        data:
+          type: object
+          required: [series]
+          properties:
+            series:
+              type: array
+              items:
+                type: object
+                properties:
+                  subject_id: { type: string }
+                  metric_key: { type: string }
+                  points:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        ts: { type: string, format: date-time }
+                        value: { type: number }
+                        lower: { type: number }
+                        upper: { type: number }
+                  volatility: { type: number }
+                  confidence_trend:
+                    type: string
+                    enum: [improving, stable, deteriorating]
+        meta:
+          $ref: '#/components/schemas/EnvelopeMeta'
+
+    RhythmQueryRequest:
+      type: object
+      required: [subjects, persona_profile, household_profile]
+      properties:
+        subjects:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubjectRef'
+        persona_profile:
+          type: object
+          additionalProperties: true
+        household_profile:
+          type: object
+          additionalProperties: true
+
+    RhythmQueryResponse:
+      type: object
+      required: [request_id, data, meta]
+      properties:
+        request_id: { type: string }
+        data:
+          type: object
+          required: [results]
+          properties:
+            results:
+              type: array
+              items:
+                type: object
+                properties:
+                  subject_id: { type: string }
+                  compatibility_index: { type: number }
+                  calmness_index: { type: number }
+                  sensory_load_index: { type: number }
+                  bureaucracy_friction_index: { type: number }
+                  narrative: { type: string }
+                  confidence:
+                    $ref: '#/components/schemas/ConfidenceSurface'
+        meta:
+          $ref: '#/components/schemas/EnvelopeMeta'
+
+    SimulationRunCreateRequest:
+      type: object
+      required: [scenario_type, scope, intensity, duration_weeks]
+      properties:
+        scenario_type:
+          type: string
+          enum: [inflation, rail_disruption, fuel_crisis, healthcare_overload, heatwave, housing_acceleration, airport_disruption, recession]
+        scope:
+          type: object
+          properties:
+            type: { type: string, enum: [global, region, corridor, country] }
+            target_ids:
+              type: array
+              items: { type: string }
+        intensity:
+          type: number
+          minimum: 0
+          maximum: 1
+        duration_weeks:
+          type: integer
+          minimum: 1
+
+    SimulationRunAcceptedResponse:
+      type: object
+      required: [request_id, data, meta]
+      properties:
+        request_id: { type: string }
+        data:
+          type: object
+          required: [run_id, status]
+          properties:
+            run_id: { type: string }
+            status: { type: string, enum: [queued, running] }
+            status_url: { type: string }
+        meta:
+          $ref: '#/components/schemas/EnvelopeMeta'
+
+    SimulationRunResponse:
+      type: object
+      required: [request_id, data, meta]
+      properties:
+        request_id: { type: string }
+        data:
+          type: object
+          required: [run_id, status]
+          properties:
+            run_id: { type: string }
+            status:
+              type: string
+              enum: [queued, running, completed, failed]
+            impacted_subjects: { type: integer }
+            delta_summary:
+              type: object
+              additionalProperties: true
+            errors:
+              type: array
+              items: { type: string }
+        meta:
+          $ref: '#/components/schemas/EnvelopeMeta'
+
+    EvidenceObservationResponse:
+      type: object
+      required: [request_id, data, meta]
+      properties:
+        request_id: { type: string }
+        data:
+          type: object
+          required: [observation_id, sources]
+          properties:
+            observation_id: { type: string }
+            sources:
+              type: array
+              items:
+                type: object
+                properties:
+                  source_id: { type: string }
+                  title: { type: string }
+                  publisher: { type: string }
+                  published_at: { type: string, format: date }
+                  url: { type: string }
+                  trace_pointer: { type: string }
+                  weight: { type: number }
+            assumptions:
+              type: array
+              items: { type: string }
+        meta:
+          $ref: '#/components/schemas/EnvelopeMeta'
+
+    CandidateSetCreateRequest:
+      type: object
+      required: [title, subjects]
+      properties:
+        title: { type: string }
+        subjects:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubjectRef'
+        annotations:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+
+    CandidateSetPatchRequest:
+      type: object
+      properties:
+        title: { type: string }
+        subjects:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubjectRef'
+        annotations:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        scenario_snapshots:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+
+    CandidateSetResponse:
+      type: object
+      required: [request_id, data, meta]
+      properties:
+        request_id: { type: string }
+        data:
+          type: object
+          required: [candidate_set_id, title, subjects, annotations]
+          properties:
+            candidate_set_id: { type: string }
+            title: { type: string }
+            subjects:
+              type: array
+              items:
+                $ref: '#/components/schemas/SubjectRef'
+            annotations:
+              type: array
+              items:
+                type: object
+                additionalProperties: true
+            scenario_snapshots:
+              type: array
+              items:
+                type: object
+                additionalProperties: true
+        meta:
+          $ref: '#/components/schemas/EnvelopeMeta'
+
+    ExportCreateRequest:
+      type: object
+      required: [workspace_state, format]
+      properties:
+        workspace_state:
+          type: object
+          additionalProperties: true
+        format:
+          type: string
+          enum: [json, csv, pdf]
+        include_evidence:
+          type: boolean
+          default: true
+
+    ExportAcceptedResponse:
+      type: object
+      required: [request_id, data, meta]
+      properties:
+        request_id: { type: string }
+        data:
+          type: object
+          required: [export_job_id, status]
+          properties:
+            export_job_id: { type: string }
+            status: { type: string, enum: [queued, running, completed, failed] }
+            download_url: { type: string }
+        meta:
+          $ref: '#/components/schemas/EnvelopeMeta'

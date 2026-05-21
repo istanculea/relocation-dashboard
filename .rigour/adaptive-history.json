@@ -1,487 +1,6 @@
 {
   "runs": [
     {
-      "timestamp": "2026-05-12T21:10:03.748Z",
-      "passedGates": 19,
-      "failedGates": 4,
-      "totalFailures": 7,
-      "provenance": {
-        "aiDriftFailures": 4,
-        "structuralFailures": 3,
-        "securityFailures": 0,
-        "governanceFailures": 0,
-        "deepAnalysisFailures": 0
-      }
-    },
-    {
-      "timestamp": "2026-05-12T21:10:19.295Z",
-      "passedGates": 19,
-      "failedGates": 4,
-      "totalFailures": 7,
-      "provenance": {
-        "aiDriftFailures": 4,
-        "structuralFailures": 3,
-        "securityFailures": 0,
-        "governanceFailures": 0,
-        "deepAnalysisFailures": 0
-      }
-    },
-    {
-      "timestamp": "2026-05-12T21:10:19.501Z",
-      "passedGates": 19,
-      "failedGates": 4,
-      "totalFailures": 7,
-      "provenance": {
-        "aiDriftFailures": 4,
-        "structuralFailures": 3,
-        "securityFailures": 0,
-        "governanceFailures": 0,
-        "deepAnalysisFailures": 0
-      }
-    },
-    {
-      "timestamp": "2026-05-12T21:19:47.286Z",
-      "passedGates": 19,
-      "failedGates": 4,
-      "totalFailures": 7,
-      "provenance": {
-        "aiDriftFailures": 4,
-        "structuralFailures": 3,
-        "securityFailures": 0,
-        "governanceFailures": 0,
-        "deepAnalysisFailures": 0
-      }
-    },
-    {
-      "timestamp": "2026-05-12T21:19:56.337Z",
-      "passedGates": 19,
-      "failedGates": 4,
-      "totalFailures": 7,
-      "provenance": {
-        "aiDriftFailures": 4,
-        "structuralFailures": 3,
-        "securityFailures": 0,
-        "governanceFailures": 0,
-        "deepAnalysisFailures": 0
-      }
-    },
-    {
-      "timestamp": "2026-05-12T21:20:39.871Z",
-      "passedGates": 19,
-      "failedGates": 4,
-      "totalFailures": 7,
-      "provenance": {
-        "aiDriftFailures": 4,
-        "structuralFailures": 3,
-        "securityFailures": 0,
-        "governanceFailures": 0,
-        "deepAnalysisFailures": 0
-      }
-    },
-    {
-      "timestamp": "2026-05-12T21:20:50.586Z",
-      "passedGates": 19,
-      "failedGates": 4,
-      "totalFailures": 7,
-      "provenance": {
-        "aiDriftFailures": 4,
-        "structuralFailures": 3,
-        "securityFailures": 0,
-        "governanceFailures": 0,
-        "deepAnalysisFailures": 0
-      }
-    },
-    {
-      "timestamp": "2026-05-12T21:51:54.130Z",
-      "passedGates": 17,
-      "failedGates": 6,
-      "totalFailures": 14,
-      "provenance": {
-        "aiDriftFailures": 9,
-        "structuralFailures": 5,
-        "securityFailures": 0,
-        "governanceFailures": 0,
-        "deepAnalysisFailures": 0
-      }
-    },
-    {
-      "timestamp": "2026-05-12T21:52:03.113Z",
-      "passedGates": 18,
-      "failedGates": 5,
-      "totalFailures": 9,
-      "provenance": {
-        "aiDriftFailures": 4,
-        "structuralFailures": 5,
-        "securityFailures": 0,
-        "governanceFailures": 0,
-        "deepAnalysisFailures": 0
-      }
-    },
-    {
-      "timestamp": "2026-05-12T21:54:01.787Z",
-      "passedGates": 18,
-      "failedGates": 5,
-      "totalFailures": 11,
-      "provenance": {
-        "aiDriftFailures": 8,
-        "structuralFailures": 3,
-        "securityFailures": 0,
-        "governanceFailures": 0,
-        "deepAnalysisFailures": 0
-      }
-    },
-    {
-      "timestamp": "2026-05-12T21:54:08.023Z",
-      "passedGates": 19,
-      "failedGates": 4,
-      "totalFailures": 7,
-      "provenance": {
-        "aiDriftFailures": 4,
-        "structuralFailures": 3,
-        "securityFailures": 0,
-        "governanceFailures": 0,
-        "deepAnalysisFailures": 0
-      }
-    },
-    {
-      "timestamp": "2026-05-13T07:12:37.563Z",
-      "passedGates": 19,
-      "failedGates": 4,
-      "totalFailures": 7,
-      "provenance": {
-        "aiDriftFailures": 4,
-        "structuralFailures": 3,
-        "securityFailures": 0,
-        "governanceFailures": 0,
-        "deepAnalysisFailures": 0
-      }
-    },
-    {
-      "timestamp": "2026-05-13T07:12:52.957Z",
-      "passedGates": 19,
-      "failedGates": 4,
-      "totalFailures": 7,
-      "provenance": {
-        "aiDriftFailures": 4,
-        "structuralFailures": 3,
-        "securityFailures": 0,
-        "governanceFailures": 0,
-        "deepAnalysisFailures": 0
-      }
-    },
-    {
-      "timestamp": "2026-05-13T07:18:08.618Z",
-      "passedGates": 20,
-      "failedGates": 3,
-      "totalFailures": 6,
-      "provenance": {
-        "aiDriftFailures": 4,
-        "structuralFailures": 2,
-        "securityFailures": 0,
-        "governanceFailures": 0,
-        "deepAnalysisFailures": 0
-      }
-    },
-    {
-      "timestamp": "2026-05-13T07:18:16.820Z",
-      "passedGates": 20,
-      "failedGates": 3,
-      "totalFailures": 6,
-      "provenance": {
-        "aiDriftFailures": 4,
-        "structuralFailures": 2,
-        "securityFailures": 0,
-        "governanceFailures": 0,
-        "deepAnalysisFailures": 0
-      }
-    },
-    {
-      "timestamp": "2026-05-13T07:18:35.679Z",
-      "passedGates": 22,
-      "failedGates": 1,
-      "totalFailures": 1,
-      "provenance": {
-        "aiDriftFailures": 0,
-        "structuralFailures": 1,
-        "securityFailures": 0,
-        "governanceFailures": 0,
-        "deepAnalysisFailures": 0
-      }
-    },
-    {
-      "timestamp": "2026-05-13T07:19:19.095Z",
-      "passedGates": 22,
-      "failedGates": 1,
-      "totalFailures": 1,
-      "provenance": {
-        "aiDriftFailures": 0,
-        "structuralFailures": 1,
-        "securityFailures": 0,
-        "governanceFailures": 0,
-        "deepAnalysisFailures": 0
-      }
-    },
-    {
-      "timestamp": "2026-05-13T07:26:52.655Z",
-      "passedGates": 20,
-      "failedGates": 3,
-      "totalFailures": 6,
-      "provenance": {
-        "aiDriftFailures": 4,
-        "structuralFailures": 2,
-        "securityFailures": 0,
-        "governanceFailures": 0,
-        "deepAnalysisFailures": 0
-      }
-    },
-    {
-      "timestamp": "2026-05-13T08:36:09.440Z",
-      "passedGates": 19,
-      "failedGates": 4,
-      "totalFailures": 7,
-      "provenance": {
-        "aiDriftFailures": 5,
-        "structuralFailures": 2,
-        "securityFailures": 0,
-        "governanceFailures": 0,
-        "deepAnalysisFailures": 0
-      }
-    },
-    {
-      "timestamp": "2026-05-13T08:36:28.336Z",
-      "passedGates": 20,
-      "failedGates": 3,
-      "totalFailures": 6,
-      "provenance": {
-        "aiDriftFailures": 4,
-        "structuralFailures": 2,
-        "securityFailures": 0,
-        "governanceFailures": 0,
-        "deepAnalysisFailures": 0
-      }
-    },
-    {
-      "timestamp": "2026-05-13T08:48:00.648Z",
-      "passedGates": 19,
-      "failedGates": 4,
-      "totalFailures": 7,
-      "provenance": {
-        "aiDriftFailures": 5,
-        "structuralFailures": 2,
-        "securityFailures": 0,
-        "governanceFailures": 0,
-        "deepAnalysisFailures": 0
-      }
-    },
-    {
-      "timestamp": "2026-05-13T08:48:41.050Z",
-      "passedGates": 20,
-      "failedGates": 3,
-      "totalFailures": 6,
-      "provenance": {
-        "aiDriftFailures": 4,
-        "structuralFailures": 2,
-        "securityFailures": 0,
-        "governanceFailures": 0,
-        "deepAnalysisFailures": 0
-      }
-    },
-    {
-      "timestamp": "2026-05-13T08:49:31.499Z",
-      "passedGates": 20,
-      "failedGates": 3,
-      "totalFailures": 6,
-      "provenance": {
-        "aiDriftFailures": 4,
-        "structuralFailures": 2,
-        "securityFailures": 0,
-        "governanceFailures": 0,
-        "deepAnalysisFailures": 0
-      }
-    },
-    {
-      "timestamp": "2026-05-13T08:49:56.442Z",
-      "passedGates": 20,
-      "failedGates": 3,
-      "totalFailures": 5,
-      "provenance": {
-        "aiDriftFailures": 3,
-        "structuralFailures": 2,
-        "securityFailures": 0,
-        "governanceFailures": 0,
-        "deepAnalysisFailures": 0
-      }
-    },
-    {
-      "timestamp": "2026-05-13T08:50:34.890Z",
-      "passedGates": 20,
-      "failedGates": 3,
-      "totalFailures": 8,
-      "provenance": {
-        "aiDriftFailures": 6,
-        "structuralFailures": 2,
-        "securityFailures": 0,
-        "governanceFailures": 0,
-        "deepAnalysisFailures": 0
-      }
-    },
-    {
-      "timestamp": "2026-05-15T20:15:09.491Z",
-      "passedGates": 17,
-      "failedGates": 6,
-      "totalFailures": 19,
-      "provenance": {
-        "aiDriftFailures": 11,
-        "structuralFailures": 8,
-        "securityFailures": 0,
-        "governanceFailures": 0,
-        "deepAnalysisFailures": 0
-      }
-    },
-    {
-      "timestamp": "2026-05-15T20:15:20.230Z",
-      "passedGates": 18,
-      "failedGates": 5,
-      "totalFailures": 12,
-      "provenance": {
-        "aiDriftFailures": 4,
-        "structuralFailures": 8,
-        "securityFailures": 0,
-        "governanceFailures": 0,
-        "deepAnalysisFailures": 0
-      }
-    },
-    {
-      "timestamp": "2026-05-15T20:20:35.199Z",
-      "passedGates": 18,
-      "failedGates": 5,
-      "totalFailures": 6,
-      "provenance": {
-        "aiDriftFailures": 4,
-        "structuralFailures": 2,
-        "securityFailures": 0,
-        "governanceFailures": 0,
-        "deepAnalysisFailures": 0
-      }
-    },
-    {
-      "timestamp": "2026-05-15T20:21:22.111Z",
-      "passedGates": 18,
-      "failedGates": 5,
-      "totalFailures": 9,
-      "provenance": {
-        "aiDriftFailures": 7,
-        "structuralFailures": 2,
-        "securityFailures": 0,
-        "governanceFailures": 0,
-        "deepAnalysisFailures": 0
-      }
-    },
-    {
-      "timestamp": "2026-05-15T20:27:50.612Z",
-      "passedGates": 19,
-      "failedGates": 4,
-      "totalFailures": 9,
-      "provenance": {
-        "aiDriftFailures": 5,
-        "structuralFailures": 4,
-        "securityFailures": 0,
-        "governanceFailures": 0,
-        "deepAnalysisFailures": 0
-      }
-    },
-    {
-      "timestamp": "2026-05-15T20:28:02.390Z",
-      "passedGates": 17,
-      "failedGates": 6,
-      "totalFailures": 8,
-      "provenance": {
-        "aiDriftFailures": 4,
-        "structuralFailures": 4,
-        "securityFailures": 0,
-        "governanceFailures": 0,
-        "deepAnalysisFailures": 0
-      }
-    },
-    {
-      "timestamp": "2026-05-15T20:28:02.502Z",
-      "passedGates": 17,
-      "failedGates": 6,
-      "totalFailures": 8,
-      "provenance": {
-        "aiDriftFailures": 4,
-        "structuralFailures": 4,
-        "securityFailures": 0,
-        "governanceFailures": 0,
-        "deepAnalysisFailures": 0
-      }
-    },
-    {
-      "timestamp": "2026-05-15T20:31:29.800Z",
-      "passedGates": 18,
-      "failedGates": 5,
-      "totalFailures": 7,
-      "provenance": {
-        "aiDriftFailures": 5,
-        "structuralFailures": 2,
-        "securityFailures": 0,
-        "governanceFailures": 0,
-        "deepAnalysisFailures": 0
-      }
-    },
-    {
-      "timestamp": "2026-05-15T20:32:01.415Z",
-      "passedGates": 18,
-      "failedGates": 5,
-      "totalFailures": 6,
-      "provenance": {
-        "aiDriftFailures": 3,
-        "structuralFailures": 3,
-        "securityFailures": 0,
-        "governanceFailures": 0,
-        "deepAnalysisFailures": 0
-      }
-    },
-    {
-      "timestamp": "2026-05-15T20:32:01.438Z",
-      "passedGates": 18,
-      "failedGates": 5,
-      "totalFailures": 6,
-      "provenance": {
-        "aiDriftFailures": 3,
-        "structuralFailures": 3,
-        "securityFailures": 0,
-        "governanceFailures": 0,
-        "deepAnalysisFailures": 0
-      }
-    },
-    {
-      "timestamp": "2026-05-15T20:36:56.861Z",
-      "passedGates": 19,
-      "failedGates": 4,
-      "totalFailures": 5,
-      "provenance": {
-        "aiDriftFailures": 2,
-        "structuralFailures": 3,
-        "securityFailures": 0,
-        "governanceFailures": 0,
-        "deepAnalysisFailures": 0
-      }
-    },
-    {
-      "timestamp": "2026-05-15T20:38:31.126Z",
-      "passedGates": 18,
-      "failedGates": 5,
-      "totalFailures": 6,
-      "provenance": {
-        "aiDriftFailures": 3,
-        "structuralFailures": 3,
-        "securityFailures": 0,
-        "governanceFailures": 0,
-        "deepAnalysisFailures": 0
-      }
-    },
-    {
       "timestamp": "2026-05-15T20:39:46.456Z",
       "passedGates": 19,
       "failedGates": 4,
@@ -1299,7 +818,488 @@
         "governanceFailures": 0,
         "deepAnalysisFailures": 0
       }
+    },
+    {
+      "timestamp": "2026-05-21T18:29:32.910Z",
+      "passedGates": 20,
+      "failedGates": 3,
+      "totalFailures": 3,
+      "provenance": {
+        "aiDriftFailures": 0,
+        "structuralFailures": 3,
+        "securityFailures": 0,
+        "governanceFailures": 0,
+        "deepAnalysisFailures": 0
+      }
+    },
+    {
+      "timestamp": "2026-05-21T18:33:27.005Z",
+      "passedGates": 20,
+      "failedGates": 3,
+      "totalFailures": 3,
+      "provenance": {
+        "aiDriftFailures": 1,
+        "structuralFailures": 2,
+        "securityFailures": 0,
+        "governanceFailures": 0,
+        "deepAnalysisFailures": 0
+      }
+    },
+    {
+      "timestamp": "2026-05-21T18:33:37.905Z",
+      "passedGates": 21,
+      "failedGates": 2,
+      "totalFailures": 2,
+      "provenance": {
+        "aiDriftFailures": 0,
+        "structuralFailures": 2,
+        "securityFailures": 0,
+        "governanceFailures": 0,
+        "deepAnalysisFailures": 0
+      }
+    },
+    {
+      "timestamp": "2026-05-21T18:33:37.962Z",
+      "passedGates": 21,
+      "failedGates": 2,
+      "totalFailures": 2,
+      "provenance": {
+        "aiDriftFailures": 0,
+        "structuralFailures": 2,
+        "securityFailures": 0,
+        "governanceFailures": 0,
+        "deepAnalysisFailures": 0
+      }
+    },
+    {
+      "timestamp": "2026-05-21T18:33:37.972Z",
+      "passedGates": 21,
+      "failedGates": 2,
+      "totalFailures": 2,
+      "provenance": {
+        "aiDriftFailures": 0,
+        "structuralFailures": 2,
+        "securityFailures": 0,
+        "governanceFailures": 0,
+        "deepAnalysisFailures": 0
+      }
+    },
+    {
+      "timestamp": "2026-05-21T18:33:42.026Z",
+      "passedGates": 20,
+      "failedGates": 3,
+      "totalFailures": 3,
+      "provenance": {
+        "aiDriftFailures": 1,
+        "structuralFailures": 2,
+        "securityFailures": 0,
+        "governanceFailures": 0,
+        "deepAnalysisFailures": 0
+      }
+    },
+    {
+      "timestamp": "2026-05-21T18:34:15.105Z",
+      "passedGates": 20,
+      "failedGates": 3,
+      "totalFailures": 3,
+      "provenance": {
+        "aiDriftFailures": 1,
+        "structuralFailures": 2,
+        "securityFailures": 0,
+        "governanceFailures": 0,
+        "deepAnalysisFailures": 0
+      }
+    },
+    {
+      "timestamp": "2026-05-21T18:34:33.944Z",
+      "passedGates": 21,
+      "failedGates": 2,
+      "totalFailures": 2,
+      "provenance": {
+        "aiDriftFailures": 0,
+        "structuralFailures": 2,
+        "securityFailures": 0,
+        "governanceFailures": 0,
+        "deepAnalysisFailures": 0
+      }
+    },
+    {
+      "timestamp": "2026-05-21T18:34:33.958Z",
+      "passedGates": 20,
+      "failedGates": 3,
+      "totalFailures": 3,
+      "provenance": {
+        "aiDriftFailures": 1,
+        "structuralFailures": 2,
+        "securityFailures": 0,
+        "governanceFailures": 0,
+        "deepAnalysisFailures": 0
+      }
+    },
+    {
+      "timestamp": "2026-05-21T18:34:33.969Z",
+      "passedGates": 21,
+      "failedGates": 2,
+      "totalFailures": 2,
+      "provenance": {
+        "aiDriftFailures": 0,
+        "structuralFailures": 2,
+        "securityFailures": 0,
+        "governanceFailures": 0,
+        "deepAnalysisFailures": 0
+      }
+    },
+    {
+      "timestamp": "2026-05-21T18:34:33.977Z",
+      "passedGates": 20,
+      "failedGates": 3,
+      "totalFailures": 3,
+      "provenance": {
+        "aiDriftFailures": 1,
+        "structuralFailures": 2,
+        "securityFailures": 0,
+        "governanceFailures": 0,
+        "deepAnalysisFailures": 0
+      }
+    },
+    {
+      "timestamp": "2026-05-21T18:34:33.982Z",
+      "passedGates": 20,
+      "failedGates": 3,
+      "totalFailures": 3,
+      "provenance": {
+        "aiDriftFailures": 1,
+        "structuralFailures": 2,
+        "securityFailures": 0,
+        "governanceFailures": 0,
+        "deepAnalysisFailures": 0
+      }
+    },
+    {
+      "timestamp": "2026-05-21T18:35:25.262Z",
+      "passedGates": 20,
+      "failedGates": 3,
+      "totalFailures": 3,
+      "provenance": {
+        "aiDriftFailures": 1,
+        "structuralFailures": 2,
+        "securityFailures": 0,
+        "governanceFailures": 0,
+        "deepAnalysisFailures": 0
+      }
+    },
+    {
+      "timestamp": "2026-05-21T18:35:33.791Z",
+      "passedGates": 21,
+      "failedGates": 2,
+      "totalFailures": 2,
+      "provenance": {
+        "aiDriftFailures": 0,
+        "structuralFailures": 2,
+        "securityFailures": 0,
+        "governanceFailures": 0,
+        "deepAnalysisFailures": 0
+      }
+    },
+    {
+      "timestamp": "2026-05-21T18:35:33.850Z",
+      "passedGates": 21,
+      "failedGates": 2,
+      "totalFailures": 2,
+      "provenance": {
+        "aiDriftFailures": 0,
+        "structuralFailures": 2,
+        "securityFailures": 0,
+        "governanceFailures": 0,
+        "deepAnalysisFailures": 0
+      }
+    },
+    {
+      "timestamp": "2026-05-21T18:35:33.862Z",
+      "passedGates": 21,
+      "failedGates": 2,
+      "totalFailures": 2,
+      "provenance": {
+        "aiDriftFailures": 0,
+        "structuralFailures": 2,
+        "securityFailures": 0,
+        "governanceFailures": 0,
+        "deepAnalysisFailures": 0
+      }
+    },
+    {
+      "timestamp": "2026-05-21T18:35:39.689Z",
+      "passedGates": 20,
+      "failedGates": 3,
+      "totalFailures": 3,
+      "provenance": {
+        "aiDriftFailures": 1,
+        "structuralFailures": 2,
+        "securityFailures": 0,
+        "governanceFailures": 0,
+        "deepAnalysisFailures": 0
+      }
+    },
+    {
+      "timestamp": "2026-05-21T18:44:57.290Z",
+      "passedGates": 15,
+      "failedGates": 8,
+      "totalFailures": 16,
+      "provenance": {
+        "aiDriftFailures": 8,
+        "structuralFailures": 2,
+        "securityFailures": 6,
+        "governanceFailures": 0,
+        "deepAnalysisFailures": 0
+      }
+    },
+    {
+      "timestamp": "2026-05-21T18:45:11.361Z",
+      "passedGates": 21,
+      "failedGates": 2,
+      "totalFailures": 2,
+      "provenance": {
+        "aiDriftFailures": 0,
+        "structuralFailures": 2,
+        "securityFailures": 0,
+        "governanceFailures": 0,
+        "deepAnalysisFailures": 0
+      }
+    },
+    {
+      "timestamp": "2026-05-21T18:45:11.381Z",
+      "passedGates": 17,
+      "failedGates": 6,
+      "totalFailures": 9,
+      "provenance": {
+        "aiDriftFailures": 2,
+        "structuralFailures": 2,
+        "securityFailures": 5,
+        "governanceFailures": 0,
+        "deepAnalysisFailures": 0
+      }
+    },
+    {
+      "timestamp": "2026-05-21T18:45:11.389Z",
+      "passedGates": 20,
+      "failedGates": 3,
+      "totalFailures": 3,
+      "provenance": {
+        "aiDriftFailures": 1,
+        "structuralFailures": 2,
+        "securityFailures": 0,
+        "governanceFailures": 0,
+        "deepAnalysisFailures": 0
+      }
+    },
+    {
+      "timestamp": "2026-05-21T18:45:11.401Z",
+      "passedGates": 18,
+      "failedGates": 5,
+      "totalFailures": 5,
+      "provenance": {
+        "aiDriftFailures": 2,
+        "structuralFailures": 2,
+        "securityFailures": 1,
+        "governanceFailures": 0,
+        "deepAnalysisFailures": 0
+      }
+    },
+    {
+      "timestamp": "2026-05-21T18:45:11.415Z",
+      "passedGates": 20,
+      "failedGates": 3,
+      "totalFailures": 3,
+      "provenance": {
+        "aiDriftFailures": 1,
+        "structuralFailures": 2,
+        "securityFailures": 0,
+        "governanceFailures": 0,
+        "deepAnalysisFailures": 0
+      }
+    },
+    {
+      "timestamp": "2026-05-21T18:50:21.449Z",
+      "passedGates": 15,
+      "failedGates": 8,
+      "totalFailures": 15,
+      "provenance": {
+        "aiDriftFailures": 6,
+        "structuralFailures": 2,
+        "securityFailures": 6,
+        "governanceFailures": 1,
+        "deepAnalysisFailures": 0
+      }
+    },
+    {
+      "timestamp": "2026-05-21T18:51:31.248Z",
+      "passedGates": 17,
+      "failedGates": 6,
+      "totalFailures": 10,
+      "provenance": {
+        "aiDriftFailures": 3,
+        "structuralFailures": 2,
+        "securityFailures": 5,
+        "governanceFailures": 0,
+        "deepAnalysisFailures": 0
+      }
+    },
+    {
+      "timestamp": "2026-05-21T19:52:59.986Z",
+      "passedGates": 16,
+      "failedGates": 7,
+      "totalFailures": 13,
+      "provenance": {
+        "aiDriftFailures": 5,
+        "structuralFailures": 2,
+        "securityFailures": 6,
+        "governanceFailures": 0,
+        "deepAnalysisFailures": 0
+      }
+    },
+    {
+      "timestamp": "2026-05-21T19:53:09.780Z",
+      "passedGates": 21,
+      "failedGates": 2,
+      "totalFailures": 2,
+      "provenance": {
+        "aiDriftFailures": 0,
+        "structuralFailures": 2,
+        "securityFailures": 0,
+        "governanceFailures": 0,
+        "deepAnalysisFailures": 0
+      }
+    },
+    {
+      "timestamp": "2026-05-21T19:53:09.795Z",
+      "passedGates": 19,
+      "failedGates": 4,
+      "totalFailures": 5,
+      "provenance": {
+        "aiDriftFailures": 1,
+        "structuralFailures": 2,
+        "securityFailures": 2,
+        "governanceFailures": 0,
+        "deepAnalysisFailures": 0
+      }
+    },
+    {
+      "timestamp": "2026-05-21T19:53:09.807Z",
+      "passedGates": 20,
+      "failedGates": 3,
+      "totalFailures": 3,
+      "provenance": {
+        "aiDriftFailures": 1,
+        "structuralFailures": 2,
+        "securityFailures": 0,
+        "governanceFailures": 0,
+        "deepAnalysisFailures": 0
+      }
+    },
+    {
+      "timestamp": "2026-05-21T19:53:09.822Z",
+      "passedGates": 21,
+      "failedGates": 2,
+      "totalFailures": 2,
+      "provenance": {
+        "aiDriftFailures": 0,
+        "structuralFailures": 2,
+        "securityFailures": 0,
+        "governanceFailures": 0,
+        "deepAnalysisFailures": 0
+      }
+    },
+    {
+      "timestamp": "2026-05-21T19:53:09.861Z",
+      "passedGates": 18,
+      "failedGates": 5,
+      "totalFailures": 7,
+      "provenance": {
+        "aiDriftFailures": 2,
+        "structuralFailures": 2,
+        "securityFailures": 3,
+        "governanceFailures": 0,
+        "deepAnalysisFailures": 0
+      }
+    },
+    {
+      "timestamp": "2026-05-21T19:54:05.049Z",
+      "passedGates": 19,
+      "failedGates": 4,
+      "totalFailures": 6,
+      "provenance": {
+        "aiDriftFailures": 1,
+        "structuralFailures": 2,
+        "securityFailures": 3,
+        "governanceFailures": 0,
+        "deepAnalysisFailures": 0
+      }
+    },
+    {
+      "timestamp": "2026-05-21T19:54:05.098Z",
+      "passedGates": 19,
+      "failedGates": 4,
+      "totalFailures": 5,
+      "provenance": {
+        "aiDriftFailures": 1,
+        "structuralFailures": 2,
+        "securityFailures": 2,
+        "governanceFailures": 0,
+        "deepAnalysisFailures": 0
+      }
+    },
+    {
+      "timestamp": "2026-05-21T19:54:05.120Z",
+      "passedGates": 19,
+      "failedGates": 4,
+      "totalFailures": 4,
+      "provenance": {
+        "aiDriftFailures": 2,
+        "structuralFailures": 2,
+        "securityFailures": 0,
+        "governanceFailures": 0,
+        "deepAnalysisFailures": 0
+      }
+    },
+    {
+      "timestamp": "2026-05-21T19:54:37.217Z",
+      "passedGates": 20,
+      "failedGates": 3,
+      "totalFailures": 4,
+      "provenance": {
+        "aiDriftFailures": 0,
+        "structuralFailures": 2,
+        "securityFailures": 2,
+        "governanceFailures": 0,
+        "deepAnalysisFailures": 0
+      }
+    },
+    {
+      "timestamp": "2026-05-21T19:54:37.245Z",
+      "passedGates": 20,
+      "failedGates": 3,
+      "totalFailures": 3,
+      "provenance": {
+        "aiDriftFailures": 1,
+        "structuralFailures": 2,
+        "securityFailures": 0,
+        "governanceFailures": 0,
+        "deepAnalysisFailures": 0
+      }
+    },
+    {
+      "timestamp": "2026-05-21T19:54:43.762Z",
+      "passedGates": 17,
+      "failedGates": 6,
+      "totalFailures": 12,
+      "provenance": {
+        "aiDriftFailures": 4,
+        "structuralFailures": 2,
+        "securityFailures": 6,
+        "governanceFailures": 0,
+        "deepAnalysisFailures": 0
+      }
     }
   ],
-  "lastUpdated": "2026-05-20T20:56:43.910Z"
+  "lastUpdated": "2026-05-21T19:54:43.762Z"
 }

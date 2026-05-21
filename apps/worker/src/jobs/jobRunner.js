@@ -1,5 +1,6 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import { bootstrapDomainSchema } from '../migrations/domainSchemaBootstrap.js';
 
 const resolveOutDir = () => path.resolve(process.env.WORKER_OUTBOX_DIR ?? path.join('apps', 'worker', 'outbox'));
 
@@ -26,6 +27,7 @@ const jobHandlers = {
     rebuiltNarrativeContexts: 28,
     citationBundles: 28,
   }),
+  domain_schema_bootstrap: async () => bootstrapDomainSchema(),
 };
 
 export const WORKER_JOBS = Object.keys(jobHandlers);

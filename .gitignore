@@ -46,3 +46,12 @@ venv/
 *.tmp
 *.temp
 tmp/
+docs/AI-INGESTION-SYSTEM-BLUEPRINT.md
+docs/EUROPEAN-MOBILITY-ATLAS-ROADMAP.md
+.rigour/events.jsonl
+.rigour/events.jsonl
+.rigour/adaptive-history.json
+.rigour/events.jsonl
+.rigour/logic-baseline.json
+node_modules/.vite/vitest/da39a3ee5e6b4b0d3255bfef95601890afd80709/results.json
+node_modules/.vite/vitest/da39a3ee5e6b4b0d3255bfef95601890afd80709/results.json

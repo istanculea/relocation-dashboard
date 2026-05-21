@@ -1,0 +1,8 @@
+{
+  "name": "@relocation/apps-admin",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "node src/index.js --check"
+  }
+}

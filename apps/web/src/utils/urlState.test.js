@@ -1,0 +1,59 @@
+import { describe, expect, it } from 'vitest';
+import {
+  buildHashWithShareState,
+  buildRouteHash,
+  clearShareStateFromHash,
+  parseHashLocation,
+  readShareStateFromHash,
+} from './urlState.js';
+
+describe('urlState', () => {
+  it('builds and reads share payloads from hash', () => {
+    const state = {
+      page: 'explorer',
+      lens: 'balanced',
+      scenario: 'oneParent',
+      city: 'lisbon-pt',
+      year: 2026,
+    };
+    const hash = buildHashWithShareState('explorer', state);
+
+    expect(hash.startsWith('#/explorer?s=')).toBe(true);
+    expect(readShareStateFromHash(hash)).toEqual(state);
+  });
+
+  it('parses route without share payload', () => {
+    const { route, params } = parseHashLocation('#/explorer');
+
+    expect(route).toBe('explorer');
+    expect(params.get('s')).toBeNull();
+    expect(readShareStateFromHash('#/explorer')).toBeNull();
+  });
+
+  it('supports map route hashing', () => {
+    const hash = buildHashWithShareState('map', { page: 'map', city: 'vienna' });
+    const { route } = parseHashLocation(hash);
+
+    expect(route).toBe('map');
+    expect(readShareStateFromHash(hash)).toEqual({ page: 'map', city: 'vienna' });
+  });
+
+  it('supports outlook and family-fit route hashing', () => {
+    const outlookHash = buildHashWithShareState('outlook', { page: 'outlook', shock: 'heatwave' });
+    const familyFitHash = buildHashWithShareState('family-fit', { page: 'family-fit', city: 'lisbon-pt' });
+
+    expect(parseHashLocation(outlookHash).route).toBe('outlook');
+    expect(readShareStateFromHash(outlookHash)).toEqual({ page: 'outlook', shock: 'heatwave' });
+
+    expect(parseHashLocation(familyFitHash).route).toBe('family-fit');
+    expect(readShareStateFromHash(familyFitHash)).toEqual({ page: 'family-fit', city: 'lisbon-pt' });
+  });
+
+  it('clears share payload while preserving route', () => {
+    const hash = buildHashWithShareState('explorer', { page: 'explorer', city: 'vienna' });
+
+    expect(clearShareStateFromHash(hash)).toBe('#/explorer');
+    expect(clearShareStateFromHash('#/map')).toBe('#/map');
+    expect(buildRouteHash('')).toBe('#/');
+  });
+});

@@ -55,6 +55,10 @@ export const buildDashboardShareState = ({
   searchValue,
   shockType,
   shockSeverity,
+  mapMode,
+  mapPersona,
+  mapComparisonCity,
+  mapNeighborCount,
   mobilityState,
 }) => ({
   page,
@@ -70,6 +74,10 @@ export const buildDashboardShareState = ({
   search: searchValue,
   shock: shockType,
   shockSeverity,
+  mapMode,
+  mapPersona,
+  mapComparisonCity,
+  mapNeighborCount,
   ...buildMobilityShareState({
     timeWindowHours: mobilityState?.timeWindowHours,
     layerVisibility: mobilityState?.layerVisibility,
@@ -115,6 +123,10 @@ export const isDefaultDashboardShareState = (shareState) => {
     && (shareState.search == null || shareState.search === '')
     && (shareState.shock == null || shareState.shock === 'none')
     && (shareState.shockSeverity == null || Number(shareState.shockSeverity) === 1)
+    && (shareState.mapMode == null || shareState.mapMode === 'familyStability')
+    && (shareState.mapPersona == null || shareState.mapPersona === 'internationalFamily')
+    && (shareState.mapComparisonCity == null || shareState.mapComparisonCity === '')
+    && (shareState.mapNeighborCount == null || Number(shareState.mapNeighborCount) === 3)
     && (shareState.mWindow == null || shareState.mWindow === 6)
     && hasDefaultLayers;
 };
@@ -147,6 +159,10 @@ export const readDashboardShareState = (shareState) => {
     search: typeof state.search === 'string' ? state.search : '',
     shock: typeof state.shock === 'string' ? state.shock : 'none',
     shockSeverity: Number.isFinite(Number(state.shockSeverity)) ? Number(state.shockSeverity) : 1,
+    mapMode: typeof state.mapMode === 'string' ? state.mapMode : 'familyStability',
+    mapPersona: typeof state.mapPersona === 'string' ? state.mapPersona : 'internationalFamily',
+    mapComparisonCity: typeof state.mapComparisonCity === 'string' ? state.mapComparisonCity : '',
+    mapNeighborCount: [2, 3, 4, 5].includes(Number(state.mapNeighborCount)) ? Number(state.mapNeighborCount) : 3,
   };
 };
 
@@ -236,6 +252,10 @@ export const useDashboardOrchestration = ({
   const [airFilter, setAirFilter] = useState(() => pickAllowed(initialShareState?.air, airOptions, 'all'));
   const [shockType, setShockType] = useState(() => (typeof initialShareState?.shock === 'string' ? initialShareState.shock : 'none'));
   const [shockSeverity, setShockSeverity] = useState(() => (Number.isFinite(Number(initialShareState?.shockSeverity)) ? Number(initialShareState.shockSeverity) : 1));
+  const [mapMode, setMapMode] = useState(() => (typeof initialShareState?.mapMode === 'string' ? initialShareState.mapMode : 'familyStability'));
+  const [mapPersona, setMapPersona] = useState(() => (typeof initialShareState?.mapPersona === 'string' ? initialShareState.mapPersona : 'internationalFamily'));
+  const [mapComparisonCity, setMapComparisonCity] = useState(() => (typeof initialShareState?.mapComparisonCity === 'string' ? initialShareState.mapComparisonCity : ''));
+  const [mapNeighborCount, setMapNeighborCount] = useState(() => ([2, 3, 4, 5].includes(Number(initialShareState?.mapNeighborCount)) ? Number(initialShareState.mapNeighborCount) : 3));
   const hasActiveSimulation = hasActiveSimulationModifiers || shockType !== 'none';
 
   const applyMobilityShareState = (shareStatePayload) => {
@@ -276,6 +296,10 @@ export const useDashboardOrchestration = ({
     setAirFilter(normalized.air);
     setShockType(normalized.shock);
     setShockSeverity(normalized.shockSeverity);
+    setMapMode(normalized.mapMode);
+    setMapPersona(normalized.mapPersona);
+    setMapComparisonCity(normalized.mapComparisonCity);
+    setMapNeighborCount(normalized.mapNeighborCount);
     setSearchValue(normalized.search);
 
     mobilityDispatch({
@@ -307,6 +331,10 @@ export const useDashboardOrchestration = ({
         searchValue,
         shockType,
         shockSeverity,
+        mapMode,
+        mapPersona,
+        mapComparisonCity,
+        mapNeighborCount,
         mobilityState,
       });
       const hashShareState = isDefaultDashboardShareState(shareState) ? null : shareState;
@@ -374,6 +402,10 @@ export const useDashboardOrchestration = ({
       searchValue,
       shockType,
       shockSeverity,
+      mapMode,
+      mapPersona,
+      mapComparisonCity,
+      mapNeighborCount,
       mobilityState,
     });
     const hashShareState = isDefaultDashboardShareState(shareState) ? null : shareState;
@@ -393,6 +425,10 @@ export const useDashboardOrchestration = ({
     searchValue,
     shockSeverity,
     shockType,
+    mapMode,
+    mapPersona,
+    mapComparisonCity,
+    mapNeighborCount,
     selectedCityKey,
     selectedYear,
     sortKey,
@@ -1012,6 +1048,10 @@ export const useDashboardOrchestration = ({
     setAirFilter,
     setBudgetFilter,
     setLensKey,
+    setMapComparisonCity,
+    setMapMode,
+    setMapNeighborCount,
+    setMapPersona,
     setMobilityFilter,
     setScenarioKey,
     setShockSeverity,
@@ -1025,6 +1065,10 @@ export const useDashboardOrchestration = ({
     sortKey,
     shockSeverity,
     shockType,
+    mapComparisonCity,
+    mapNeighborCount,
+    mapMode,
+    mapPersona,
     thresholds,
     verificationFilter,
     citySelectorOptions,

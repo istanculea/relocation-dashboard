@@ -1825,9 +1825,19 @@ const StrategicCityCard = function strategicCityCard({ city, dimensions, intelli
 export const CityMapPage = function cityMapPage({
   cityOptions,
   selectedCity,
+  comparisonCityKey = '',
+  onComparisonCityChange = () => {},
+  nearestNeighborCount = 3,
+  onNearestNeighborCountChange = () => {},
+  selectedModeKey = 'familyStability',
+  onModeChange = () => {},
+  selectedPersonaKey = 'internationalFamily',
+  onPersonaChange = () => {},
   onSelectCity,
   onBack,
   onGoToExplorer,
+  onGoToOutlook,
+  onGoToFamilyFit,
   onShare,
   onResetLink,
   isLinkCustomized,
@@ -1849,10 +1859,6 @@ export const CityMapPage = function cityMapPage({
     [layerVisibility.air, layerVisibility.railHighSpeed, layerVisibility.railRegional, layerVisibility.road],
   );
 
-  const [nearestNeighborCount, setNearestNeighborCount] = useState(3);
-  const [selectedModeKey, setSelectedModeKey] = useState('familyStability');
-  const [selectedPersonaKey, setSelectedPersonaKey] = useState('internationalFamily');
-  const [comparisonCityKey, setComparisonCityKey] = useState('');
   const [hoveredCityKey, setHoveredCityKey] = useState(null);
   const [zoom, setZoom] = useState(1);
   const [pan, setPan] = useState({ x: 0, y: 0 });
@@ -1922,9 +1928,9 @@ export const CityMapPage = function cityMapPage({
 
   useEffect(() => {
     if (comparisonCityKey && comparisonCityKey === selectedCityKey) {
-      setComparisonCityKey('');
+      onComparisonCityChange('');
     }
-  }, [comparisonCityKey, selectedCityKey, setComparisonCityKey]);
+  }, [comparisonCityKey, onComparisonCityChange, selectedCityKey]);
 
   const rankingStripRows = useMemo(() => {
     const withDimensions = mappableCityOptions.map((city) => ({
@@ -2082,6 +2088,28 @@ export const CityMapPage = function cityMapPage({
           </a>
           <a
             className="ws-icon-btn"
+            href="#/outlook"
+            onClick={(event) => {
+              event.preventDefault();
+              onGoToOutlook();
+            }}
+            title="Open Future Outlook"
+          >
+            Outlook
+          </a>
+          <a
+            className="ws-icon-btn"
+            href="#/family-fit"
+            onClick={(event) => {
+              event.preventDefault();
+              onGoToFamilyFit();
+            }}
+            title="Open Family Fit"
+          >
+            Family Fit
+          </a>
+          <a
+            className="ws-icon-btn"
             href="#/"
             onClick={(event) => {
               event.preventDefault();
@@ -2161,7 +2189,7 @@ export const CityMapPage = function cityMapPage({
                   id="city-map-comparison-picker"
                   className="city-map-toolbar__select city-map-neighbor-select"
                   value={comparisonCityKey}
-                  onChange={(event) => setComparisonCityKey(event.target.value)}
+                  onChange={(event) => onComparisonCityChange(event.target.value)}
                 >
                   <option value="">Auto</option>
                   {mappableCityOptions
@@ -2181,7 +2209,7 @@ export const CityMapPage = function cityMapPage({
                     key={modeKey}
                     type="button"
                     className={`city-map-layer-btn${selectedModeKey === modeKey ? ' city-map-layer-btn--active' : ''}`}
-                    onClick={() => setSelectedModeKey(modeKey)}
+                    onClick={() => onModeChange(modeKey)}
                     aria-pressed={selectedModeKey === modeKey}
                   >
                     {modeProfile.label}
@@ -2198,7 +2226,7 @@ export const CityMapPage = function cityMapPage({
                     key={personaKey}
                     type="button"
                     className={`city-map-layer-btn${selectedPersonaKey === personaKey ? ' city-map-layer-btn--active' : ''}`}
-                    onClick={() => setSelectedPersonaKey(personaKey)}
+                    onClick={() => onPersonaChange(personaKey)}
                     aria-pressed={selectedPersonaKey === personaKey}
                   >
                     {personaProfile.label}
@@ -2285,7 +2313,7 @@ export const CityMapPage = function cityMapPage({
                 id="city-map-neighbor-count"
                 className="city-map-toolbar__select city-map-neighbor-select"
                 value={nearestNeighborCount}
-                onChange={(event) => setNearestNeighborCount(Number(event.target.value))}
+                onChange={(event) => onNearestNeighborCountChange(Number(event.target.value))}
               >
                 <option value={2}>2</option>
                 <option value={3}>3</option>

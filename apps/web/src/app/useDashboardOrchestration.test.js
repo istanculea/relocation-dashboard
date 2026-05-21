@@ -40,6 +40,10 @@ describe('resolveMobilityMapForPage', () => {
       searchValue: 'vienna',
       shockType: 'heatwave',
       shockSeverity: 1.4,
+      mapMode: 'careerAcceleration',
+      mapPersona: 'startupFounder',
+      mapComparisonCity: 'bologna-it',
+      mapNeighborCount: 5,
       mobilityState: {
         timeWindowHours: 3,
         layerVisibility: {
@@ -61,6 +65,10 @@ describe('resolveMobilityMapForPage', () => {
       search: 'vienna',
       shock: 'heatwave',
       shockSeverity: 1.4,
+      mapMode: 'careerAcceleration',
+      mapPersona: 'startupFounder',
+      mapComparisonCity: 'bologna-it',
+      mapNeighborCount: 5,
       mWindow: 3,
       mLayers: {
         air: true,
@@ -89,6 +97,10 @@ describe('resolveMobilityMapForPage', () => {
       searchValue: '',
       shockType: 'none',
       shockSeverity: 1,
+      mapMode: 'familyStability',
+      mapPersona: 'internationalFamily',
+      mapComparisonCity: '',
+      mapNeighborCount: 3,
       mobilityState: {
         timeWindowHours: 6,
         layerVisibility: {
@@ -124,6 +136,10 @@ describe('resolveMobilityMapForPage', () => {
       searchValue: '',
       shockType: 'none',
       shockSeverity: 1,
+      mapMode: 'familyStability',
+      mapPersona: 'internationalFamily',
+      mapComparisonCity: '',
+      mapNeighborCount: 3,
       mobilityState: {
         timeWindowHours: 6,
         layerVisibility: {
@@ -142,6 +158,8 @@ describe('resolveMobilityMapForPage', () => {
 
     expect(isDefaultDashboardShareState(explorerBaseline)).toBe(true);
     expect(isDefaultDashboardShareState({ ...explorerBaseline, city: 'vienna-at' })).toBe(false);
+    expect(isDefaultDashboardShareState({ ...explorerBaseline, mapMode: 'careerAcceleration' })).toBe(false);
+    expect(isDefaultDashboardShareState({ ...explorerBaseline, mapNeighborCount: 5 })).toBe(false);
   });
 
   it('normalizes partial or invalid share payloads', () => {
@@ -159,6 +177,10 @@ describe('resolveMobilityMapForPage', () => {
       search: 42,
       shock: 9,
       shockSeverity: 'bad-value',
+      mapMode: 7,
+      mapPersona: null,
+      mapComparisonCity: 5,
+      mapNeighborCount: 9,
     });
 
     expect(normalized).toEqual({
@@ -175,6 +197,10 @@ describe('resolveMobilityMapForPage', () => {
       search: '',
       shock: 'none',
       shockSeverity: 1,
+      mapMode: 'familyStability',
+      mapPersona: 'internationalFamily',
+      mapComparisonCity: '',
+      mapNeighborCount: 3,
     });
   });
 

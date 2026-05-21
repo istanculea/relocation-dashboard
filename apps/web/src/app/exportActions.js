@@ -107,6 +107,10 @@ export const shareDashboardSnapshot = async ({
   searchValue,
   shockType = 'none',
   shockSeverity = 1,
+  mapMode = 'familyStability',
+  mapPersona = 'internationalFamily',
+  mapComparisonCity = '',
+  mapNeighborCount = 3,
   comparisonTitle,
   timeWindowHours,
   layerVisibility,
@@ -129,6 +133,10 @@ export const shareDashboardSnapshot = async ({
     search: searchValue,
     shock: shockType,
     shockSeverity,
+    mapMode,
+    mapPersona,
+    mapComparisonCity,
+    mapNeighborCount,
     ...buildMobilityShareState({ timeWindowHours, layerVisibility }),
   };
   const shareUrl = buildShareUrl({ route: page, shareState, locationObject: window.location });

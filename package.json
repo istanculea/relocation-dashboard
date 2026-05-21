@@ -11,6 +11,8 @@
     "dashboard:guard": "node scripts/check-import-boundaries.mjs && node scripts/check-bundle-boundaries.mjs",
     "dashboard:preview": "vite preview --config apps/web/vite.config.js",
     "dashboard:test": "vitest run",
+    "dashboard:test:visual": "npm run dashboard:build && playwright test --config playwright.visual.config.js",
+    "dashboard:test:visual:update": "npm run dashboard:build && playwright test --config playwright.visual.config.js --update-snapshots",
     "apps:web:dev": "npm run dashboard:dev",
     "apps:admin:check": "node apps/admin/src/index.js --check",
     "apps:worker:check": "node apps/worker/src/index.js --check",
@@ -34,7 +36,9 @@
     "world-atlas": "^2.0.2"
   },
   "devDependencies": {
+    "@playwright/test": "^1.60.0",
     "@vitejs/plugin-react": "^5.1.0",
+    "jsdom": "^29.1.1",
     "rigour-cli-shim": "file:tools/rigour-cli",
     "vite": "^7.1.12",
     "vitest": "^4.1.6"

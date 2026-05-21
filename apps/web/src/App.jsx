@@ -51,6 +51,10 @@ const App = function app() {
     hasActiveSimulation,
     hasActiveThresholds,
     lensKey,
+    mapComparisonCity,
+    mapMode,
+    mapNeighborCount,
+    mapPersona,
     mobilityFilter,
     navigateTo,
     page,
@@ -64,6 +68,10 @@ const App = function app() {
     setAirFilter,
     setBudgetFilter,
     setLensKey,
+    setMapComparisonCity,
+    setMapMode,
+    setMapNeighborCount,
+    setMapPersona,
     setMobilityFilter,
     setScenarioKey,
     setShockSeverity,
@@ -95,6 +103,10 @@ const App = function app() {
     searchValue,
     shockType,
     shockSeverity,
+    mapMode,
+    mapPersona,
+    mapComparisonCity,
+    mapNeighborCount,
     mobilityState,
   });
   const isLinkCustomized = !isDefaultDashboardShareState(currentShareState);
@@ -160,6 +172,10 @@ const App = function app() {
       searchValue,
       shockType,
       shockSeverity,
+      mapMode,
+      mapPersona,
+      mapComparisonCity,
+      mapNeighborCount,
       comparisonTitle,
       timeWindowHours,
       layerVisibility,
@@ -182,6 +198,10 @@ const App = function app() {
     setAirFilter('all');
     setShockType('none');
     setShockSeverity(1);
+    setMapComparisonCity('');
+    setMapMode('familyStability');
+    setMapNeighborCount(3);
+    setMapPersona('internationalFamily');
     setSearchValue('');
 
     dashboardDispatch({ type: ACTIONS.RESET_SIMULATION });
@@ -258,6 +278,16 @@ const App = function app() {
           onSelectCity={setSelectedCityKey}
           onBack={() => navigateTo('')}
           onGoToExplorer={() => navigateTo('explorer')}
+          onGoToOutlook={() => navigateTo('outlook')}
+          onGoToFamilyFit={() => navigateTo('family-fit')}
+          comparisonCityKey={mapComparisonCity}
+          onComparisonCityChange={setMapComparisonCity}
+          nearestNeighborCount={mapNeighborCount}
+          onNearestNeighborCountChange={setMapNeighborCount}
+          selectedModeKey={mapMode}
+          onModeChange={setMapMode}
+          selectedPersonaKey={mapPersona}
+          onPersonaChange={setMapPersona}
           onShare={handleShare}
           onResetLink={handleResetLink}
           isLinkCustomized={isLinkCustomized}
@@ -278,9 +308,14 @@ const App = function app() {
       >
         <LazyFutureOutlookPage
           rows={futureOutlookRows}
+          cityOptions={citySelectorOptions}
+          selectedCityKey={selectedCityKey}
+          onSelectCity={setSelectedCityKey}
           selectedYear={selectedYear}
           onYearChange={setSelectedYear}
           onBack={() => navigateTo('')}
+          onGoToMap={() => navigateTo('map')}
+          onGoToFamilyFit={() => navigateTo('family-fit')}
           onShare={handleShare}
           onResetLink={handleResetLink}
           isLinkCustomized={isLinkCustomized}
@@ -305,7 +340,12 @@ const App = function app() {
       >
         <LazyFamilyFitPage
           rows={familyFitExplorerRows}
+          cityOptions={citySelectorOptions}
+          selectedCityKey={selectedCityKey}
+          onSelectCity={setSelectedCityKey}
           onBack={() => navigateTo('')}
+          onGoToMap={() => navigateTo('map')}
+          onGoToOutlook={() => navigateTo('outlook')}
           onShare={handleShare}
           onResetLink={handleResetLink}
           isLinkCustomized={isLinkCustomized}

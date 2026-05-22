@@ -87,10 +87,10 @@ export const FamilyFitPage = function familyFitPage({
         </div>
       </header>
 
-      <main className="dashboard" style={{ padding: '1rem 1.25rem' }}>
-        <section className="ws-pane" style={{ marginBottom: '0.9rem' }}>
+      <main className="dashboard route-dashboard route-dashboard--family-fit">
+        <section className="ws-pane route-pane route-pane--first">
           <div className="ws-pane__header"><span className="ws-pane__title">Profile Preference</span></div>
-          <div className="ws-pane__body" style={{ display: 'grid', gap: '0.9rem' }}>
+          <div className="ws-pane__body route-card-stack">
             <label>
               Anchor City
               <select className="ws-select" value={focusRow?.key ?? ''} onChange={(event) => onSelectCity(event.target.value || null)}>
@@ -99,7 +99,7 @@ export const FamilyFitPage = function familyFitPage({
                 ))}
               </select>
             </label>
-            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+            <div className="route-action-row">
               {Object.entries(FIT_PROFILES).map(([key, config]) => (
                 <button key={key} type="button" className={`ws-icon-btn${profile === key ? ' ws-icon-btn--cta' : ''}`} onClick={() => setProfile(key)}>
                   {config.label}
@@ -134,10 +134,10 @@ export const FamilyFitPage = function familyFitPage({
           </section>
         )}
 
-        <section className="ws-split-row" style={{ marginTop: '0.9rem' }}>
-          <section className="ws-pane" style={{ flex: 1.05 }}>
+        <section className="route-split-grid route-split-grid--family-fit">
+          <section className="ws-pane route-split-grid__pane route-split-grid__pane--primary">
             <div className="ws-pane__header"><span className="ws-pane__title">Anchor Narrative</span></div>
-            <div className="ws-pane__body" style={{ display: 'grid', gap: '0.75rem' }}>
+            <div className="ws-pane__body route-card-stack">
               <article className="ws-atlas-deck__card">
                 <span className="ws-atlas-deck__label">Current Interpretation</span>
                 <strong>{focusRow?.narrative || 'No narrative available'}</strong>
@@ -146,11 +146,11 @@ export const FamilyFitPage = function familyFitPage({
             </div>
           </section>
 
-          <section className="ws-pane" style={{ flex: 0.95 }}>
+          <section className="ws-pane route-split-grid__pane route-split-grid__pane--secondary">
             <div className="ws-pane__header"><span className="ws-pane__title">Best Matches</span></div>
-            <div className="ws-pane__body" style={{ display: 'grid', gap: '0.75rem' }}>
+            <div className="ws-pane__body route-card-stack">
               {ranked.slice(0, 6).map((row) => (
-                <button key={row.key} type="button" className="ws-atlas-deck__card" style={{ textAlign: 'left' }} onClick={() => onSelectCity(row.key)}>
+                <button key={row.key} type="button" className="ws-atlas-deck__card route-card-button" onClick={() => onSelectCity(row.key)}>
                   <span className="ws-atlas-deck__label">{row.city}, {row.country}</span>
                   <strong>Compatibility {row.compatibilityScore.toFixed(2)}</strong>
                   <small>Profile fit {row.fitScore.toFixed(2)} · {row.narrative || 'No narrative available'}</small>
@@ -160,19 +160,19 @@ export const FamilyFitPage = function familyFitPage({
           </section>
         </section>
 
-        <section className="ws-pane" style={{ marginTop: '0.9rem' }}>
+        <section className="ws-pane route-pane">
           <div className="ws-pane__header"><span className="ws-pane__title">Compatibility Breakdown</span></div>
-          <div className="ws-pane__body" style={{ display: 'grid', gap: '0.75rem' }}>
+          <div className="ws-pane__body route-card-stack">
             {ranked.slice(0, 12).map((row) => (
               <article key={row.key} className="ws-atlas-deck__card">
                 <span className="ws-atlas-deck__label">{row.city}, {row.country}</span>
                 <strong>Compatibility {row.compatibilityScore.toFixed(2)}</strong>
                 <small>{row.narrative || 'No narrative available'}</small>
-                <div style={{ marginTop: '0.35rem' }}>
+                <div className="route-chip-row">
                   <span>Family {row.familyRhythm.toFixed(2)}</span>
-                  <span> · Psychological {row.psychologicalRhythm.toFixed(2)}</span>
-                  <span> · Environmental {row.environmentalRhythm.toFixed(2)}</span>
-                  <span> · Profile fit {row.fitScore.toFixed(2)}</span>
+                  <span>Psychological {row.psychologicalRhythm.toFixed(2)}</span>
+                  <span>Environmental {row.environmentalRhythm.toFixed(2)}</span>
+                  <span>Profile fit {row.fitScore.toFixed(2)}</span>
                 </div>
               </article>
             ))}

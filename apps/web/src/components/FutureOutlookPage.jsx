@@ -133,10 +133,10 @@ export const FutureOutlookPage = function futureOutlookPage({
         </div>
       </header>
 
-      <main className="dashboard" style={{ padding: '1rem 1.25rem' }}>
-        <section className="ws-pane" style={{ marginBottom: '0.9rem' }}>
+      <main className="dashboard route-dashboard route-dashboard--outlook">
+        <section className="ws-pane route-pane route-pane--first">
           <div className="ws-pane__header"><span className="ws-pane__title">Scenario Controls</span></div>
-          <div className="ws-pane__body" style={{ display: 'grid', gap: '0.8rem', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))' }}>
+          <div className="ws-pane__body route-controls-grid">
             <label>
               Focus City
               <select className="ws-select" value={selectedRow?.key ?? ''} onChange={(event) => onSelectCity(event.target.value || null)}>
@@ -194,10 +194,10 @@ export const FutureOutlookPage = function futureOutlookPage({
           </section>
         )}
 
-        <section className="ws-split-row" style={{ marginTop: '0.9rem' }}>
-          <section className="ws-pane" style={{ flex: 1.1 }}>
+        <section className="route-split-grid route-split-grid--outlook">
+          <section className="ws-pane route-split-grid__pane route-split-grid__pane--primary">
             <div className="ws-pane__header"><span className="ws-pane__title">Signal Outlook</span></div>
-            <div className="ws-pane__body" style={{ display: 'grid', gap: '0.75rem' }}>
+            <div className="ws-pane__body route-card-stack">
               {selectedRow?.summary.projectedIndicators.map((indicator) => (
                 <article key={`${selectedRow.key}-${indicator.indicatorKey}`} className="ws-atlas-deck__card">
                   <span className="ws-atlas-deck__label">{indicator.label}</span>
@@ -205,7 +205,7 @@ export const FutureOutlookPage = function futureOutlookPage({
                   <small>
                     Current {indicator.current.toFixed(2)} · {trendDirection(indicator)} · {confidenceLabel(indicator.confidence)}
                   </small>
-                  <div style={{ marginTop: '0.35rem', display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                  <div className="route-chip-row">
                     <span>{indicator.delta >= 0 ? '+' : ''}{indicator.delta.toFixed(2)} delta</span>
                     <span>Band {indicator.projected.lower.toFixed(2)}–{indicator.projected.upper.toFixed(2)}</span>
                     {indicator.projected.shockAdjustment !== 0 && <span>Shock {indicator.projected.shockAdjustment >= 0 ? '+' : ''}{indicator.projected.shockAdjustment.toFixed(2)}</span>}
@@ -215,11 +215,11 @@ export const FutureOutlookPage = function futureOutlookPage({
             </div>
           </section>
 
-          <section className="ws-pane" style={{ flex: 0.9 }}>
+          <section className="ws-pane route-split-grid__pane route-split-grid__pane--secondary">
             <div className="ws-pane__header"><span className="ws-pane__title">Top Projected Cities</span></div>
-            <div className="ws-pane__body" style={{ display: 'grid', gap: '0.75rem' }}>
+            <div className="ws-pane__body route-card-stack">
               {cityRows.slice(0, 8).map((row) => (
-                <button key={row.key} type="button" className="ws-atlas-deck__card" style={{ textAlign: 'left' }} onClick={() => onSelectCity(row.key)}>
+                <button key={row.key} type="button" className="ws-atlas-deck__card route-card-button" onClick={() => onSelectCity(row.key)}>
                   <span className="ws-atlas-deck__label">{row.city}, {row.country}</span>
                   <strong>{row.summary.averageProjected.toFixed(2)} projected score</strong>
                   <small>Current {row.summary.averageCurrent.toFixed(2)} · {confidenceLabel(row.summary.confidence)}</small>
@@ -229,9 +229,9 @@ export const FutureOutlookPage = function futureOutlookPage({
           </section>
         </section>
 
-        <section className="ws-pane" style={{ marginTop: '0.9rem' }}>
+        <section className="ws-pane route-pane">
           <div className="ws-pane__header"><span className="ws-pane__title">Closest Alternatives</span></div>
-          <div className="ws-pane__body" style={{ display: 'grid', gap: '0.75rem', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))' }}>
+          <div className="ws-pane__body route-grid-cards">
             {comparisonRows.map((row) => (
               <article key={row.key} className="ws-atlas-deck__card">
                 <span className="ws-atlas-deck__label">{row.city}, {row.country}</span>

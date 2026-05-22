@@ -219,14 +219,14 @@ export const StrategicRadarChart = ({ selectedCity = null, filteredRows = [], si
     <figure className="radar-chart-figure">
       <figcaption className="radar-chart-caption">
         <span className="radar-chart-city">{cityName}</span>
-        <span className="radar-chart-sub">9-pillar strategic balance vs. filtered mean</span>
+        <span className="radar-chart-sub">{PILLAR_KEYS.length}-pillar strategic balance vs. filtered mean</span>
       </figcaption>
 
       <svg
         viewBox={`0 0 ${size} ${size}`}
         className="radar-chart-svg"
         role="img"
-        aria-label={`Radar chart for ${cityName} across 9 strategic pillars`}
+        aria-label={`Radar chart for ${cityName} across ${PILLAR_KEYS.length} strategic pillars`}
       >
         <defs>
           {/* Gradient fills */}

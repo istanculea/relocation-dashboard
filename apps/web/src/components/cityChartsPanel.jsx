@@ -37,10 +37,57 @@ const tierLabel = (score) => {
   return 'Drag';
 };
 
+const safeSpan = (minValue, maxValue, fallback = 1) => {
+  const span = maxValue - minValue;
+  return span > 0 ? span : fallback;
+};
+
+const paddedDomain = (values, {
+  padRatio = 0.08,
+  minSpan = 1,
+  floor = Number.NEGATIVE_INFINITY,
+  ceil = Number.POSITIVE_INFINITY,
+  round = null,
+} = {}) => {
+  if (!values.length) {
+    return { min: 0, max: minSpan };
+  }
+
+  const rawMin = Math.min(...values);
+  const rawMax = Math.max(...values);
+  const span = Math.max(rawMax - rawMin, minSpan);
+  const pad = span * padRatio;
+
+  let min = Math.max(floor, rawMin - pad);
+  let max = Math.min(ceil, rawMax + pad);
+
+  if (round) {
+    min = round.down(min);
+    max = round.up(max);
+  }
+
+  if (max <= min) {
+    max = Math.min(ceil, min + minSpan);
+  }
+
+  return { min, max };
+};
+
 // ── Quality of Life Bubble Chart ───────────────────────────────
 // X = monthly budget, Y = QoL (strategic balance score), bubble size = active lens score
 const BubbleChart = function bubbleChart({ rows, selectedCityKey, onSelectCity, scenarioKey, lensKey }) {
   const [tooltip, setTooltip] = useState(null);
+
+  if (!rows.length) {
+    return (
+      <div className="chart-container">
+        <div className="chart-header">
+          <h3>Quality of Life vs Budget</h3>
+          <p>Chart unavailable because there are no cities in the current result set.</p>
+        </div>
+      </div>
+    );
+  }
 
   const W = 760;
   const H = 480;
@@ -58,17 +105,21 @@ const BubbleChart = function bubbleChart({ rows, selectedCityKey, onSelectCity, 
   const qolScores = rows.map((r) => r.strategicBalance.weightedScore);
   const lensScores = rows.map((r) => r.activeWeightedScore);
 
-  const rawMinBudget = Math.min(...budgets);
-  const rawMaxBudget = Math.max(...budgets);
-  const budgetPad = (rawMaxBudget - rawMinBudget) * 0.06;
-  const minBudget = Math.floor((rawMinBudget - budgetPad) / 200) * 200;
-  const maxBudget = Math.ceil((rawMaxBudget + budgetPad) / 200) * 200;
+  const { min: minBudget, max: maxBudget } = paddedDomain(budgets, {
+    padRatio: 0.06,
+    minSpan: 400,
+    round: {
+      down: (value) => Math.floor(value / 200) * 200,
+      up: (value) => Math.ceil(value / 200) * 200,
+    },
+  });
 
-  const rawMinQol = Math.min(...qolScores);
-  const rawMaxQol = Math.max(...qolScores);
-  const qolPad = (rawMaxQol - rawMinQol) * 0.12;
-  const minQol = Math.max(0, rawMinQol - qolPad);
-  const maxQol = Math.min(10, rawMaxQol + qolPad);
+  const { min: minQol, max: maxQol } = paddedDomain(qolScores, {
+    padRatio: 0.12,
+    minSpan: 1,
+    floor: 0,
+    ceil: 10,
+  });
 
   const minLens = Math.min(...lensScores);
   const maxLens = Math.max(...lensScores);
@@ -76,8 +127,11 @@ const BubbleChart = function bubbleChart({ rows, selectedCityKey, onSelectCity, 
   const midBudget = (minBudget + maxBudget) / 2;
   const midQol = (minQol + maxQol) / 2;
 
-  const toX = (budget) => PAD.left + ((budget - minBudget) / (maxBudget - minBudget)) * plotW;
-  const toY = (score) => PAD.top + plotH - ((score - minQol) / (maxQol - minQol)) * plotH;
+  const budgetSpan = safeSpan(minBudget, maxBudget, 1);
+  const qolSpan = safeSpan(minQol, maxQol, 1);
+
+  const toX = (budget) => PAD.left + ((budget - minBudget) / budgetSpan) * plotW;
+  const toY = (score) => PAD.top + plotH - ((score - minQol) / qolSpan) * plotH;
   const toR = (score) => 7 + ((score - minLens) / (Math.max(maxLens - minLens, 0.01))) * 11;
 
   const xTicks = 5;
@@ -287,6 +341,17 @@ const BubbleChart = function bubbleChart({ rows, selectedCityKey, onSelectCity, 
 
 // ── Horizontal Bar Chart ───────────────────────────────────────
 const BarChart = function barChart({ rows, selectedCityKey, onSelectCity, lensKey }) {
+  if (!rows.length) {
+    return (
+      <div className="chart-container">
+        <div className="chart-header">
+          <h3>City Rankings</h3>
+          <p>Chart unavailable because there are no cities in the current result set.</p>
+        </div>
+      </div>
+    );
+  }
+
   const sorted = useMemo(() => [...rows].sort((a, b) => b.activeWeightedScore - a.activeWeightedScore), [rows]);
   const maxScore = 10;
   const BAR_H = 28;
@@ -439,9 +504,9 @@ const PillarRadar = function pillarRadar({ rows, selectedCity }) {
   return (
     <div className="chart-container">
       <div className="chart-header">
-        <h3>12-Pillar Radar — Top 10 Cities</h3>
+        <h3>{pillars.length}-Pillar Radar — Top 10 Cities</h3>
         <p>
-          Strategic Balance Matrix scores across all 12 family-relocation pillars for the top 10 cities by Quality of Life score.
+          Strategic Balance Matrix scores across all {pillars.length} family-relocation pillars for the top 10 cities by Quality of Life score.
           Click any legend item to show or hide that city.
           {selectedCity && ` The selected city (${selectedCity.city}) is highlighted with a solid outline.`}
         </p>

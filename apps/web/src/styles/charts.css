@@ -76,9 +76,10 @@
 }
 
 .chart-scroll-wrap--radar {
-  max-width: 500px;
-  padding-left: 56px;
-  overflow: visible;
+  max-width: 100%;
+  padding-left: 32px;
+  overflow-x: auto;
+  overflow-y: visible;
 }
 
 .scatter-svg,
@@ -92,6 +93,7 @@
 .radar-svg {
   display: block;
   width: 100%;
+  min-width: 440px;
   max-width: 460px;
   height: auto;
   overflow: visible;
@@ -111,6 +113,18 @@
 
   .chart-scroll-wrap--radar {
     max-width: none;
+    padding-left: 40px;
+  }
+}
+
+@media (max-width: 680px) {
+  .chart-scroll-wrap--radar {
+    padding-left: 12px;
+    padding-right: 8px;
+  }
+
+  .radar-svg {
+    min-width: 400px;
   }
 }
 

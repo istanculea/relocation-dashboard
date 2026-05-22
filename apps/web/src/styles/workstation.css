@@ -347,6 +347,74 @@
   text-overflow: ellipsis;
 }
 
+/* Route-level card readability overrides for Future Outlook and Family Fit */
+.explorer-page-shell .route-dashboard .ws-atlas-deck__card {
+  gap: 6px;
+  align-items: flex-start;
+}
+
+.explorer-page-shell .route-dashboard .ws-atlas-deck__card .ws-atlas-deck__label,
+.explorer-page-shell .route-dashboard .ws-atlas-deck__card strong,
+.explorer-page-shell .route-dashboard .ws-atlas-deck__card small {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  overflow-wrap: anywhere;
+}
+
+.explorer-page-shell .route-dashboard .ws-atlas-deck__card .ws-atlas-deck__label {
+  font-size: 10px;
+  line-height: 1.35;
+}
+
+.explorer-page-shell .route-dashboard .ws-atlas-deck__card strong {
+  font-size: 15px;
+  line-height: 1.35;
+  color: var(--ws-ink);
+}
+
+.explorer-page-shell .route-dashboard .ws-atlas-deck__card small {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--ws-ink-2);
+}
+
+.explorer-page-shell .route-dashboard .route-chip-row span {
+  color: var(--ws-ink-2);
+  font-size: 11.5px;
+}
+
+.explorer-page-shell .route-dashboard--outlook .outlook-signal-card,
+.explorer-page-shell .route-dashboard--outlook .outlook-top-cities__card,
+.explorer-page-shell .route-dashboard--outlook .outlook-alternatives__card,
+.explorer-page-shell .route-dashboard--family-fit .family-fit-summary__card,
+.explorer-page-shell .route-dashboard--family-fit .family-fit-narrative__card,
+.explorer-page-shell .route-dashboard--family-fit .family-fit-best-matches__card,
+.explorer-page-shell .route-dashboard--family-fit .family-fit-compatibility__card {
+  border-color: rgba(31, 42, 46, 0.14);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(250, 247, 241, 0.92));
+}
+
+.explorer-page-shell .route-dashboard--outlook .outlook-signal-card strong,
+.explorer-page-shell .route-dashboard--outlook .outlook-top-cities__card strong,
+.explorer-page-shell .route-dashboard--outlook .outlook-alternatives__card strong,
+.explorer-page-shell .route-dashboard--family-fit .family-fit-best-matches__card strong,
+.explorer-page-shell .route-dashboard--family-fit .family-fit-compatibility__card strong {
+  font-size: 16px;
+}
+
+.explorer-page-shell .route-dashboard--family-fit .family-fit-best-matches__card .ws-atlas-deck__label,
+.explorer-page-shell .route-dashboard--family-fit .family-fit-compatibility__card .ws-atlas-deck__label {
+  font-size: 11px;
+  color: var(--ws-ink-2);
+}
+
+.explorer-page-shell .route-dashboard--family-fit .family-fit-best-matches__card small,
+.explorer-page-shell .route-dashboard--family-fit .family-fit-compatibility__card small {
+  font-size: 13px;
+  color: var(--ws-ink);
+}
+
 /* ── Main area (scatter + heatmap stacked) ─────────────────────── */
 .ws-main {
   display: flex;

@@ -110,23 +110,23 @@ export const FamilyFitPage = function familyFitPage({
         </section>
 
         {focusRow && (
-          <section className="ws-atlas-deck" aria-label="Family-fit focus summary">
-            <article className="ws-atlas-deck__card">
+          <section className="ws-atlas-deck family-fit-summary" aria-label="Family-fit focus summary">
+            <article className="ws-atlas-deck__card family-fit-summary__card">
               <span className="ws-atlas-deck__label">Anchor City</span>
               <strong>{focusRow.city}, {focusRow.country}</strong>
               <small>{focusCityMeta?.activeLensLabel ?? 'Balanced'} relocation frame</small>
             </article>
-            <article className="ws-atlas-deck__card">
+            <article className="ws-atlas-deck__card family-fit-summary__card">
               <span className="ws-atlas-deck__label">Family Rhythm</span>
               <strong>{focusRow.familyRhythm.toFixed(2)}</strong>
               <small>Household tempo and safety fit</small>
             </article>
-            <article className="ws-atlas-deck__card">
+            <article className="ws-atlas-deck__card family-fit-summary__card">
               <span className="ws-atlas-deck__label">Psychological Rhythm</span>
               <strong>{focusRow.psychologicalRhythm.toFixed(2)}</strong>
               <small>Stress load and emotional sustainability</small>
             </article>
-            <article className="ws-atlas-deck__card">
+            <article className="ws-atlas-deck__card family-fit-summary__card">
               <span className="ws-atlas-deck__label">Environmental Rhythm</span>
               <strong>{focusRow.environmentalRhythm.toFixed(2)}</strong>
               <small>Air and environmental quality profile</small>
@@ -135,10 +135,10 @@ export const FamilyFitPage = function familyFitPage({
         )}
 
         <section className="route-split-grid route-split-grid--family-fit">
-          <section className="ws-pane route-split-grid__pane route-split-grid__pane--primary">
+          <section className="ws-pane route-split-grid__pane route-split-grid__pane--primary family-fit-narrative">
             <div className="ws-pane__header"><span className="ws-pane__title">Anchor Narrative</span></div>
             <div className="ws-pane__body route-card-stack">
-              <article className="ws-atlas-deck__card">
+              <article className="ws-atlas-deck__card family-fit-narrative__card">
                 <span className="ws-atlas-deck__label">Current Interpretation</span>
                 <strong>{focusRow?.narrative || 'No narrative available'}</strong>
                 <small>Use this as the baseline rhythm you want to preserve or improve.</small>
@@ -146,11 +146,11 @@ export const FamilyFitPage = function familyFitPage({
             </div>
           </section>
 
-          <section className="ws-pane route-split-grid__pane route-split-grid__pane--secondary">
+          <section className="ws-pane route-split-grid__pane route-split-grid__pane--secondary family-fit-best-matches">
             <div className="ws-pane__header"><span className="ws-pane__title">Best Matches</span></div>
             <div className="ws-pane__body route-card-stack">
               {ranked.slice(0, 6).map((row) => (
-                <button key={row.key} type="button" className="ws-atlas-deck__card route-card-button" onClick={() => onSelectCity(row.key)}>
+                <button key={row.key} type="button" className="ws-atlas-deck__card route-card-button family-fit-best-matches__card" onClick={() => onSelectCity(row.key)}>
                   <span className="ws-atlas-deck__label">{row.city}, {row.country}</span>
                   <strong>Compatibility {row.compatibilityScore.toFixed(2)}</strong>
                   <small>Profile fit {row.fitScore.toFixed(2)} · {row.narrative || 'No narrative available'}</small>
@@ -160,11 +160,11 @@ export const FamilyFitPage = function familyFitPage({
           </section>
         </section>
 
-        <section className="ws-pane route-pane">
+        <section className="ws-pane route-pane family-fit-compatibility">
           <div className="ws-pane__header"><span className="ws-pane__title">Compatibility Breakdown</span></div>
           <div className="ws-pane__body route-card-stack">
             {ranked.slice(0, 12).map((row) => (
-              <article key={row.key} className="ws-atlas-deck__card">
+              <article key={row.key} className="ws-atlas-deck__card family-fit-compatibility__card">
                 <span className="ws-atlas-deck__label">{row.city}, {row.country}</span>
                 <strong>Compatibility {row.compatibilityScore.toFixed(2)}</strong>
                 <small>{row.narrative || 'No narrative available'}</small>

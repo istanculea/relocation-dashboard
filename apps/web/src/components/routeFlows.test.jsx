@@ -133,6 +133,10 @@ describe('route flow interactions', () => {
 
     clickByText('Family Fit');
 
+    expect(container.querySelectorAll('.outlook-signal-card').length).toBeGreaterThan(0);
+    expect(container.querySelectorAll('.outlook-top-cities__card').length).toBeGreaterThan(0);
+    expect(container.querySelectorAll('.outlook-alternatives__card').length).toBeGreaterThan(0);
+
     expect(onSelectCity).toHaveBeenCalledWith(temporalRows[1].key);
     expect(onGoToFamilyFit).toHaveBeenCalledTimes(1);
   });
@@ -164,6 +168,11 @@ describe('route flow interactions', () => {
     });
 
     clickByText('Outlook');
+
+    expect(container.querySelectorAll('.family-fit-summary__card').length).toBe(4);
+    expect(container.querySelectorAll('.family-fit-narrative__card').length).toBe(1);
+    expect(container.querySelectorAll('.family-fit-best-matches__card').length).toBeGreaterThan(0);
+    expect(container.querySelectorAll('.family-fit-compatibility__card').length).toBeGreaterThan(0);
 
     expect(onSelectCity).toHaveBeenCalledWith(familyFitRows[1].key);
     expect(onGoToOutlook).toHaveBeenCalledTimes(1);

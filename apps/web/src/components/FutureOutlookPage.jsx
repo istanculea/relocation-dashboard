@@ -195,11 +195,11 @@ export const FutureOutlookPage = function futureOutlookPage({
         )}
 
         <section className="route-split-grid route-split-grid--outlook">
-          <section className="ws-pane route-split-grid__pane route-split-grid__pane--primary">
+          <section className="ws-pane route-split-grid__pane route-split-grid__pane--primary outlook-signal-stack">
             <div className="ws-pane__header"><span className="ws-pane__title">Signal Outlook</span></div>
             <div className="ws-pane__body route-card-stack">
               {selectedRow?.summary.projectedIndicators.map((indicator) => (
-                <article key={`${selectedRow.key}-${indicator.indicatorKey}`} className="ws-atlas-deck__card">
+                <article key={`${selectedRow.key}-${indicator.indicatorKey}`} className="ws-atlas-deck__card outlook-signal-card">
                   <span className="ws-atlas-deck__label">{indicator.label}</span>
                   <strong>{indicator.projected.value.toFixed(2)} in {selectedYear}</strong>
                   <small>
@@ -215,11 +215,11 @@ export const FutureOutlookPage = function futureOutlookPage({
             </div>
           </section>
 
-          <section className="ws-pane route-split-grid__pane route-split-grid__pane--secondary">
+          <section className="ws-pane route-split-grid__pane route-split-grid__pane--secondary outlook-top-cities">
             <div className="ws-pane__header"><span className="ws-pane__title">Top Projected Cities</span></div>
             <div className="ws-pane__body route-card-stack">
               {cityRows.slice(0, 8).map((row) => (
-                <button key={row.key} type="button" className="ws-atlas-deck__card route-card-button" onClick={() => onSelectCity(row.key)}>
+                <button key={row.key} type="button" className="ws-atlas-deck__card route-card-button outlook-top-cities__card" onClick={() => onSelectCity(row.key)}>
                   <span className="ws-atlas-deck__label">{row.city}, {row.country}</span>
                   <strong>{row.summary.averageProjected.toFixed(2)} projected score</strong>
                   <small>Current {row.summary.averageCurrent.toFixed(2)} · {confidenceLabel(row.summary.confidence)}</small>
@@ -229,11 +229,11 @@ export const FutureOutlookPage = function futureOutlookPage({
           </section>
         </section>
 
-        <section className="ws-pane route-pane">
+        <section className="ws-pane route-pane outlook-alternatives">
           <div className="ws-pane__header"><span className="ws-pane__title">Closest Alternatives</span></div>
           <div className="ws-pane__body route-grid-cards">
             {comparisonRows.map((row) => (
-              <article key={row.key} className="ws-atlas-deck__card">
+              <article key={row.key} className="ws-atlas-deck__card outlook-alternatives__card">
                 <span className="ws-atlas-deck__label">{row.city}, {row.country}</span>
                 <strong>{row.summary.averageProjected.toFixed(2)} projected score</strong>
                 <small>{row.summary.delta >= 0 ? '+' : ''}{row.summary.delta.toFixed(2)} vs current · {confidenceLabel(row.summary.confidence)}</small>

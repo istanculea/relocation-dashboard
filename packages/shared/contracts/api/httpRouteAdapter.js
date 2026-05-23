@@ -106,8 +106,9 @@ export const dispatchApiRequest = async ({ handlers, method, pathname, query, bo
     };
   }
 
+  const routeMatch = pathname.match(route.pattern);
   const args = route.mapParams({
-    captures: route.pattern.exec(pathname)?.slice(1) ?? [],
+    captures: routeMatch?.slice(1) ?? [],
     query,
     body,
   });
@@ -178,6 +179,16 @@ export const createApiHttpServer = ({ handlers, allowCors = true, logger = conso
   const requestListener = createApiRequestListener({ handlers, allowCors, logger });
   const server = createServer();
 
+  const shutdownServer = () => {
+    if (server.listening) {
+      server.close();
+    }
+  };
+
+  process.once('exit', shutdownServer);
+  process.once('SIGINT', shutdownServer);
+  process.once('SIGTERM', shutdownServer);
+
   server.on('request', requestListener);
   server.on('error', (error) => {
     logger.error?.(error);
@@ -187,6 +198,9 @@ export const createApiHttpServer = ({ handlers, allowCors = true, logger = conso
     }
   });
   server.on('close', () => {
+    process.off('exit', shutdownServer);
+    process.off('SIGINT', shutdownServer);
+    process.off('SIGTERM', shutdownServer);
     logger.info?.('api_http_server_closed');
   });
 

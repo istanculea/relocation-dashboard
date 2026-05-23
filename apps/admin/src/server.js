@@ -7,6 +7,21 @@ export const startAdminApiServer = ({
   host = process.env.ADMIN_API_HOST ?? '127.0.0.1',
 } = {}) => new Promise((resolve) => {
   const server = createApiHttpServer({ handlers: apiV1Handlers });
+  const shutdownServer = () => {
+    if (server.listening) {
+      server.close();
+    }
+  };
+
+  process.on('exit', shutdownServer);
+  process.on('SIGINT', shutdownServer);
+  process.on('SIGTERM', shutdownServer);
+  server.once('close', () => {
+    process.off('exit', shutdownServer);
+    process.off('SIGINT', shutdownServer);
+    process.off('SIGTERM', shutdownServer);
+  });
+
   server.listen(port, host, () => {
     console.log(`admin api runtime listening on http://${host}:${port}`);
     console.log('artifact endpoints enabled: /v1/admin/artifacts/scenario and /v1/admin/artifacts/evidence');

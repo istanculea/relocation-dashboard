@@ -11,6 +11,21 @@ export const startWebServiceRuntime = ({
     ]);
 
     const server = createApiHttpServer({ handlers: apiV1Handlers });
+    const shutdownServer = () => {
+      if (server.listening) {
+        server.close();
+      }
+    };
+
+    process.on('exit', shutdownServer);
+    process.on('SIGINT', shutdownServer);
+    process.on('SIGTERM', shutdownServer);
+    server.once('close', () => {
+      process.off('exit', shutdownServer);
+      process.off('SIGINT', shutdownServer);
+      process.off('SIGTERM', shutdownServer);
+    });
+
     server.listen(port, host, () => {
       console.log(`web service runtime listening on http://${host}:${port}`);
       resolve(server);

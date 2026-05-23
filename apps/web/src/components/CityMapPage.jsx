@@ -1691,85 +1691,17 @@ const CityMapCanvas = function cityMapCanvas({
             </g>
           )}
 
-          {(() => {
-            const nodeVisuals = sortedCityOptions
-              .map((city) => {
-                const geo = cityGeoData[city.key];
-                if (!geo) {
-                  return null;
-                }
-                const point = projectEuropePoint(geo, MAIN_EUROPE_MAP, VIEWBOX_WIDTH, VIEWBOX_HEIGHT);
-                const dimensions = cityDimensionByKey.get(city.key);
-                const intelligenceRow = cityIntelligenceByKey.get(city.key);
-                const strategic = intelligenceRow?.strategicFit ?? dimensions?.strategic ?? getScoreValue(city);
-                const rank = topCityRankByKey.get(city.key) ?? Number.POSITIVE_INFINITY;
-                const hubTier = getHubTier(rank);
-                const hubScale = getHubScale(hubTier);
-                const pointRadius = clampValue((6.1 + (strategic - 5.6) * 1.55) * hubScale, 5.2, 13.6);
-                const isActive = city.key === selectedCityKey;
-                const isHovered = city.key === hoveredCityKey;
-
-                return {
-                  city,
-                  point,
-                  strategic,
-                  rank,
-                  hubTier,
-                  pointRadius,
-                  isActive,
-                  isHovered,
-                };
-              })
-              .filter(Boolean);
-
-            const labelPlacements = makeCityLabelPlacements({
-              nodeVisuals,
-              showLabels,
-              selectedCityKey,
-              hoveredCityKey,
-            });
-
-            return nodeVisuals.map((node) => {
-              const { city, point, strategic, hubTier, pointRadius, isActive, isHovered } = node;
-              const labelPlacement = labelPlacements.get(city.key);
-
-              return (
-              <g
-                key={city.key}
-                className={`city-map-point city-map-point--${hubTier}${isActive ? ' city-map-point--active' : ''}${isHovered ? ' city-map-point--hover' : ''}`}
-                onClick={() => onSelectCity(city.key)}
-                onMouseEnter={() => onHoverCity(city.key)}
-                onMouseLeave={() => onHoverCity(null)}
-                role="button"
-                tabIndex={0}
-                aria-label={`${city.city}, ${city.country}. Strategic score ${strategic.toFixed(2)}.`}
-                onKeyDown={(event) => {
-                  if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault();
-                    onSelectCity(city.key);
-                  }
-                }}
-              >
-                <circle cx={point.x} cy={point.y} r={isActive ? pointRadius + 2 : pointRadius} />
-                <circle cx={point.x} cy={point.y} r={isActive ? pointRadius + 8 : pointRadius + 5} className="city-map-point__halo" />
-                {labelPlacement && (
-                  <g className="city-map-label">
-                    <line x1={point.x + pointRadius * 0.72} y1={point.y} x2={labelPlacement.leaderX} y2={labelPlacement.leaderY} />
-                    <text x={labelPlacement.x} y={labelPlacement.y} textAnchor={labelPlacement.anchor}>{labelPlacement.text}</text>
-                  </g>
-                )}
-                {topCityRankByKey.has(city.key) && (
-                  <g className="city-map-rank-pin" aria-hidden="true">
-                    <circle cx={point.x - pointRadius - 9} cy={point.y - pointRadius - 8} r="9.5" />
-                    <text x={point.x - pointRadius - 9} y={point.y - pointRadius - 5} textAnchor="middle">
-                      {topCityRankByKey.get(city.key)}
-                    </text>
-                  </g>
-                )}
-              </g>
-              );
-            });
-          })()}
+          <CityMapNodeLayer
+            sortedCityOptions={sortedCityOptions}
+            cityDimensionByKey={cityDimensionByKey}
+            cityIntelligenceByKey={cityIntelligenceByKey}
+            selectedCityKey={selectedCityKey}
+            hoveredCityKey={hoveredCityKey}
+            showLabels={showLabels}
+            topCityRankByKey={topCityRankByKey}
+            onSelectCity={onSelectCity}
+            onHoverCity={onHoverCity}
+          />
         </g>
       </svg>
     </div>
@@ -1820,6 +1752,268 @@ const StrategicCityCard = function strategicCityCard({ city, dimensions, intelli
       </button>
     </article>
   );
+};
+
+const resolveCityByKey = (cities, cityKey) => (
+  cityKey ? cities.find((city) => city.key === cityKey) ?? null : null
+);
+
+const selectTopRankingRow = (rows, selector, direction = 'desc') => {
+  const sorted = [...rows].sort((left, right) => {
+    const delta = selector(right) - selector(left);
+    return direction === 'desc' ? delta : -delta;
+  });
+
+  return sorted[0] ?? null;
+};
+
+const buildBestRailRankingRow = (rows, cityConnectionsByKey) => [...rows]
+  .map((row) => ({
+    ...row,
+    railCount: (cityConnectionsByKey.get(row.city.key) ?? []).filter((connection) => connection.modes.includes('rail')).length,
+  }))
+  .sort((left, right) => right.railCount - left.railCount)[0] ?? null;
+
+const buildRankingStripRows = ({
+  mappableCityOptions,
+  cityDimensionByKey,
+  connectivityRanking,
+  cityConnectionsByKey,
+  intelligenceByKey,
+}) => {
+  const withDimensions = mappableCityOptions.map((city) => ({
+    city,
+    dimensions: cityDimensionByKey.get(city.key),
+    network: connectivityRanking.find((row) => row.key === city.key),
+    intelligence: intelligenceByKey.get(city.key),
+  }));
+
+  return [
+    { label: 'Top Strategic Fit', row: selectTopRankingRow(withDimensions, (candidate) => candidate.intelligence?.strategicFit ?? 0) },
+    { label: 'Best Family Stability', row: selectTopRankingRow(withDimensions, (candidate) => candidate.intelligence?.signals?.familyReadiness ?? 0) },
+    { label: 'Best Rail Networks', row: buildBestRailRankingRow(withDimensions, cityConnectionsByKey) },
+    { label: 'Most Walkable', row: selectTopRankingRow(withDimensions, (candidate) => candidate.intelligence?.signals?.walkability ?? 0) },
+    { label: 'Lowest Commute Burden', row: selectTopRankingRow(withDimensions, (candidate) => candidate.dimensions?.commuteMinutes ?? 100, 'asc') },
+  ];
+};
+
+const resolveFocusCitySelection = ({
+  mappableCityOptions,
+  cityDimensionByKey,
+  cityConnectionsByKey,
+  intelligenceByKey,
+  focusCityKey,
+}) => {
+  const focusCity = resolveCityByKey(mappableCityOptions, focusCityKey);
+
+  return {
+    focusCity,
+    focusDimensions: focusCity ? cityDimensionByKey.get(focusCity.key) : null,
+    focusIntel: focusCity ? intelligenceByKey.get(focusCity.key) ?? null : null,
+    focusConnections: focusCity ? cityConnectionsByKey.get(focusCity.key) ?? [] : [],
+    focusNeighborhoods: focusCity ? getNeighborhoodProfiles(focusCity.key).slice(0, 3) : [],
+  };
+};
+
+const resolveComparisonCitySelection = ({
+  mappableCityOptions,
+  intelligenceByKey,
+  intelligenceRanking,
+  focusCityKey,
+  comparisonCityKey,
+}) => {
+  const fallbackCity = intelligenceRanking.find((row) => row.key !== focusCityKey)?.city ?? null;
+  const comparisonCity = resolveCityByKey(mappableCityOptions, comparisonCityKey) ?? fallbackCity;
+
+  return {
+    comparisonCity,
+    comparisonIntel: comparisonCity ? intelligenceByKey.get(comparisonCity.key) ?? null : null,
+  };
+};
+
+const resolveCityMapSelection = ({
+  mappableCityOptions,
+  cityDimensionByKey,
+  cityConnectionsByKey,
+  intelligenceByKey,
+  intelligenceRanking,
+  focusCityKey,
+  comparisonCityKey,
+}) => {
+  const {
+    focusCity,
+    focusDimensions,
+    focusIntel,
+    focusConnections,
+    focusNeighborhoods,
+  } = resolveFocusCitySelection({
+    mappableCityOptions,
+    cityDimensionByKey,
+    cityConnectionsByKey,
+    intelligenceByKey,
+    focusCityKey,
+  });
+
+  const {
+    comparisonCity,
+    comparisonIntel,
+  } = resolveComparisonCitySelection({
+    mappableCityOptions,
+    intelligenceByKey,
+    intelligenceRanking,
+    focusCityKey,
+    comparisonCityKey,
+  });
+
+  return {
+    focusCity,
+    focusDimensions,
+    focusIntel,
+    focusConnections,
+    focusNeighborhoods,
+    comparisonCity,
+    comparisonIntel,
+    comparisonSignals: comparisonIntel?.signals ?? null,
+    focusSignals: focusIntel?.signals ?? null,
+  };
+};
+
+const buildCityMapNarrativeState = ({
+  focusCity,
+  focusIntel,
+  focusDimensions,
+  focusSignals,
+  comparisonSignals,
+  combinedLensWeights,
+}) => ({
+  selectedCityTruthGood: focusIntel?.truthGood ?? [],
+  selectedCityTruthBad: focusIntel?.truthBad ?? [],
+  selectedUrbanDNA: focusCity ? buildUrbanDNA(focusCity, focusIntel?.strategicFit ?? 0) : '',
+  selectedWeeklyLife: focusCity ? buildWeeklyLifeSnapshot(focusCity, focusDimensions, focusIntel?.signals ?? {}) : [],
+  selectedForecast: focusCity ? buildForecastSnapshot(focusIntel?.signals ?? {}, focusCity) : null,
+  contrastLines: focusSignals && comparisonSignals
+    ? buildContrastLines(focusSignals, comparisonSignals, combinedLensWeights)
+    : [],
+  explanationLines: focusIntel
+    ? [...(focusIntel.truthGood ?? []).slice(0, 3), ...focusIntel.modeDrivers.slice(0, 2).map((item) => item.label)]
+    : [],
+});
+
+const buildCityMapNodeVisuals = ({
+  sortedCityOptions,
+  cityDimensionByKey,
+  cityIntelligenceByKey,
+  topCityRankByKey,
+  selectedCityKey,
+  hoveredCityKey,
+}) => sortedCityOptions
+  .map((city) => {
+    const geo = cityGeoData[city.key];
+    if (!geo) {
+      return null;
+    }
+
+    const point = projectEuropePoint(geo, MAIN_EUROPE_MAP, VIEWBOX_WIDTH, VIEWBOX_HEIGHT);
+    const dimensions = cityDimensionByKey.get(city.key);
+    const intelligenceRow = cityIntelligenceByKey.get(city.key);
+    const strategic = intelligenceRow?.strategicFit ?? dimensions?.strategic ?? getScoreValue(city);
+    const rank = topCityRankByKey.get(city.key) ?? Number.POSITIVE_INFINITY;
+    const hubTier = getHubTier(rank);
+    const hubScale = getHubScale(hubTier);
+    const pointRadius = clampValue((6.1 + (strategic - 5.6) * 1.55) * hubScale, 5.2, 13.6);
+    const isActive = city.key === selectedCityKey;
+    const isHovered = city.key === hoveredCityKey;
+
+    return {
+      city,
+      point,
+      strategic,
+      rank,
+      hubTier,
+      pointRadius,
+      isActive,
+      isHovered,
+    };
+  })
+  .filter(Boolean);
+
+const CityMapNode = ({ node, labelPlacement, topCityRankByKey, onSelectCity, onHoverCity }) => {
+  const { city, point, strategic, hubTier, pointRadius, isActive, isHovered } = node;
+
+  return (
+    <g
+      key={city.key}
+      className={`city-map-point city-map-point--${hubTier}${isActive ? ' city-map-point--active' : ''}${isHovered ? ' city-map-point--hover' : ''}`}
+      onClick={() => onSelectCity(city.key)}
+      onMouseEnter={() => onHoverCity(city.key)}
+      onMouseLeave={() => onHoverCity(null)}
+      role="button"
+      tabIndex={0}
+      aria-label={`${city.city}, ${city.country}. Strategic score ${strategic.toFixed(2)}.`}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          onSelectCity(city.key);
+        }
+      }}
+    >
+      <circle cx={point.x} cy={point.y} r={isActive ? pointRadius + 2 : pointRadius} />
+      <circle cx={point.x} cy={point.y} r={isActive ? pointRadius + 8 : pointRadius + 5} className="city-map-point__halo" />
+      {labelPlacement && (
+        <g className="city-map-label">
+          <line x1={point.x + pointRadius * 0.72} y1={point.y} x2={labelPlacement.leaderX} y2={labelPlacement.leaderY} />
+          <text x={labelPlacement.x} y={labelPlacement.y} textAnchor={labelPlacement.anchor}>{labelPlacement.text}</text>
+        </g>
+      )}
+      {topCityRankByKey.has(city.key) && (
+        <g className="city-map-rank-pin" aria-hidden="true">
+          <circle cx={point.x - pointRadius - 9} cy={point.y - pointRadius - 8} r="9.5" />
+          <text x={point.x - pointRadius - 9} y={point.y - pointRadius - 5} textAnchor="middle">
+            {topCityRankByKey.get(city.key)}
+          </text>
+        </g>
+      )}
+    </g>
+  );
+};
+
+const CityMapNodeLayer = ({
+  sortedCityOptions,
+  cityDimensionByKey,
+  cityIntelligenceByKey,
+  selectedCityKey,
+  hoveredCityKey,
+  showLabels,
+  topCityRankByKey,
+  onSelectCity,
+  onHoverCity,
+}) => {
+  const nodeVisuals = buildCityMapNodeVisuals({
+    sortedCityOptions,
+    cityDimensionByKey,
+    cityIntelligenceByKey,
+    topCityRankByKey,
+    selectedCityKey,
+    hoveredCityKey,
+  });
+
+  const labelPlacements = makeCityLabelPlacements({
+    nodeVisuals,
+    showLabels,
+    selectedCityKey,
+    hoveredCityKey,
+  });
+
+  return nodeVisuals.map((node) => (
+    <CityMapNode
+      key={node.city.key}
+      node={node}
+      labelPlacement={labelPlacements.get(node.city.key)}
+      topCityRankByKey={topCityRankByKey}
+      onSelectCity={onSelectCity}
+      onHoverCity={onHoverCity}
+    />
+  ));
 };
 
 export const CityMapPage = function cityMapPage({
@@ -1925,58 +2119,33 @@ export const CityMapPage = function cityMapPage({
     [intelligenceRanking],
   );
 
-  useEffect(() => {
-    if (comparisonCityKey && comparisonCityKey === selectedCityKey) {
-      onComparisonCityChange('');
-    }
-  }, [comparisonCityKey, onComparisonCityChange, selectedCityKey]);
+  const rankingStripRows = useMemo(
+    () => buildRankingStripRows({
+      mappableCityOptions,
+      cityDimensionByKey,
+      connectivityRanking,
+      cityConnectionsByKey,
+      intelligenceByKey,
+    }),
+    [mappableCityOptions, cityDimensionByKey, connectivityRanking, cityConnectionsByKey, intelligenceByKey],
+  );
 
-  const rankingStripRows = useMemo(() => {
-    const withDimensions = mappableCityOptions.map((city) => ({
-      city,
-      dimensions: cityDimensionByKey.get(city.key),
-      network: connectivityRanking.find((row) => row.key === city.key),
-      intelligence: intelligenceByKey.get(city.key),
-    }));
+  const cityMapSelection = useMemo(
+    () => resolveCityMapSelection({
+      mappableCityOptions,
+      cityDimensionByKey,
+      cityConnectionsByKey,
+      intelligenceByKey,
+      intelligenceRanking,
+      focusCityKey,
+      comparisonCityKey,
+    }),
+    [mappableCityOptions, cityDimensionByKey, cityConnectionsByKey, intelligenceByKey, intelligenceRanking, focusCityKey, comparisonCityKey],
+  );
 
-    const sortBy = (selector, direction = 'desc') => [...withDimensions]
-      .sort((left, right) => {
-        const delta = selector(right) - selector(left);
-        return direction === 'desc' ? delta : -delta;
-      })[0] ?? null;
-
-    const bestRail = [...withDimensions]
-      .map((row) => {
-        const links = cityConnectionsByKey.get(row.city.key) ?? [];
-        const railCount = links.filter((connection) => connection.modes.includes('rail')).length;
-        return { ...row, railCount };
-      })
-      .sort((left, right) => right.railCount - left.railCount)[0] ?? null;
-
-    return [
-      { label: 'Top Strategic Fit', row: sortBy((candidate) => candidate.intelligence?.strategicFit ?? 0) },
-      { label: 'Best Family Stability', row: sortBy((candidate) => candidate.intelligence?.signals?.familyReadiness ?? 0) },
-      { label: 'Best Rail Networks', row: bestRail },
-      { label: 'Most Walkable', row: sortBy((candidate) => candidate.intelligence?.signals?.walkability ?? 0) },
-      { label: 'Lowest Commute Burden', row: sortBy((candidate) => candidate.dimensions?.commuteMinutes ?? 100, 'asc') },
-    ];
-  }, [mappableCityOptions, cityDimensionByKey, connectivityRanking, cityConnectionsByKey, intelligenceByKey]);
-
-  const focusCity = focusCityKey
-    ? mappableCityOptions.find((city) => city.key === focusCityKey) ?? null
-    : null;
-  const focusDimensions = focusCity ? cityDimensionByKey.get(focusCity.key) : null;
-  const focusIntel = focusCity ? intelligenceByKey.get(focusCity.key) ?? null : null;
-  const focusConnections = focusCity ? cityConnectionsByKey.get(focusCity.key) ?? [] : [];
-  const focusNeighborhoods = focusCity ? getNeighborhoodProfiles(focusCity.key).slice(0, 3) : [];
   const selectedModeProfile = STRATEGIC_MODES[selectedModeKey] ?? STRATEGIC_MODES.familyStability;
   const selectedPersonaProfile = PERSONA_PROFILES[selectedPersonaKey] ?? PERSONA_PROFILES.internationalFamily;
-  const comparisonCity = comparisonCityKey
-    ? mappableCityOptions.find((city) => city.key === comparisonCityKey) ?? null
-    : intelligenceRanking.find((row) => row.key !== focusCity?.key)?.city ?? null;
-  const comparisonIntel = comparisonCity ? intelligenceByKey.get(comparisonCity.key) ?? null : null;
-  const comparisonSignals = comparisonIntel?.signals ?? null;
-  const focusSignals = focusIntel?.signals ?? null;
+
   const combinedLensWeights = useMemo(() => {
     const merged = { ...selectedModeProfile.weights };
     Object.entries(selectedPersonaProfile.weights).forEach(([key, weight]) => {
@@ -1985,17 +2154,41 @@ export const CityMapPage = function cityMapPage({
     return merged;
   }, [selectedModeProfile.weights, selectedPersonaProfile.weights]);
 
-  const selectedCityTruthGood = focusIntel?.truthGood ?? [];
-  const selectedCityTruthBad = focusIntel?.truthBad ?? [];
-  const selectedUrbanDNA = focusCity ? buildUrbanDNA(focusCity, focusIntel?.strategicFit ?? 0) : '';
-  const selectedWeeklyLife = focusCity ? buildWeeklyLifeSnapshot(focusCity, focusDimensions, focusIntel?.signals ?? {}) : [];
-  const selectedForecast = focusCity ? buildForecastSnapshot(focusIntel?.signals ?? {}, focusCity) : null;
-  const contrastLines = focusSignals && comparisonSignals
-    ? buildContrastLines(focusSignals, comparisonSignals, combinedLensWeights)
-    : [];
-  const explanationLines = focusIntel
-    ? [...selectedCityTruthGood.slice(0, 3), ...focusIntel.modeDrivers.slice(0, 2).map((item) => item.label)]
-    : [];
+  const cityMapNarrativeState = useMemo(
+    () => buildCityMapNarrativeState({
+      ...cityMapSelection,
+      combinedLensWeights,
+    }),
+    [cityMapSelection, combinedLensWeights],
+  );
+
+  useEffect(() => {
+    if (comparisonCityKey && comparisonCityKey === selectedCityKey) {
+      onComparisonCityChange('');
+    }
+  }, [comparisonCityKey, onComparisonCityChange, selectedCityKey]);
+
+  const {
+    focusCity,
+    focusDimensions,
+    focusIntel,
+    focusConnections,
+    focusNeighborhoods,
+    comparisonCity,
+    comparisonIntel,
+    comparisonSignals,
+    focusSignals,
+  } = cityMapSelection;
+
+  const {
+    selectedCityTruthGood,
+    selectedCityTruthBad,
+    selectedUrbanDNA,
+    selectedWeeklyLife,
+    selectedForecast,
+    contrastLines,
+    explanationLines,
+  } = cityMapNarrativeState;
 
   const handleZoom = (direction) => {
     setZoom((previousZoom) => {

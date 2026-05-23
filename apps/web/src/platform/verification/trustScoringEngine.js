@@ -35,16 +35,22 @@ const inferEvidenceClass = (auditCounts) => {
   return 'inferential';
 };
 
+const GOVERNMENT_SOURCE_TOKENS = ['.gov', 'europa.eu', 'ministry', 'municipal'];
+const INDEPENDENT_SOURCE_TOKENS = ['oecd', 'worldbank', 'imf', 'eurostat'];
+const OBSERVATIONAL_SOURCE_TOKENS = ['operator', 'metro', 'hospital', 'service'];
+
+const containsAnyToken = (value, tokens) => tokens.some((token) => value.includes(token));
+
 const classifySource = (source) => {
   const value = String(source ?? '').toLowerCase();
 
-  if (value.includes('.gov') || value.includes('europa.eu') || value.includes('ministry') || value.includes('municipal')) {
+  if (containsAnyToken(value, GOVERNMENT_SOURCE_TOKENS)) {
     return 'governmental';
   }
-  if (value.includes('oecd') || value.includes('worldbank') || value.includes('imf') || value.includes('eurostat')) {
+  if (containsAnyToken(value, INDEPENDENT_SOURCE_TOKENS)) {
     return 'independent';
   }
-  if (value.includes('operator') || value.includes('metro') || value.includes('hospital') || value.includes('service')) {
+  if (containsAnyToken(value, OBSERVATIONAL_SOURCE_TOKENS)) {
     return 'observational';
   }
   return 'user_reported';

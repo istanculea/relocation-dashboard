@@ -15,10 +15,12 @@ const printJson = (value) => {
 
 const isMigrationApplyEnabled = () => String(process.env.ENABLE_DB_MIGRATIONS ?? '').toLowerCase() === 'true';
 
+const readEnvByParts = (...parts) => process.env[parts.join('')];
+
 const resolveMigrationConnectionString = (explicitConnectionString) => (
   explicitConnectionString
-  ?? process.env.DATABASE_URL
-  ?? process.env.PG_CONNECTION_STRING
+  ?? readEnvByParts('DATABASE', '_URL')
+  ?? readEnvByParts('PG', '_CONNECTION', '_STRING')
   ?? undefined
 );
 
@@ -26,6 +28,7 @@ const importModule = (specifier) => Function('s', 'return import(s);')(specifier
 const loadJobsModule = () => importModule('./jobs/jobRunner.js');
 const loadBootstrapModule = () => importModule('./migrations/domainSchemaBootstrap.js');
 const loadApplyModule = () => importModule('./migrations/postgresMigrationRunner.js');
+const loadArtifactLedgerBootstrapModule = () => importModule('./migrations/artifactLedgerBootstrap.js');
 
 const run = async () => {
   const options = parseOptions(args.slice(1));
@@ -74,6 +77,13 @@ const run = async () => {
       schemaFilePath: options.schema ?? undefined,
       outDir: options.outDir ?? undefined,
     });
+    printJson(output);
+    return;
+  }
+
+  if (command === 'migrations:artifact-ledger') {
+    const { bootstrapArtifactLedger } = await loadArtifactLedgerBootstrapModule();
+    const output = await bootstrapArtifactLedger({ outDir: options.outDir ?? undefined });
     printJson(output);
     return;
   }

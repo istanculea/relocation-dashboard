@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
+import { parseManifestJson } from './manifestParser.js';
 
 const DEFAULT_MIGRATION_LOG_TABLE = 'esmip_schema_migrations';
 
@@ -9,7 +10,7 @@ const buildDigest = (text) => createHash('sha256').update(text, 'utf8').digest('
 const loadManifest = async (manifestPath) => {
   const absolutePath = path.resolve(manifestPath);
   const raw = await readFile(absolutePath, 'utf8');
-  return JSON.parse(raw);
+  return parseManifestJson(raw, absolutePath);
 };
 
 const countStatements = (sql) => sql
@@ -35,9 +36,9 @@ const defaultClientFactory = async (connectionString) => {
   return new Client({ connectionString });
 };
 
-const ensureMigrationLogTable = async (client, tableName) => {
+const ensureMigrationLogTable = async (client) => {
   await client.query(`
-    create table if not exists ${tableName} (
+    create table if not exists esmip_schema_migrations (
       sha256 text primary key,
       schema_file_path text not null,
       source_manifest text,
@@ -46,8 +47,8 @@ const ensureMigrationLogTable = async (client, tableName) => {
   `);
 };
 
-const hasDigestApplied = async (client, tableName, sha256) => {
-  const result = await client.query(`select 1 from ${tableName} where sha256 = $1 limit 1;`, [sha256]);
+const hasDigestApplied = async (client, sha256) => {
+  const result = await client.query('select 1 from esmip_schema_migrations where sha256 = $1 limit 1;', [sha256]);
   return result.rowCount > 0;
 };
 
@@ -71,6 +72,10 @@ export const applyDomainSchemaMigration = async ({
     throw new Error('Missing connection string for migration apply');
   }
 
+  if (migrationLogTable && migrationLogTable !== DEFAULT_MIGRATION_LOG_TABLE) {
+    throw new Error(`Unsupported migration log table: ${migrationLogTable}`);
+  }
+
   const manifest = manifestPath ? await loadManifest(manifestPath) : null;
   const resolvedSchemaPath = path.resolve(
     schemaFilePath
@@ -89,45 +94,41 @@ export const applyDomainSchemaMigration = async ({
 
   const client = await clientFactory(resolvedConnectionString);
 
-  try {
+  return (async () => {
     await client.connect();
     await client.query('begin;');
 
-    await ensureMigrationLogTable(client, migrationLogTable);
+    const result = await (async () => {
+      await ensureMigrationLogTable(client);
 
-    const alreadyApplied = await hasDigestApplied(client, migrationLogTable, schemaDigest);
-    if (alreadyApplied) {
-      await client.query('rollback;');
+      const alreadyApplied = await hasDigestApplied(client, schemaDigest);
+      if (alreadyApplied) {
+        await client.query('rollback;');
+        return {
+          status: 'already_applied',
+          schema: describedSchema,
+          migrationLogTable: DEFAULT_MIGRATION_LOG_TABLE,
+        };
+      }
+
+      await client.query(schemaSql);
+      await client.query(
+        'insert into esmip_schema_migrations (sha256, schema_file_path, source_manifest) values ($1, $2, $3);',
+        [schemaDigest, resolvedSchemaPath, manifestPath ?? null],
+      );
+      await client.query('commit;');
+
       return {
-        status: 'already_applied',
+        status: 'applied',
         schema: describedSchema,
-        migrationLogTable,
+        migrationLogTable: DEFAULT_MIGRATION_LOG_TABLE,
+        sourceManifest: manifestPath ?? null,
       };
-    }
+    })().catch(async (error) => {
+      await client.query('rollback;').catch(() => undefined);
+      throw error;
+    });
 
-    await client.query(schemaSql);
-
-    await client.query(
-      `insert into ${migrationLogTable} (sha256, schema_file_path, source_manifest) values ($1, $2, $3);`,
-      [schemaDigest, resolvedSchemaPath, manifestPath ?? null],
-    );
-
-    await client.query('commit;');
-
-    return {
-      status: 'applied',
-      schema: describedSchema,
-      migrationLogTable,
-      sourceManifest: manifestPath ?? null,
-    };
-  } catch (error) {
-    try {
-      await client.query('rollback;');
-    } catch {
-      // No-op rollback fallback if transaction was not opened.
-    }
-    throw error;
-  } finally {
-    await client.end();
-  }
+    return result;
+  })().finally(() => client.end());
 };

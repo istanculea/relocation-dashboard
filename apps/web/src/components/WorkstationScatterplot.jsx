@@ -116,6 +116,65 @@ function resolveDotRadius({ rowCount, isSelected, isHovered, isFiltered }) {
   return Math.max(5.4, base * densityScale);
 }
 
+function applyNodePairRepulsion(a, b, separationPreset) {
+  const dx = b.x - a.x;
+  const dy = b.y - a.y;
+  const dist = Math.hypot(dx, dy) || 0.0001;
+  const minDist = a.r + b.r + separationPreset.minGap;
+
+  if (dist >= minDist) {
+    return;
+  }
+
+  const overlap = (minDist - dist) * separationPreset.repelStrength;
+  const ux = dx / dist;
+  const uy = dy / dist;
+  const moveA = b.pinned ? overlap : overlap * 0.5;
+  const moveB = a.pinned ? overlap : overlap * 0.5;
+
+  if (!a.pinned) {
+    a.x -= ux * moveA;
+    a.y -= uy * moveA;
+  }
+  if (!b.pinned) {
+    b.x += ux * moveB;
+    b.y += uy * moveB;
+  }
+}
+
+function runRepulsionPass(nodes, separationPreset) {
+  for (let i = 0; i < nodes.length; i += 1) {
+    for (let j = i + 1; j < nodes.length; j += 1) {
+      applyNodePairRepulsion(nodes[i], nodes[j], separationPreset);
+    }
+  }
+}
+
+function stabilizeNode(node, separationPreset, plotBounds) {
+  if (!node.pinned) {
+    node.x += (node.x0 - node.x) * separationPreset.springStrength;
+    node.y += (node.y0 - node.y) * separationPreset.springStrength;
+  }
+
+  const dx0 = node.x - node.x0;
+  const dy0 = node.y - node.y0;
+  const displacement = Math.hypot(dx0, dy0);
+  if (displacement > separationPreset.maxDisplacement) {
+    const scale = separationPreset.maxDisplacement / displacement;
+    node.x = node.x0 + dx0 * scale;
+    node.y = node.y0 + dy0 * scale;
+  }
+
+  node.x = Math.max(plotBounds.left + node.r, Math.min(plotBounds.right - node.r, node.x));
+  node.y = Math.max(plotBounds.top + node.r, Math.min(plotBounds.bottom - node.r, node.y));
+}
+
+function runStabilizationPass(nodes, separationPreset, plotBounds) {
+  for (const node of nodes) {
+    stabilizeNode(node, separationPreset, plotBounds);
+  }
+}
+
 function buildLayoutPositions({
   orderedDots,
   filteredKeys,
@@ -150,54 +209,8 @@ function buildLayoutPositions({
   });
 
   for (let iteration = 0; iteration < separationPreset.iterations; iteration += 1) {
-    for (let i = 0; i < nodes.length; i += 1) {
-      for (let j = i + 1; j < nodes.length; j += 1) {
-        const a = nodes[i];
-        const b = nodes[j];
-        const dx = b.x - a.x;
-        const dy = b.y - a.y;
-        const dist = Math.hypot(dx, dy) || 0.0001;
-        const minDist = a.r + b.r + separationPreset.minGap;
-
-        if (dist >= minDist) {
-          continue;
-        }
-
-        const overlap = (minDist - dist) * separationPreset.repelStrength;
-        const ux = dx / dist;
-        const uy = dy / dist;
-        const moveA = b.pinned ? overlap : overlap * 0.5;
-        const moveB = a.pinned ? overlap : overlap * 0.5;
-
-        if (!a.pinned) {
-          a.x -= ux * moveA;
-          a.y -= uy * moveA;
-        }
-        if (!b.pinned) {
-          b.x += ux * moveB;
-          b.y += uy * moveB;
-        }
-      }
-    }
-
-    for (const node of nodes) {
-      if (!node.pinned) {
-        node.x += (node.x0 - node.x) * separationPreset.springStrength;
-        node.y += (node.y0 - node.y) * separationPreset.springStrength;
-      }
-
-      const dx0 = node.x - node.x0;
-      const dy0 = node.y - node.y0;
-      const displacement = Math.hypot(dx0, dy0);
-      if (displacement > separationPreset.maxDisplacement) {
-        const scale = separationPreset.maxDisplacement / displacement;
-        node.x = node.x0 + dx0 * scale;
-        node.y = node.y0 + dy0 * scale;
-      }
-
-      node.x = Math.max(plotBounds.left + node.r, Math.min(plotBounds.right - node.r, node.x));
-      node.y = Math.max(plotBounds.top + node.r, Math.min(plotBounds.bottom - node.r, node.y));
-    }
+    runRepulsionPass(nodes, separationPreset);
+    runStabilizationPass(nodes, separationPreset, plotBounds);
   }
 
   return new Map(nodes.map((node) => [node.key, node]));

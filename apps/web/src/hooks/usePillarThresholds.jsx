@@ -109,9 +109,9 @@ export default usePillarThresholds;
  * PillarThresholdSliders
  *
  * Renders a compact column of labelled range sliders (0-10) for each pillar.
- * Drop this inside the InteractiveComparisonPanel filter section.
+ * Drop this inside the primary workstation filter section.
  *
- * Integration in comparisonPanels.jsx:
+ * Integration in WorkstationLayout.jsx:
  *   import { PillarThresholdSliders } from '../hooks/usePillarThresholds.js';
  *
  *   <PillarThresholdSliders

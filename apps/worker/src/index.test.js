@@ -11,4 +11,14 @@ describe('worker feature slices', () => {
     expect(result.jobId).toBe(WORKER_JOBS[0]);
     expect(typeof result.outputPath).toBe('string');
   });
+
+  it('registers and runs artifact productization jobs', async () => {
+    expect(WORKER_JOBS).toContain('scenario_artifact_rollup');
+    expect(WORKER_JOBS).toContain('evidence_artifact_rollup');
+    expect(WORKER_JOBS).toContain('artifact_ledger_bootstrap');
+
+    const artifactResult = await runJob('artifact_ledger_bootstrap');
+    expect(artifactResult.jobId).toBe('artifact_ledger_bootstrap');
+    expect(typeof artifactResult.payload.outputPath).toBe('string');
+  });
 });

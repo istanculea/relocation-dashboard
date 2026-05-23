@@ -296,6 +296,101 @@ export const buildFamilyFitRows = () =>
 export const calculateWeightedScore = (scores, weights) =>
   scorePillars.reduce((total, [key]) => total + scores[key] * weights[key], 0);
 
+const deriveEvidenceCoverage = (city) => {
+  const counts = city.audit?.counts ?? { verified: 0, mixed: 0, modeled: 0 };
+  const total = counts.verified + counts.mixed + counts.modeled;
+  if (total <= 0) {
+    return 0.3;
+  }
+
+  const weighted = (counts.verified * 1) + (counts.mixed * 0.6) + (counts.modeled * 0.2);
+  return Number(Math.max(0, Math.min(1, weighted / total)).toFixed(2));
+};
+
+const deriveStructuralStability = (city) => {
+  const safety = Number(city.scores?.safety ?? 5);
+  const environment = Number(city.scores?.environment ?? 5);
+  return Number(Math.max(0, Math.min(1, ((safety + environment) / 20))).toFixed(2));
+};
+
+export const buildDecisionConfidenceRollup = (city) => {
+  const sourceConfidence = Number(city.verificationProfile?.confidence ?? 0.35);
+  const evidenceCoverage = deriveEvidenceCoverage(city);
+  const structuralStability = deriveStructuralStability(city);
+  const overallConfidence = Number((
+    (sourceConfidence * 0.5)
+    + (evidenceCoverage * 0.3)
+    + (structuralStability * 0.2)
+  ).toFixed(2));
+
+  const confidenceBand = overallConfidence >= 0.78
+    ? 'high'
+    : overallConfidence >= 0.62
+      ? 'medium'
+      : 'low';
+
+  return {
+    overallConfidence,
+    confidenceBand,
+    sourceConfidence,
+    evidenceCoverage,
+    structuralStability,
+  };
+};
+
+export const buildDecisionReasonCodes = ({ city, strategicBalance, confidenceRollup }) => {
+  const reasons = [];
+  const affordability = city.budgets?.oneParent?.midpoint ?? Number.POSITIVE_INFINITY;
+  const infrastructure = Number(city.scores?.infrastructure ?? 5);
+  const safety = Number(city.scores?.safety ?? 5);
+
+  if (confidenceRollup.overallConfidence >= 0.75) {
+    reasons.push({ code: 'verification_strength', label: 'Strong verification confidence', direction: 'positive' });
+  }
+  if (strategicBalance.weightedScore >= 7.4) {
+    reasons.push({ code: 'strategic_fit_high', label: 'High strategic fit score', direction: 'positive' });
+  }
+  if (infrastructure >= 7) {
+    reasons.push({ code: 'mobility_resilience', label: 'Resilient mobility infrastructure', direction: 'positive' });
+  }
+  if (safety >= 7) {
+    reasons.push({ code: 'safety_anchor', label: 'Safety and stability anchor', direction: 'positive' });
+  }
+  if (affordability <= 2800) {
+    reasons.push({ code: 'affordability_headroom', label: 'Affordability headroom', direction: 'positive' });
+  }
+  if (affordability >= 3600) {
+    reasons.push({ code: 'cost_pressure', label: 'Elevated cost pressure', direction: 'risk' });
+  }
+
+  return reasons.slice(0, 4);
+};
+
+export const buildDecisionEngineSummary = ({ city, strategicBalance }) => {
+  const confidenceRollup = buildDecisionConfidenceRollup(city);
+  const reasonCodes = buildDecisionReasonCodes({ city, strategicBalance, confidenceRollup });
+
+  return {
+    ...confidenceRollup,
+    reasonCodes,
+    primaryReasonCode: reasonCodes[0]?.code ?? null,
+  };
+};
+
+export const sortRankedCities = (rows) => [...rows].sort((left, right) => {
+  if (right.activeWeightedScore !== left.activeWeightedScore) {
+    return right.activeWeightedScore - left.activeWeightedScore;
+  }
+
+  const rightConfidence = right.decisionEngine?.overallConfidence ?? 0;
+  const leftConfidence = left.decisionEngine?.overallConfidence ?? 0;
+  if (rightConfidence !== leftConfidence) {
+    return rightConfidence - leftConfidence;
+  }
+
+  return String(left.city).localeCompare(String(right.city));
+});
+
 const scenarioProfileTypes = {
   bothWorking: 'dual_income',
   oneIncTwoKids: 'single_income_two_kids',
@@ -351,7 +446,7 @@ export const buildRanking = (presetKey = 'balanced', scenarioKey = 'oneParent') 
   // are what differentiate it from a plain dual_income ranking.
   const balanceProfileType = balanceProfileTypes[profileType] ?? profileType;
 
-  return [...cities]
+  const rankedCities = [...cities]
     .map((city) => {
       const strategicBalance = buildStrategicBalanceMatrix(city, balanceProfileType);
       const pillarWeights = effectivePillarWeights ?? preset.pillarWeights;
@@ -377,14 +472,20 @@ export const buildRanking = (presetKey = 'balanced', scenarioKey = 'oneParent') 
 
       const strategicPositioning = buildStrategicPositioning(rankedCity);
       const narrativeBrief = buildNarrativeBrief(rankedCity, strategicPositioning);
+      const decisionEngine = buildDecisionEngineSummary({
+        city: rankedCity,
+        strategicBalance,
+      });
 
       return {
         ...rankedCity,
         strategicPositioning,
         narrativeBrief,
+        decisionEngine,
       };
-    })
-    .sort((left, right) => right.activeWeightedScore - left.activeWeightedScore);
+    });
+
+  return sortRankedCities(rankedCities);
 };
 
 export const buildTemporalOutlookRows = (indicatorKeys = TOP_TEMPORAL_INDICATORS) =>

@@ -11,7 +11,13 @@ import {
   sortRows,
   verificationOptions,
 } from '../utils/comparisonFilters.js';
-import { priorityPresets, scenarioMeta, verificationWindow } from '../data/dashboardConfig.js';
+import {
+  DEFAULT_HOUSEHOLD_PROFILE,
+  deriveScenarioKeyFromHousehold,
+  priorityPresets,
+  scenarioMeta,
+  verificationWindow,
+} from '../data/dashboardConfig.js';
 import { applySimulationModifiers } from '../utils/simulationModifiers.js';
 import { persistStoredValue, readStoredValue } from '../utils/storagePersistence.js';
 import { buildHashWithShareState, parseHashLocation, readShareStateFromHash } from '../utils/urlState.js';
@@ -30,7 +36,7 @@ const MOBILITY_ACTION_TYPES = {
 };
 
 export const resolveMobilityMapForPage = (page) => {
-  if (page === 'explorer' || page === 'outlook' || page === 'family-fit') {
+  if (page === 'explorer') {
     return 'reach';
   }
 
@@ -41,10 +47,240 @@ export const resolveMobilityMapForPage = (page) => {
   return 'strategicNetwork';
 };
 
+const clampNumber = (value, min, max) => Math.min(max, Math.max(min, value));
+
+const SCENARIO_LAB_PRESETS = [
+  {
+    key: 'baseline-2028',
+    label: 'Baseline 2028',
+    selectedYear: 2028,
+    shockType: 'none',
+    shockSeverity: 1,
+  },
+  {
+    key: 'inflation-stress-2029',
+    label: 'Inflation Stress 2029',
+    selectedYear: 2029,
+    shockType: 'inflationWave',
+    shockSeverity: 1.4,
+  },
+  {
+    key: 'rail-disruption-2028',
+    label: 'Rail Disruption 2028',
+    selectedYear: 2028,
+    shockType: 'railStrike',
+    shockSeverity: 1.3,
+  },
+  {
+    key: 'heatwave-2030',
+    label: 'Heatwave 2030',
+    selectedYear: 2030,
+    shockType: 'heatwave',
+    shockSeverity: 1.5,
+  },
+];
+
+const MAX_SCENARIO_LAB_RUNS = 8;
+
+const normalizeScenarioLabRun = (run) => {
+  if (!run || typeof run !== 'object') {
+    return null;
+  }
+
+  const id = typeof run.id === 'string' && run.id.length > 0
+    ? run.id
+    : null;
+  const selectedYear = clampNumber(Number(run.selectedYear) || 2028, 2026, 2031);
+  const shockSeverity = clampNumber(Number(run.shockSeverity) || 1, 0.5, 2);
+  const name = typeof run.name === 'string' && run.name.trim().length > 0
+    ? run.name.trim().slice(0, 80)
+    : null;
+
+  if (!id) {
+    return null;
+  }
+
+  return {
+    id,
+    name,
+    selectedCityKey: typeof run.selectedCityKey === 'string' ? run.selectedCityKey : null,
+    selectedYear,
+    shockType: typeof run.shockType === 'string' ? run.shockType : 'none',
+    shockSeverity,
+    createdAt: typeof run.createdAt === 'string' ? run.createdAt : new Date(0).toISOString(),
+  };
+};
+
+const formatScenarioLabRunName = ({ selectedCityKey, selectedYear, shockType, shockSeverity }) => {
+  const cityLabel = selectedCityKey || 'focus-city';
+  if (shockType === 'none') {
+    return `${cityLabel} · ${selectedYear} baseline`;
+  }
+  return `${cityLabel} · ${selectedYear} ${shockType} x${shockSeverity.toFixed(1)}`;
+};
+
+export const inferEvidenceRiskTier = (verificationProfile) => {
+  const confidence = verificationProfile?.confidence ?? 0;
+  const freshnessDays = verificationProfile?.freshnessDays ?? 365;
+
+  if (confidence >= 0.75 && freshnessDays <= 180) {
+    return 'low';
+  }
+
+  if (confidence >= 0.55 && freshnessDays <= 365) {
+    return 'medium';
+  }
+
+  return 'high';
+};
+
+export const buildEvidenceCenterExportBlock = (selectedCity) => ({
+  selectedCityKey: selectedCity?.key ?? null,
+  confidence: selectedCity?.verificationProfile?.confidence ?? null,
+  evidenceClass: selectedCity?.verificationProfile?.evidenceClass ?? null,
+  sourceCount: selectedCity?.verificationProfile?.sourceCount ?? 0,
+  sourceDiversityScore: selectedCity?.verificationProfile?.sourceDiversityScore ?? null,
+  freshnessDays: selectedCity?.verificationProfile?.freshnessDays ?? null,
+  freshnessDecay: selectedCity?.verificationProfile?.freshnessDecay ?? null,
+  riskTier: inferEvidenceRiskTier(selectedCity?.verificationProfile),
+});
+
+export const addScenarioLabRun = (previousRuns, nextRun) => [nextRun, ...previousRuns].slice(0, MAX_SCENARIO_LAB_RUNS);
+
+export const deleteScenarioLabRunById = (previousRuns, runId) => previousRuns.filter((run) => run.id !== runId);
+
+export const findScenarioLabRunById = (runs, runId) => runs.find((run) => run.id === runId) ?? null;
+
+export const hydrateScenarioLabStateFromRun = (run) => {
+  if (!run) {
+    return null;
+  }
+
+  return {
+    selectedCityKey: run.selectedCityKey,
+    selectedYear: run.selectedYear,
+    shockType: run.shockType,
+    shockSeverity: run.shockSeverity,
+  };
+};
+
+const normalizeHouseholdProfile = (profile) => {
+  const source = profile && typeof profile === 'object' ? profile : {};
+
+  return {
+    kidsCount: clampNumber(Number(source.kidsCount) || DEFAULT_HOUSEHOLD_PROFILE.kidsCount, 0, 4),
+    hasPets: Boolean(source.hasPets),
+    remoteWorkRatio: clampNumber(Number(source.remoteWorkRatio) || DEFAULT_HOUSEHOLD_PROFILE.remoteWorkRatio, 0, 1),
+    languageLevel: ['beginner', 'intermediate', 'fluent'].includes(source.languageLevel)
+      ? source.languageLevel
+      : DEFAULT_HOUSEHOLD_PROFILE.languageLevel,
+    budgetSensitivity: ['strict', 'balanced', 'flexible'].includes(source.budgetSensitivity)
+      ? source.budgetSensitivity
+      : DEFAULT_HOUSEHOLD_PROFILE.budgetSensitivity,
+    commuteTolerance: ['low', 'moderate', 'high'].includes(source.commuteTolerance)
+      ? source.commuteTolerance
+      : DEFAULT_HOUSEHOLD_PROFILE.commuteTolerance,
+    riskAppetite: ['low', 'balanced', 'high'].includes(source.riskAppetite)
+      ? source.riskAppetite
+      : DEFAULT_HOUSEHOLD_PROFILE.riskAppetite,
+  };
+};
+
+const deriveHouseholdProfileFromScenario = (scenarioKey) => {
+  switch (scenarioKey) {
+    case 'bothWorking':
+      return { ...DEFAULT_HOUSEHOLD_PROFILE, kidsCount: 1, remoteWorkRatio: 0.65 };
+    case 'twoKids':
+      return { ...DEFAULT_HOUSEHOLD_PROFILE, kidsCount: 2, remoteWorkRatio: 0.6 };
+    case 'oneIncTwoKids':
+      return { ...DEFAULT_HOUSEHOLD_PROFILE, kidsCount: 2, remoteWorkRatio: 0.35 };
+    case 'oneParent':
+    default:
+      return { ...DEFAULT_HOUSEHOLD_PROFILE, kidsCount: 1, remoteWorkRatio: 0.35 };
+  }
+};
+
+const buildPillarScoreAccessor = (row) => {
+  const pillars = new Map((row.strategicBalance?.pillars ?? []).map((pillar) => [pillar.key, pillar.score]));
+  return (pillarKey) => pillars.get(pillarKey) ?? 5;
+};
+
+const computeKidsDelta = (profile, scoreOf) => (
+  profile.kidsCount >= 2
+    ? (scoreOf('childcareEducation') - 5) * 0.08
+    : 0
+);
+
+const computePetsDelta = (profile, scoreOf) => (
+  profile.hasPets
+    ? ((scoreOf('envPollution') - 5) * 0.04) + ((scoreOf('socialCapital') - 5) * 0.03)
+    : 0
+);
+
+const computeRemoteDelta = (profile, scoreOf) => (
+  profile.remoteWorkRatio * (((scoreOf('economyJobsTaxes') - 5) * 0.06) + ((scoreOf('socialCapital') - 5) * 0.04))
+);
+
+const computeLanguageDelta = (profile, scoreOf) => {
+  const languageAdjustments = {
+    beginner: (scoreOf('euRegistration') - 5) * 0.05,
+    fluent: (scoreOf('socialCapital') - 5) * 0.03,
+  };
+
+  return languageAdjustments[profile.languageLevel] ?? 0;
+};
+
+const computeCommuteDelta = (profile, scoreOf) => {
+  const commuteAdjustments = {
+    low: (scoreOf('mobilityLogistics') - 5) * 0.07,
+    high: (scoreOf('locationInfra') - 5) * 0.03,
+  };
+
+  return commuteAdjustments[profile.commuteTolerance] ?? 0;
+};
+
+const computeRiskDelta = (profile, scoreOf) => {
+  const riskAdjustments = {
+    low: ((scoreOf('criminalityStreetSafe') - 5) * 0.07) + ((scoreOf('climateResilience') - 5) * 0.04),
+    high: (scoreOf('economyJobsTaxes') - 5) * 0.03,
+  };
+
+  return riskAdjustments[profile.riskAppetite] ?? 0;
+};
+
+const computeBudgetSensitivityDelta = (profile, scenarioBudget) => {
+  if (!Number.isFinite(scenarioBudget)) {
+    return 0;
+  }
+
+  const budgetAdjustments = {
+    strict: clampNumber((3000 - scenarioBudget) / 900, -0.45, 0.45),
+    flexible: clampNumber((scenarioBudget - 3200) / 1200, -0.2, 0.2),
+  };
+
+  return budgetAdjustments[profile.budgetSensitivity] ?? 0;
+};
+
+const applyHouseholdProfileToScore = (row, profile, scenarioBudget) => {
+  const normalized = normalizeHouseholdProfile(profile);
+  const scoreOf = buildPillarScoreAccessor(row);
+
+  const delta = computeKidsDelta(normalized, scoreOf)
+    + computePetsDelta(normalized, scoreOf)
+    + computeRemoteDelta(normalized, scoreOf)
+    + computeLanguageDelta(normalized, scoreOf)
+    + computeCommuteDelta(normalized, scoreOf)
+    + computeRiskDelta(normalized, scoreOf)
+    + computeBudgetSensitivityDelta(normalized, scenarioBudget);
+
+  return clampNumber(row.activeWeightedScore + delta, 1, 10);
+};
+
 export const buildDashboardShareState = ({
   page,
   lensKey,
   scenarioKey,
+  householdProfile,
   selectedCityKey,
   selectedYear,
   sortKey,
@@ -60,36 +296,47 @@ export const buildDashboardShareState = ({
   mapComparisonCity,
   mapNeighborCount,
   mobilityState,
-}) => ({
-  page,
-  lens: lensKey,
-  scenario: scenarioKey,
-  city: selectedCityKey,
-  year: selectedYear,
-  sort: sortKey,
-  verification: verificationFilter,
-  budget: budgetFilter,
-  mobility: mobilityFilter,
-  air: airFilter,
-  search: searchValue,
-  shock: shockType,
-  shockSeverity,
-  mapMode,
-  mapPersona,
-  mapComparisonCity,
-  mapNeighborCount,
-  ...buildMobilityShareState({
-    timeWindowHours: mobilityState?.timeWindowHours,
-    layerVisibility: mobilityState?.layerVisibility,
-  }),
-});
+}) => {
+  const normalizedHouseholdProfile = normalizeHouseholdProfile(householdProfile);
+  const normalizedScenarioKey = scenarioKey ?? deriveScenarioKeyFromHousehold(normalizedHouseholdProfile);
+
+  return {
+    page,
+    lens: lensKey,
+    scenario: normalizedScenarioKey,
+    householdProfile: normalizedHouseholdProfile,
+    city: selectedCityKey,
+    year: selectedYear,
+    sort: sortKey,
+    verification: verificationFilter,
+    budget: budgetFilter,
+    mobility: mobilityFilter,
+    air: airFilter,
+    search: searchValue,
+    shock: shockType,
+    shockSeverity,
+    mapMode,
+    mapPersona,
+    mapComparisonCity,
+    mapNeighborCount,
+    ...buildMobilityShareState({
+      timeWindowHours: mobilityState?.timeWindowHours,
+      layerVisibility: mobilityState?.layerVisibility,
+    }),
+  };
+};
 
 export const isDefaultDashboardShareState = (shareState) => {
   if (!shareState || typeof shareState !== 'object') {
     return true;
   }
 
-  const mobilityLayers = shareState.mLayers ?? {};
+  const matchesOptionalString = (value, expected) => value == null || value === expected;
+  const matchesOptionalNumber = (value, expected) => value == null || Number(value) === expected;
+  const hasAllowedPage = ['', 'map', 'explorer'].includes(shareState.page);
+  const hasDefaultHouseholdProfile = JSON.stringify(normalizeHouseholdProfile(shareState.householdProfile))
+    === JSON.stringify(normalizeHouseholdProfile(DEFAULT_HOUSEHOLD_PROFILE));
+
   const defaultMobilityLayers = {
     railHighSpeed: true,
     railRegional: true,
@@ -101,33 +348,42 @@ export const isDefaultDashboardShareState = (shareState) => {
     heat: true,
     isochrones: true,
   };
-
   const hasDefaultLayers = Object.entries(defaultMobilityLayers).every(
-    ([key, value]) => mobilityLayers[key] === value,
+    ([key, expected]) => (shareState.mLayers ?? {})[key] === expected,
   );
 
-  return (shareState.page === ''
-    || shareState.page === 'map'
-    || shareState.page === 'explorer'
-    || shareState.page === 'outlook'
-    || shareState.page === 'family-fit')
+  const optionalStringDefaults = [
+    ['sort', 'score'],
+    ['verification', 'all'],
+    ['budget', 'all'],
+    ['mobility', 'all'],
+    ['air', 'all'],
+    ['search', ''],
+    ['shock', 'none'],
+    ['mapMode', 'familyStability'],
+    ['mapPersona', 'internationalFamily'],
+    ['mapComparisonCity', ''],
+  ];
+  const optionalNumberDefaults = [
+    ['shockSeverity', 1],
+    ['mapNeighborCount', 3],
+    ['mWindow', 6],
+  ];
+  const hasDefaultOptionalStrings = optionalStringDefaults.every(
+    ([field, expected]) => matchesOptionalString(shareState[field], expected),
+  );
+  const hasDefaultOptionalNumbers = optionalNumberDefaults.every(
+    ([field, expected]) => matchesOptionalNumber(shareState[field], expected),
+  );
+
+  return hasAllowedPage
     && shareState.lens === 'balanced'
     && shareState.scenario === 'oneParent'
+    && hasDefaultHouseholdProfile
     && shareState.city == null
     && shareState.year === 2026
-    && (shareState.sort == null || shareState.sort === 'score')
-    && (shareState.verification == null || shareState.verification === 'all')
-    && (shareState.budget == null || shareState.budget === 'all')
-    && (shareState.mobility == null || shareState.mobility === 'all')
-    && (shareState.air == null || shareState.air === 'all')
-    && (shareState.search == null || shareState.search === '')
-    && (shareState.shock == null || shareState.shock === 'none')
-    && (shareState.shockSeverity == null || Number(shareState.shockSeverity) === 1)
-    && (shareState.mapMode == null || shareState.mapMode === 'familyStability')
-    && (shareState.mapPersona == null || shareState.mapPersona === 'internationalFamily')
-    && (shareState.mapComparisonCity == null || shareState.mapComparisonCity === '')
-    && (shareState.mapNeighborCount == null || Number(shareState.mapNeighborCount) === 3)
-    && (shareState.mWindow == null || shareState.mWindow === 6)
+    && hasDefaultOptionalStrings
+    && hasDefaultOptionalNumbers
     && hasDefaultLayers;
 };
 
@@ -137,18 +393,23 @@ export const readDashboardShareState = (shareState) => {
   const page = state.page === ''
     || state.page === 'explorer'
     || state.page === 'map'
-    || state.page === 'outlook'
-    || state.page === 'family-fit'
     ? state.page
     : 'map';
   const lens = Object.hasOwn(priorityPresets, state.lens) ? state.lens : 'balanced';
-  const scenario = Object.hasOwn(scenarioMeta, state.scenario) ? state.scenario : 'oneParent';
+  const legacyScenario = Object.hasOwn(scenarioMeta, state.scenario) ? state.scenario : null;
+  const householdProfile = normalizeHouseholdProfile(
+    state.householdProfile ?? (legacyScenario ? deriveHouseholdProfileFromScenario(legacyScenario) : DEFAULT_HOUSEHOLD_PROFILE),
+  );
+  const scenario = legacyScenario
+    ? state.scenario
+    : deriveScenarioKeyFromHousehold(householdProfile);
   const year = /^\d{4}$/.test(String(state.year)) ? Number(state.year) : 2026;
 
   return {
     page,
     lens,
     scenario,
+    householdProfile,
     city: typeof state.city === 'string' ? state.city : null,
     year,
     sort: pickAllowed(state.sort, sortOptions, 'score'),
@@ -211,13 +472,26 @@ export const useDashboardOrchestration = ({
 
     return readStoredValue(storageKeys.lens, 'balanced', (value) => Object.hasOwn(priorityPresets, value));
   });
-  const [scenarioKey, setScenarioKey] = useState(() => {
-    if (initialShareState?.scenario && Object.hasOwn(scenarioMeta, initialShareState.scenario)) {
-      return initialShareState.scenario;
+  const [householdProfile, setHouseholdProfile] = useState(() => {
+    if (initialShareState?.householdProfile) {
+      return normalizeHouseholdProfile(initialShareState.householdProfile);
     }
 
-    return readStoredValue(storageKeys.scenario, 'oneParent', (value) => Object.hasOwn(scenarioMeta, value));
+    const stored = readStoredValue(storageKeys.householdProfile, '', (value) => typeof value === 'string');
+    if (!stored) {
+      return DEFAULT_HOUSEHOLD_PROFILE;
+    }
+
+    try {
+      return normalizeHouseholdProfile(JSON.parse(stored));
+    } catch {
+      return DEFAULT_HOUSEHOLD_PROFILE;
+    }
   });
+  const scenarioKey = useMemo(
+    () => deriveScenarioKeyFromHousehold(householdProfile),
+    [householdProfile],
+  );
   const [selectedCityKey, setSelectedCityKey] = useState(() => initialShareState?.city ?? null);
   const [selectedYear, setSelectedYear] = useState(() => {
     if (initialShareState?.year && /^\d{4}$/.test(String(initialShareState.year))) {
@@ -236,8 +510,6 @@ export const useDashboardOrchestration = ({
     if (
       initialShareState?.page === 'explorer'
       || initialShareState?.page === 'map'
-      || initialShareState?.page === 'outlook'
-      || initialShareState?.page === 'family-fit'
     ) {
       return initialShareState.page;
     }
@@ -256,7 +528,95 @@ export const useDashboardOrchestration = ({
   const [mapPersona, setMapPersona] = useState(() => (typeof initialShareState?.mapPersona === 'string' ? initialShareState.mapPersona : 'internationalFamily'));
   const [mapComparisonCity, setMapComparisonCity] = useState(() => (typeof initialShareState?.mapComparisonCity === 'string' ? initialShareState.mapComparisonCity : ''));
   const [mapNeighborCount, setMapNeighborCount] = useState(() => ([2, 3, 4, 5].includes(Number(initialShareState?.mapNeighborCount)) ? Number(initialShareState.mapNeighborCount) : 3));
+  const [savedScenarioLabRuns, setSavedScenarioLabRuns] = useState(() => {
+    const stored = readStoredValue(storageKeys.scenarioLabRuns, '[]', (value) => typeof value === 'string');
+
+    try {
+      const parsed = JSON.parse(stored);
+      if (!Array.isArray(parsed)) {
+        return [];
+      }
+
+      return parsed
+        .map(normalizeScenarioLabRun)
+        .filter(Boolean)
+        .slice(0, MAX_SCENARIO_LAB_RUNS);
+    } catch {
+      return [];
+    }
+  });
+  const [activeScenarioLabRunId, setActiveScenarioLabRunId] = useState(null);
   const hasActiveSimulation = hasActiveSimulationModifiers || shockType !== 'none';
+  const activeScenarioLabRun = useMemo(
+    () => findScenarioLabRunById(savedScenarioLabRuns, activeScenarioLabRunId),
+    [activeScenarioLabRunId, savedScenarioLabRuns],
+  );
+
+  const selectedScenarioLabPresetKey = useMemo(
+    () => SCENARIO_LAB_PRESETS.find((preset) => (
+      preset.selectedYear === selectedYear
+      && preset.shockType === shockType
+      && preset.shockSeverity === shockSeverity
+    ))?.key ?? 'custom',
+    [selectedYear, shockSeverity, shockType],
+  );
+
+  const applyScenarioLabPreset = (presetKey) => {
+    const preset = SCENARIO_LAB_PRESETS.find((candidate) => candidate.key === presetKey);
+    if (!preset) {
+      return;
+    }
+
+    setSelectedYear(preset.selectedYear);
+    setShockType(preset.shockType);
+    setShockSeverity(preset.shockSeverity);
+    setActiveScenarioLabRunId(null);
+  };
+
+  const loadScenarioLabRun = (runId) => {
+    const selectedRun = findScenarioLabRunById(savedScenarioLabRuns, runId);
+    if (!selectedRun) {
+      return;
+    }
+
+    const runState = hydrateScenarioLabStateFromRun(selectedRun);
+    setSelectedCityKey(runState.selectedCityKey);
+    setSelectedYear(runState.selectedYear);
+    setShockType(runState.shockType);
+    setShockSeverity(runState.shockSeverity);
+    setActiveScenarioLabRunId(selectedRun.id);
+  };
+
+  const saveScenarioLabRun = (name) => {
+    const nextRun = normalizeScenarioLabRun({
+      id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+      name,
+      selectedCityKey,
+      selectedYear,
+      shockType,
+      shockSeverity,
+      createdAt: new Date().toISOString(),
+    });
+
+    if (!nextRun) {
+      return;
+    }
+
+    const withFallbackName = {
+      ...nextRun,
+      name: nextRun.name ?? formatScenarioLabRunName(nextRun),
+    };
+
+    setSavedScenarioLabRuns((previousRuns) => addScenarioLabRun(previousRuns, withFallbackName));
+    setActiveScenarioLabRunId(withFallbackName.id);
+  };
+
+  const deleteScenarioLabRun = (runId) => {
+    setSavedScenarioLabRuns((previousRuns) => deleteScenarioLabRunById(previousRuns, runId));
+    if (activeScenarioLabRunId === runId) {
+      setActiveScenarioLabRunId(null);
+    }
+  };
 
   const applyMobilityShareState = (shareStatePayload) => {
     const mobilityShareState = readMobilityShareState(shareStatePayload);
@@ -286,7 +646,7 @@ export const useDashboardOrchestration = ({
 
     setPage(normalized.page);
     setLensKey(normalized.lens);
-    setScenarioKey(normalized.scenario);
+    setHouseholdProfile(normalized.householdProfile);
     setSelectedCityKey(normalized.city);
     setSelectedYear(normalized.year);
     setSortKey(normalized.sort);
@@ -300,6 +660,7 @@ export const useDashboardOrchestration = ({
     setMapPersona(normalized.mapPersona);
     setMapComparisonCity(normalized.mapComparisonCity);
     setMapNeighborCount(normalized.mapNeighborCount);
+    setActiveScenarioLabRunId(null);
     setSearchValue(normalized.search);
 
     mobilityDispatch({
@@ -321,6 +682,7 @@ export const useDashboardOrchestration = ({
         page: target,
         lensKey,
         scenarioKey,
+        householdProfile,
         selectedCityKey,
         selectedYear,
         sortKey,
@@ -392,6 +754,7 @@ export const useDashboardOrchestration = ({
       page,
       lensKey,
       scenarioKey,
+      householdProfile,
       selectedCityKey,
       selectedYear,
       sortKey,
@@ -429,6 +792,7 @@ export const useDashboardOrchestration = ({
     mapPersona,
     mapComparisonCity,
     mapNeighborCount,
+    householdProfile,
     selectedCityKey,
     selectedYear,
     sortKey,
@@ -440,6 +804,21 @@ export const useDashboardOrchestration = ({
       applyMobilityShareState(initialShareState);
     }
   }, [initialMobilityShareState, mobilityDispatch]);
+
+  useEffect(() => {
+    if (!activeScenarioLabRun) {
+      return;
+    }
+
+    const isStillMatching = activeScenarioLabRun.selectedCityKey === selectedCityKey
+      && activeScenarioLabRun.selectedYear === selectedYear
+      && activeScenarioLabRun.shockType === shockType
+      && activeScenarioLabRun.shockSeverity === shockSeverity;
+
+    if (!isStillMatching) {
+      setActiveScenarioLabRunId(null);
+    }
+  }, [activeScenarioLabRun, selectedCityKey, selectedYear, shockSeverity, shockType]);
 
   useEffect(() => {
     let cancelled = false;
@@ -549,16 +928,22 @@ export const useDashboardOrchestration = ({
         return applySimulationModifiers(baseRow, simulationModifiers, scenarioKey);
       });
 
+      const profileAdjustedRows = baseRows.map((row) => ({
+        ...row,
+        activeWeightedScore: applyHouseholdProfileToScore(row, householdProfile, row.scenarioBudget),
+      }));
+
       if (shockType !== 'none') {
         const shock = createSimulationShock({ type: shockType, severity: shockSeverity });
 
-        return applyShockToRows(baseRows, shock, scenarioKey).map((row) => ({
+        return applyShockToRows(profileAdjustedRows, shock, scenarioKey).map((row) => ({
           ...row,
           activeShock: shock,
+          activeWeightedScore: applyHouseholdProfileToScore(row, householdProfile, row.scenarioBudget),
         }));
       }
 
-      return baseRows;
+      return profileAdjustedRows;
     },
     [
       buildFamilyFitRowsFn,
@@ -566,6 +951,7 @@ export const useDashboardOrchestration = ({
       buildTemporalOutlookRowsFn,
       familyFitByKey,
       lensKey,
+      householdProfile,
       scenarioKey,
       shockSeverity,
       shockType,
@@ -780,6 +1166,7 @@ export const useDashboardOrchestration = ({
           stayAwayIf: row.city360.stayAwayIf,
           scenarioKey,
           scenario: scenarioMeta[scenarioKey].label,
+          householdProfile,
           selectedYear,
           selectedCity: selectedComparisonCity ? `${selectedComparisonCity.city}, ${selectedComparisonCity.country}` : 'None',
           searchTerm: searchValue || 'All cities',
@@ -809,8 +1196,10 @@ export const useDashboardOrchestration = ({
           verifiedSources: row.verifiedSourceSummary ?? 'None',
           trustConfidence: row.verificationProfile?.confidence ?? null,
           trustEvidenceClass: row.verificationProfile?.evidenceClass ?? 'mixed',
-          trustSourceDiversity: row.verificationProfile?.sourceDiversity ?? 0,
-          trustFreshness: row.verificationProfile?.freshness ?? 0,
+          trustSourceDiversity: row.verificationProfile?.sourceDiversityScore ?? 0,
+          trustFreshnessDecay: row.verificationProfile?.freshnessDecay ?? 0,
+          trustFreshnessDays: row.verificationProfile?.freshnessDays ?? null,
+          trustRiskTier: inferEvidenceRiskTier(row.verificationProfile),
           lastReviewed: row.lastReviewed,
         }))
         : [
@@ -866,8 +1255,24 @@ export const useDashboardOrchestration = ({
         shockType,
         shockSeverity,
       },
+      scenarioLab: {
+        presetKey: selectedScenarioLabPresetKey,
+        savedRunsCount: savedScenarioLabRuns.length,
+        activeRun: activeScenarioLabRun
+          ? {
+            id: activeScenarioLabRun.id,
+            name: activeScenarioLabRun.name,
+            createdAt: activeScenarioLabRun.createdAt,
+            selectedCityKey: activeScenarioLabRun.selectedCityKey,
+            selectedYear: activeScenarioLabRun.selectedYear,
+            shockType: activeScenarioLabRun.shockType,
+            shockSeverity: activeScenarioLabRun.shockSeverity,
+          }
+          : null,
+      },
       selectedYear,
       selectedCityKey: selectedComparisonCity?.key ?? null,
+      evidenceCenter: buildEvidenceCenterExportBlock(selectedExplorerCity),
       filteredResultCount: filteredComparisonRows.length,
       totalComparedCities: comparisonRows.length,
       dashboardView: {
@@ -956,10 +1361,14 @@ export const useDashboardOrchestration = ({
       lensKey,
       mobilityFilter,
       mobilityLabel,
+      householdProfile,
       scenarioKey,
       searchValue,
       selectedComparisonCity,
+      selectedExplorerCity,
+      selectedScenarioLabPresetKey,
       selectedYear,
+      savedScenarioLabRuns.length,
       shockSeverity,
       shockType,
       sortKey,
@@ -967,6 +1376,7 @@ export const useDashboardOrchestration = ({
       verificationFilter,
       verificationLabel,
       hasActiveSimulation,
+      activeScenarioLabRun,
     ],
   );
 
@@ -975,8 +1385,12 @@ export const useDashboardOrchestration = ({
   }, [lensKey]);
 
   useEffect(() => {
-    persistStoredValue(storageKeys.scenario, scenarioKey);
-  }, [scenarioKey]);
+    persistStoredValue(storageKeys.householdProfile, JSON.stringify(householdProfile));
+  }, [householdProfile]);
+
+  useEffect(() => {
+    persistStoredValue(storageKeys.scenarioLabRuns, JSON.stringify(savedScenarioLabRuns));
+  }, [savedScenarioLabRuns]);
 
   useEffect(() => {
     persistStoredValue(storageKeys.year, selectedYear);
@@ -1029,9 +1443,8 @@ export const useDashboardOrchestration = ({
     exportRows,
     exportStamp,
     explorerRankingRows,
-    familyFitExplorerRows,
-    filteredComparisonRows,
     futureOutlookRows,
+    filteredComparisonRows,
     hasActiveSimulation,
     hasActiveThresholds,
     lensKey,
@@ -1039,6 +1452,7 @@ export const useDashboardOrchestration = ({
     navigateTo,
     page,
     resetThresholds,
+    householdProfile,
     scenarioKey,
     searchValue,
     selectedCityKey,
@@ -1053,7 +1467,7 @@ export const useDashboardOrchestration = ({
     setMapNeighborCount,
     setMapPersona,
     setMobilityFilter,
-    setScenarioKey,
+    setHouseholdProfile,
     setShockSeverity,
     setShockType,
     setSearchValue,
@@ -1069,6 +1483,14 @@ export const useDashboardOrchestration = ({
     mapNeighborCount,
     mapMode,
     mapPersona,
+    scenarioLabPresets: SCENARIO_LAB_PRESETS,
+    selectedScenarioLabPresetKey,
+    savedScenarioLabRuns,
+    activeScenarioLabRun,
+    applyScenarioLabPreset,
+    saveScenarioLabRun,
+    loadScenarioLabRun,
+    deleteScenarioLabRun,
     thresholds,
     verificationFilter,
     citySelectorOptions,

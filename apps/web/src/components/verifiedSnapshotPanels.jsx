@@ -1,3 +1,4 @@
+import { useMemo, useState } from 'react';
 import {
   auditStatusMeta,
   verificationWindow,
@@ -20,6 +21,128 @@ import { formatFreshnessLabel, getFreshnessMeta } from '../utils/freshness.js';
 
 const isStrictlyVerifiedSection = (city, sectionKey) =>
   city.audit.sections[sectionKey] === 'verified' && getVerifiedSources(city, sectionKey).length > 0;
+
+const EVIDENCE_FILTER_OPTIONS = [
+  { key: 'strict', label: 'Strict verified only' },
+  { key: 'all', label: 'All audit sections' },
+  { key: 'gaps', label: 'Gaps only' },
+];
+
+const deriveEvidenceRiskMeta = (status, freshnessMeta, hasStrictSource) => {
+  if (status === 'modeled' || freshnessMeta.tier === 'stale') {
+    return { tier: 'high', label: 'High risk' };
+  }
+
+  if (status === 'verified' && hasStrictSource && freshnessMeta.tier === 'fresh') {
+    return { tier: 'low', label: 'Low risk' };
+  }
+
+  return { tier: 'medium', label: 'Medium risk' };
+};
+
+export const buildEvidenceRows = (city, filterKey = 'strict') => {
+  if (!city) {
+    return [];
+  }
+
+  return strictSectionCards
+    .map((section) => {
+      const status = city.audit.sections?.[section.key] ?? 'modeled';
+      const strictSources = getVerifiedSources(city, section.key);
+      const displaySources = strictSources.length
+        ? strictSources
+        : (city.sources?.[section.key] ?? []);
+      const source = displaySources[0] ?? null;
+      const hasStrictSource = strictSources.length > 0;
+
+      if (filterKey === 'strict' && !hasStrictSource) {
+        return null;
+      }
+
+      if (filterKey === 'gaps' && hasStrictSource) {
+        return null;
+      }
+
+      const sourceDate = source?.verifiedAt ?? source?.observedAt ?? null;
+      const freshnessMeta = getFreshnessMeta(sourceDate);
+      const freshnessLabel = sourceDate
+        ? formatFreshnessLabel(freshnessMeta)
+        : 'Unknown freshness';
+      const riskMeta = deriveEvidenceRiskMeta(status, freshnessMeta, hasStrictSource);
+
+      return {
+        key: section.key,
+        label: section.title,
+        status,
+        statusLabel: auditStatusMeta[status]?.label ?? status,
+        hasStrictSource,
+        sourceLabel: source?.label ?? 'No source attached',
+        sourceDate: sourceDate ?? 'n/a',
+        freshnessCss: freshnessMeta.css,
+        freshnessLabel,
+        riskTier: riskMeta.tier,
+        riskLabel: riskMeta.label,
+        gapReason: hasStrictSource ? null : getGapReason(city, section.key, status),
+      };
+    })
+    .filter(Boolean);
+};
+
+export const EvidenceCenterPanel = function evidenceCenterPanel({ city }) {
+  const [evidenceFilter, setEvidenceFilter] = useState('strict');
+
+  const rows = useMemo(
+    () => buildEvidenceRows(city, evidenceFilter),
+    [city, evidenceFilter],
+  );
+
+  return (
+    <section className="stack-gap-lg" aria-label="Evidence Center">
+      <div className="compact-section-header">
+        <span className="compact-section-header__eyebrow">Evidence Center</span>
+        <h4 className="compact-section-header__title">Source Confidence Surface</h4>
+        <span className="compact-section-header__detail">
+          Section-level source freshness and risk banding to make strict evidence quality explicit.
+        </span>
+      </div>
+
+      <div className="ws-scenario-lab__controls evidence-center__controls">
+        <label>
+          Evidence View
+          <select
+            className="ws-select"
+            value={evidenceFilter}
+            onChange={(event) => setEvidenceFilter(event.target.value)}
+            aria-label="Evidence center view"
+          >
+            {EVIDENCE_FILTER_OPTIONS.map((option) => (
+              <option key={option.key} value={option.key}>{option.label}</option>
+            ))}
+          </select>
+        </label>
+      </div>
+
+      <div className="evidence-center-grid">
+        {rows.map((row) => (
+          <article key={`${city.key}-${row.key}-evidence`} className="evidence-center-card">
+            <div className="evidence-center-card__header">
+              <strong>{row.label}</strong>
+              <span className={`evidence-risk-badge evidence-risk-badge--${row.riskTier}`}>{row.riskLabel}</span>
+            </div>
+            <p className="evidence-center-card__meta">{row.statusLabel} · {row.sourceLabel}</p>
+            <div className="evidence-center-card__chips">
+              <span className={`freshness-badge ${row.freshnessCss}`}>{row.freshnessLabel}</span>
+              <span className="evidence-center-card__source-date">{row.sourceDate}</span>
+            </div>
+            {!row.hasStrictSource && row.gapReason ? (
+              <p className="evidence-center-card__gap">{row.gapReason}</p>
+            ) : null}
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+};
 
 export const BenchmarkMethodologyPanel = function benchmarkMethodologyPanel() {
   return (
@@ -328,6 +451,7 @@ export const SelectedCityVerificationPanel = function selectedCityVerificationPa
         </span>
         <span><strong>Source window:</strong> {verificationWindow.label}</span>
       </div>
+      <EvidenceCenterPanel city={city} />
       {deltaCards.length ? (
         <div className="verification-delta-grid">
           {deltaCards.map((card) => (

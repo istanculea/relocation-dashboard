@@ -23,10 +23,6 @@ export const parseHashLocation = (hash = '') => {
     ? 'explorer'
     : routeRaw === '/map'
       ? 'map'
-      : routeRaw === '/outlook'
-        ? 'outlook'
-        : routeRaw === '/family-fit'
-          ? 'family-fit'
       : '';
   const params = new URLSearchParams(queryRaw);
 
@@ -56,10 +52,6 @@ export const buildHashWithShareState = (route = '', shareState = null) => {
     ? '/explorer'
     : route === 'map'
       ? '/map'
-      : route === 'outlook'
-        ? '/outlook'
-        : route === 'family-fit'
-          ? '/family-fit'
       : '/';
 
   if (!shareState) {

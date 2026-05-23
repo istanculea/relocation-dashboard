@@ -3,7 +3,14 @@ import { coreCities } from './data/citiesCore';
 import { expandedCities } from './data/citiesExpanded';
 import cityExpansionWaveSummary from './data/cityExpansionWaveSummary.json';
 import { cityCatalog } from './data/cityCatalog.js';
-import { buildRanking, buildTemporalOutlookRows, cities, spatialHierarchy } from './relocationData.js';
+import {
+  buildDecisionConfidenceRollup,
+  buildRanking,
+  buildTemporalOutlookRows,
+  cities,
+  sortRankedCities,
+  spatialHierarchy,
+} from './relocationData.js';
 
 describe('buildRanking', () => {
   it('returns scored cities in descending order with enriched comparison metadata', () => {
@@ -48,5 +55,49 @@ describe('buildRanking', () => {
     const outlookRows = buildTemporalOutlookRows();
     expect(outlookRows.length).toBe(cities.length);
     expect(outlookRows[0].indicators.length).toBeGreaterThan(0);
+  });
+
+  it('adds decision engine reason codes and confidence rollups to ranking rows', () => {
+    const rows = buildRanking('balanced', 'oneParent');
+    const leader = rows[0];
+
+    expect(leader.decisionEngine).toBeTruthy();
+    expect(typeof leader.decisionEngine.overallConfidence).toBe('number');
+    expect(['low', 'medium', 'high']).toContain(leader.decisionEngine.confidenceBand);
+    expect(Array.isArray(leader.decisionEngine.reasonCodes)).toBe(true);
+  });
+
+  it('sorts ties deterministically using confidence then city label', () => {
+    const tiedRows = [
+      {
+        city: 'Zurich',
+        activeWeightedScore: 8.2,
+        decisionEngine: { overallConfidence: 0.72 },
+      },
+      {
+        city: 'Amsterdam',
+        activeWeightedScore: 8.2,
+        decisionEngine: { overallConfidence: 0.72 },
+      },
+      {
+        city: 'Berlin',
+        activeWeightedScore: 8.2,
+        decisionEngine: { overallConfidence: 0.83 },
+      },
+    ];
+
+    const sorted = sortRankedCities(tiedRows);
+    expect(sorted.map((row) => row.city)).toEqual(['Berlin', 'Amsterdam', 'Zurich']);
+  });
+
+  it('builds bounded confidence rollups from verification and audit inputs', () => {
+    const rollup = buildDecisionConfidenceRollup({
+      verificationProfile: { confidence: 0.81 },
+      audit: { counts: { verified: 6, mixed: 2, modeled: 1 } },
+      scores: { safety: 8, environment: 7.5 },
+    });
+
+    expect(rollup.overallConfidence).toBeGreaterThan(0);
+    expect(rollup.overallConfidence).toBeLessThanOrEqual(1);
   });
 });

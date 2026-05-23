@@ -21,6 +21,7 @@
     "apps:worker:check": "node apps/worker/src/index.js --check",
     "apps:worker:migrations:describe": "node apps/worker/src/index.js migrations:describe",
     "apps:worker:migrations:bootstrap": "node apps/worker/src/index.js migrations:bootstrap",
+    "apps:worker:migrations:artifact-ledger": "node apps/worker/src/index.js migrations:artifact-ledger",
     "apps:worker:migrations:apply": "node apps/worker/src/index.js migrations:apply",
     "apps:worker:migrations:bootstrap-and-apply": "node apps/worker/src/index.js migrations:bootstrap-and-apply",
     "platform:test:contracts": "vitest run --root . apps/admin/src/api/v1/handlers.contracts.test.js apps/worker/src/migrations/domainSchemaBootstrap.test.js apps/worker/src/migrations/postgresMigrationRunner.test.js packages/shared/contracts/api/httpRouteAdapter.test.js apps/worker/src/index.test.js",
@@ -29,11 +30,13 @@
     "rigour:init": "node scripts/rigour-init.cjs"
   },
   "unused_allowlist": [
-    "rigour-cli-shim"
+    "rigour-cli-shim",
+    "jsdom"
   ],
   "rigour": {
     "unused_allowlist": [
-      "rigour-cli-shim"
+      "rigour-cli-shim",
+      "jsdom"
     ]
   },
   "dependencies": {

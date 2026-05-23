@@ -3,15 +3,13 @@
 import { act } from 'react';
 import { createRoot } from 'react-dom/client';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { cities, buildFamilyFitRows, buildTemporalOutlookRows } from '../relocationData.js';
+import { buildTemporalOutlookRows, cities } from '../relocationData.js';
 import { MobilityProvider } from '../context/MobilityContext.jsx';
 import { CityMapPage } from './CityMapPage.jsx';
-import { FamilyFitPage } from './FamilyFitPage.jsx';
-import { FutureOutlookPage } from './FutureOutlookPage.jsx';
+import { ScenarioLabSection } from './ScenarioLabSection.jsx';
 
 const cityOptions = cities.slice(0, 4);
-const temporalRows = buildTemporalOutlookRows().filter((row) => cityOptions.some((city) => city.key === row.key));
-const familyFitRows = buildFamilyFitRows().filter((row) => cityOptions.some((city) => city.key === row.key));
+const noop = () => {};
 
 globalThis.IS_REACT_ACT_ENVIRONMENT = true;
 
@@ -59,15 +57,34 @@ const clickByText = (text) => {
   });
 };
 
+const changeField = (selector, value, eventType = 'change') => {
+  const field = container.querySelector(selector);
+
+  if (!field) {
+    throw new Error(`Could not find field for selector: ${selector}`);
+  }
+
+  act(() => {
+    const prototype = Object.getPrototypeOf(field);
+    const valueSetter = Object.getOwnPropertyDescriptor(prototype, 'value')?.set;
+    if (valueSetter) {
+      valueSetter.call(field, value);
+    } else {
+      field.value = value;
+    }
+    field.dispatchEvent(new Event(eventType, { bubbles: true }));
+  });
+};
+
 afterEach(() => {
   cleanup();
 });
 
 describe('route flow interactions', () => {
-  it('lets the map route change strategic mode and persona and navigate outward', () => {
+  it('lets the map route change strategic mode and persona and navigate to explorer', () => {
     const onModeChange = vi.fn();
     const onPersonaChange = vi.fn();
-    const onGoToOutlook = vi.fn();
+    const onGoToExplorer = vi.fn();
 
     renderComponent(
       <MobilityProvider>
@@ -78,13 +95,11 @@ describe('route flow interactions', () => {
           onModeChange={onModeChange}
           selectedPersonaKey="internationalFamily"
           onPersonaChange={onPersonaChange}
-          onSelectCity={vi.fn()}
-          onBack={vi.fn()}
-          onGoToExplorer={vi.fn()}
-          onGoToOutlook={onGoToOutlook}
-          onGoToFamilyFit={vi.fn()}
-          onShare={vi.fn()}
-          onResetLink={vi.fn()}
+          onSelectCity={noop}
+          onBack={noop}
+          onGoToExplorer={onGoToExplorer}
+          onShare={noop}
+          onResetLink={noop}
           isLinkCustomized={false}
         />
       </MobilityProvider>,
@@ -92,89 +107,105 @@ describe('route flow interactions', () => {
 
     clickByText('Career Acceleration');
     clickByText('Startup Founder');
-    clickByText('Outlook');
+    clickByText('Explorer');
 
     expect(onModeChange).toHaveBeenCalledWith('careerAcceleration');
     expect(onPersonaChange).toHaveBeenCalledWith('startupFounder');
-    expect(onGoToOutlook).toHaveBeenCalledTimes(1);
+    expect(onGoToExplorer).toHaveBeenCalledTimes(1);
   });
 
-  it('lets the outlook route switch focus city and navigate to family fit', () => {
-    const onSelectCity = vi.fn();
-    const onGoToFamilyFit = vi.fn();
+  it('renders the embedded map layout for dashboard mode without route header actions', () => {
+    renderComponent(
+      <MobilityProvider>
+        <CityMapPage
+          embedded
+          cityOptions={cityOptions}
+          selectedCity={cityOptions[0]}
+          selectedModeKey="familyStability"
+          onModeChange={noop}
+          selectedPersonaKey="internationalFamily"
+          onPersonaChange={noop}
+          onSelectCity={noop}
+          comparisonCityKey=""
+          onComparisonCityChange={noop}
+          nearestNeighborCount={3}
+          onNearestNeighborCountChange={noop}
+          onShare={noop}
+          onResetLink={noop}
+          isLinkCustomized={false}
+        />
+      </MobilityProvider>,
+    );
+
+    const embeddedShell = container.querySelector('.city-map-embedded');
+    const routeHeader = container.querySelector('.city-map-header');
+
+    expect(embeddedShell).toBeTruthy();
+    expect(routeHeader).toBeFalsy();
+    expect(container.textContent).toContain('Urban Strategic Intelligence For Real Relocation Decisions');
+  });
+
+  it('renders Scenario Lab controls and summary cards in dashboard mode', () => {
+    const outlookRows = buildTemporalOutlookRows().slice(0, 3);
+    const onApplyPreset = vi.fn();
+    const onSaveRun = vi.fn();
+    const onLoadRun = vi.fn();
+    const onDeleteRun = vi.fn();
 
     renderComponent(
-      <FutureOutlookPage
-        rows={temporalRows}
+      <ScenarioLabSection
+        rows={outlookRows}
         cityOptions={cityOptions}
-        selectedCityKey={temporalRows[0].key}
-        onSelectCity={onSelectCity}
+        selectedCityKey={outlookRows[0].key}
+        onSelectCity={noop}
         selectedYear={2028}
-        onYearChange={vi.fn()}
-        onBack={vi.fn()}
-        onGoToMap={vi.fn()}
-        onGoToFamilyFit={onGoToFamilyFit}
-        onShare={vi.fn()}
-        onResetLink={vi.fn()}
-        isLinkCustomized={false}
+        onYearChange={noop}
         shockType="none"
         shockSeverity={1}
-        onShockTypeChange={vi.fn()}
-        onShockSeverityChange={vi.fn()}
+        onShockTypeChange={noop}
+        onShockSeverityChange={noop}
+        presets={[
+          { key: 'baseline-2028', label: 'Baseline 2028' },
+          { key: 'inflation-stress-2029', label: 'Inflation Stress 2029' },
+        ]}
+        selectedPresetKey="custom"
+        onApplyPreset={onApplyPreset}
+        savedRuns={[
+          { id: 'run-1', name: 'Vienna 2028 baseline' },
+        ]}
+        activeRun={{
+          id: 'run-1',
+          name: 'Vienna 2028 baseline',
+          selectedCityKey: outlookRows[0].key,
+          createdAt: '2026-05-22T10:00:00.000Z',
+        }}
+        onSaveRun={onSaveRun}
+        onLoadRun={onLoadRun}
+        onDeleteRun={onDeleteRun}
       />,
     );
 
-    const focusSelect = container.querySelector('select');
+    const section = container.querySelector('#sec-scenario-lab');
+    const summaryDeck = container.querySelector('[aria-label="Scenario lab summary"]');
 
-    act(() => {
-      focusSelect.value = temporalRows[1].key;
-      focusSelect.dispatchEvent(new Event('change', { bubbles: true }));
-    });
+    expect(section).toBeTruthy();
+    expect(summaryDeck).toBeTruthy();
+    expect(container.textContent).toContain('Scenario Lab');
+    expect(container.textContent).toContain('Strategic Event');
+    expect(container.textContent).toContain('Shock Severity');
+    expect(container.textContent).toContain('Run: Vienna 2028 baseline');
+    expect(container.textContent).toContain('City:');
 
-    clickByText('Family Fit');
+    changeField('select[aria-label="Scenario lab preset"]', 'inflation-stress-2029');
+    changeField('input[aria-label="Scenario run label"]', 'My stress run');
+    clickByText('Save Run');
+    changeField('select[aria-label="Scenario saved runs"]', 'run-1');
+    clickByText('Load Run');
+    clickByText('Delete Run');
 
-    expect(container.querySelectorAll('.outlook-signal-card').length).toBeGreaterThan(0);
-    expect(container.querySelectorAll('.outlook-top-cities__card').length).toBeGreaterThan(0);
-    expect(container.querySelectorAll('.outlook-alternatives__card').length).toBeGreaterThan(0);
-
-    expect(onSelectCity).toHaveBeenCalledWith(temporalRows[1].key);
-    expect(onGoToFamilyFit).toHaveBeenCalledTimes(1);
-  });
-
-  it('lets the family-fit route switch anchor city and inspect a suggested match', () => {
-    const onSelectCity = vi.fn();
-    const onGoToOutlook = vi.fn();
-
-    renderComponent(
-      <FamilyFitPage
-        rows={familyFitRows}
-        cityOptions={cityOptions}
-        selectedCityKey={familyFitRows[0].key}
-        onSelectCity={onSelectCity}
-        onBack={vi.fn()}
-        onGoToMap={vi.fn()}
-        onGoToOutlook={onGoToOutlook}
-        onShare={vi.fn()}
-        onResetLink={vi.fn()}
-        isLinkCustomized={false}
-      />,
-    );
-
-    const anchorSelect = container.querySelector('select');
-
-    act(() => {
-      anchorSelect.value = familyFitRows[1].key;
-      anchorSelect.dispatchEvent(new Event('change', { bubbles: true }));
-    });
-
-    clickByText('Outlook');
-
-    expect(container.querySelectorAll('.family-fit-summary__card').length).toBe(4);
-    expect(container.querySelectorAll('.family-fit-narrative__card').length).toBe(1);
-    expect(container.querySelectorAll('.family-fit-best-matches__card').length).toBeGreaterThan(0);
-    expect(container.querySelectorAll('.family-fit-compatibility__card').length).toBeGreaterThan(0);
-
-    expect(onSelectCity).toHaveBeenCalledWith(familyFitRows[1].key);
-    expect(onGoToOutlook).toHaveBeenCalledTimes(1);
+    expect(onApplyPreset).toHaveBeenCalledWith('inflation-stress-2029');
+    expect(onSaveRun).toHaveBeenCalledWith('My stress run');
+    expect(onLoadRun).toHaveBeenCalledWith('run-1');
+    expect(onDeleteRun).toHaveBeenCalledWith('run-1');
   });
 });

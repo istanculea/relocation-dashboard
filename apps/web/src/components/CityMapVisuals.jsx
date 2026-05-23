@@ -235,6 +235,134 @@ const getHubScale = (tier) => {
   return 0.88;
 };
 
+const getConnectionClassName = ({ connection, selectedCityKey, hoveredCityKey }) => {
+  const isSelectedEdge =
+    connection.fromCity.key === selectedCityKey || connection.toCity.key === selectedCityKey;
+  const isHoveredEdge =
+    connection.fromCity.key === hoveredCityKey || connection.toCity.key === hoveredCityKey;
+
+  return [
+    'city-map-network__line',
+    `city-map-network__line--${connection.primaryMode}`,
+    isSelectedEdge ? 'city-map-network__line--selected' : '',
+    isHoveredEdge ? 'city-map-network__line--hover' : '',
+  ].filter(Boolean).join(' ');
+};
+
+const getConnectionStyle = ({ connection, cityIntelligenceByKey, cityDimensionByKey }) => {
+  const fromStrategic = cityIntelligenceByKey.get(connection.fromCity.key)?.strategicFit
+    ?? cityDimensionByKey.get(connection.fromCity.key)?.strategic
+    ?? getScoreValue(connection.fromCity);
+  const toStrategic = cityIntelligenceByKey.get(connection.toCity.key)?.strategicFit
+    ?? cityDimensionByKey.get(connection.toCity.key)?.strategic
+    ?? getScoreValue(connection.toCity);
+
+  const corridorIntensity = clampValue((((fromStrategic + toStrategic) / 2) - 5.4) / 2.5, 0.2, 1);
+  const corridorStrokeWidth = connection.primaryMode === 'rail'
+    ? 1.8 + corridorIntensity * 1.9
+    : connection.primaryMode === 'air'
+      ? 1.2 + corridorIntensity * 1.5
+      : 0.75 + corridorIntensity * 1.2;
+
+  return {
+    '--corridor-intensity': corridorIntensity.toFixed(3),
+    strokeWidth: corridorStrokeWidth,
+    opacity: 0.2 + corridorIntensity * 0.74,
+  };
+};
+
+const buildNodeVisuals = ({
+  sortedCityOptions,
+  selectedCityKey,
+  hoveredCityKey,
+  cityDimensionByKey,
+  cityIntelligenceByKey,
+  topCityRankByKey,
+}) => sortedCityOptions
+  .map((city) => {
+    const geo = cityGeoData[city.key];
+    if (!geo) {
+      return null;
+    }
+
+    const point = projectEuropePoint(geo, MAIN_EUROPE_MAP, VIEWBOX_WIDTH, VIEWBOX_HEIGHT);
+    const dimensions = cityDimensionByKey.get(city.key);
+    const intelligenceRow = cityIntelligenceByKey.get(city.key);
+    const strategic = intelligenceRow?.strategicFit ?? dimensions?.strategic ?? getScoreValue(city);
+    const rank = topCityRankByKey.get(city.key) ?? Number.POSITIVE_INFINITY;
+    const hubTier = getHubTier(rank);
+    const hubScale = getHubScale(hubTier);
+    const pointRadius = clampValue((6.1 + (strategic - 5.6) * 1.55) * hubScale, 5.2, 13.6);
+    const isActive = city.key === selectedCityKey;
+    const isHovered = city.key === hoveredCityKey;
+
+    return {
+      city,
+      point,
+      strategic,
+      rank,
+      hubTier,
+      pointRadius,
+      isActive,
+      isHovered,
+    };
+  })
+  .filter(Boolean);
+
+const renderNodeVisual = ({
+  node,
+  labelPlacement,
+  topCityRankByKey,
+  onSelectCity,
+  onHoverCity,
+}) => {
+  const {
+    city,
+    point,
+    strategic,
+    hubTier,
+    pointRadius,
+    isActive,
+    isHovered,
+  } = node;
+
+  return (
+    <g
+      key={city.key}
+      className={`city-map-point city-map-point--${hubTier}${isActive ? ' city-map-point--active' : ''}${isHovered ? ' city-map-point--hover' : ''}`}
+      onClick={() => onSelectCity(city.key)}
+      onMouseEnter={() => onHoverCity(city.key)}
+      onMouseLeave={() => onHoverCity(null)}
+      role="button"
+      tabIndex={0}
+      aria-label={`${city.city}, ${city.country}. Strategic score ${strategic.toFixed(2)}.`}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          onSelectCity(city.key);
+        }
+      }}
+    >
+      <circle cx={point.x} cy={point.y} r={isActive ? pointRadius + 2 : pointRadius} />
+      <circle cx={point.x} cy={point.y} r={isActive ? pointRadius + 8 : pointRadius + 5} className="city-map-point__halo" />
+      {labelPlacement && (
+        <g className="city-map-label">
+          <line x1={point.x + pointRadius * 0.72} y1={point.y} x2={labelPlacement.leaderX} y2={labelPlacement.leaderY} />
+          <text x={labelPlacement.x} y={labelPlacement.y} textAnchor={labelPlacement.anchor}>{labelPlacement.text}</text>
+        </g>
+      )}
+      {topCityRankByKey.has(city.key) && (
+        <g className="city-map-rank-pin" aria-hidden="true">
+          <circle cx={point.x - pointRadius - 9} cy={point.y - pointRadius - 8} r="9.5" />
+          <text x={point.x - pointRadius - 9} y={point.y - pointRadius - 5} textAnchor="middle">
+            {topCityRankByKey.get(city.key)}
+          </text>
+        </g>
+      )}
+    </g>
+  );
+};
+
 export const CityMapCanvas = function cityMapCanvas({
   cityOptions,
   selectedCityKey,
@@ -417,35 +545,16 @@ export const CityMapCanvas = function cityMapCanvas({
                 const toGeo = cityGeoData[connection.toCity.key];
                 const fromPoint = projectEuropePoint(fromGeo, MAIN_EUROPE_MAP, VIEWBOX_WIDTH, VIEWBOX_HEIGHT);
                 const toPoint = projectEuropePoint(toGeo, MAIN_EUROPE_MAP, VIEWBOX_WIDTH, VIEWBOX_HEIGHT);
-                const isSelectedEdge =
-                  connection.fromCity.key === selectedCityKey || connection.toCity.key === selectedCityKey;
-                const isHoveredEdge =
-                  connection.fromCity.key === hoveredCityKey || connection.toCity.key === hoveredCityKey;
-
-                const fromStrategic = cityIntelligenceByKey.get(connection.fromCity.key)?.strategicFit
-                  ?? cityDimensionByKey.get(connection.fromCity.key)?.strategic
-                  ?? getScoreValue(connection.fromCity);
-                const toStrategic = cityIntelligenceByKey.get(connection.toCity.key)?.strategicFit
-                  ?? cityDimensionByKey.get(connection.toCity.key)?.strategic
-                  ?? getScoreValue(connection.toCity);
-                const corridorIntensity = clampValue((((fromStrategic + toStrategic) / 2) - 5.4) / 2.5, 0.2, 1);
-                const corridorStrokeWidth = connection.primaryMode === 'rail'
-                  ? 1.8 + corridorIntensity * 1.9
-                  : connection.primaryMode === 'air'
-                    ? 1.2 + corridorIntensity * 1.5
-                    : 0.75 + corridorIntensity * 1.2;
-                const corridorStyle = {
-                  '--corridor-intensity': corridorIntensity.toFixed(3),
-                  strokeWidth: corridorStrokeWidth,
-                  opacity: 0.2 + corridorIntensity * 0.74,
-                };
-
-                const lineClasses = [
-                  'city-map-network__line',
-                  `city-map-network__line--${connection.primaryMode}`,
-                  isSelectedEdge ? 'city-map-network__line--selected' : '',
-                  isHoveredEdge ? 'city-map-network__line--hover' : '',
-                ].filter(Boolean).join(' ');
+                const corridorStyle = getConnectionStyle({
+                  connection,
+                  cityIntelligenceByKey,
+                  cityDimensionByKey,
+                });
+                const lineClasses = getConnectionClassName({
+                  connection,
+                  selectedCityKey,
+                  hoveredCityKey,
+                });
 
                 if (connection.primaryMode === 'air') {
                   return (
@@ -506,35 +615,14 @@ export const CityMapCanvas = function cityMapCanvas({
           )}
 
           {(() => {
-            const nodeVisuals = sortedCityOptions
-              .map((city) => {
-                const geo = cityGeoData[city.key];
-                if (!geo) {
-                  return null;
-                }
-                const point = projectEuropePoint(geo, MAIN_EUROPE_MAP, VIEWBOX_WIDTH, VIEWBOX_HEIGHT);
-                const dimensions = cityDimensionByKey.get(city.key);
-                const intelligenceRow = cityIntelligenceByKey.get(city.key);
-                const strategic = intelligenceRow?.strategicFit ?? dimensions?.strategic ?? getScoreValue(city);
-                const rank = topCityRankByKey.get(city.key) ?? Number.POSITIVE_INFINITY;
-                const hubTier = getHubTier(rank);
-                const hubScale = getHubScale(hubTier);
-                const pointRadius = clampValue((6.1 + (strategic - 5.6) * 1.55) * hubScale, 5.2, 13.6);
-                const isActive = city.key === selectedCityKey;
-                const isHovered = city.key === hoveredCityKey;
-
-                return {
-                  city,
-                  point,
-                  strategic,
-                  rank,
-                  hubTier,
-                  pointRadius,
-                  isActive,
-                  isHovered,
-                };
-              })
-              .filter(Boolean);
+            const nodeVisuals = buildNodeVisuals({
+              sortedCityOptions,
+              selectedCityKey,
+              hoveredCityKey,
+              cityDimensionByKey,
+              cityIntelligenceByKey,
+              topCityRankByKey,
+            });
 
             const labelPlacements = makeCityLabelPlacements({
               nodeVisuals,
@@ -543,46 +631,13 @@ export const CityMapCanvas = function cityMapCanvas({
               hoveredCityKey,
             });
 
-            return nodeVisuals.map((node) => {
-              const { city, point, strategic, hubTier, pointRadius, isActive, isHovered } = node;
-              const labelPlacement = labelPlacements.get(city.key);
-
-              return (
-              <g
-                key={city.key}
-                className={`city-map-point city-map-point--${hubTier}${isActive ? ' city-map-point--active' : ''}${isHovered ? ' city-map-point--hover' : ''}`}
-                onClick={() => onSelectCity(city.key)}
-                onMouseEnter={() => onHoverCity(city.key)}
-                onMouseLeave={() => onHoverCity(null)}
-                role="button"
-                tabIndex={0}
-                aria-label={`${city.city}, ${city.country}. Strategic score ${strategic.toFixed(2)}.`}
-                onKeyDown={(event) => {
-                  if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault();
-                    onSelectCity(city.key);
-                  }
-                }}
-              >
-                <circle cx={point.x} cy={point.y} r={isActive ? pointRadius + 2 : pointRadius} />
-                <circle cx={point.x} cy={point.y} r={isActive ? pointRadius + 8 : pointRadius + 5} className="city-map-point__halo" />
-                {labelPlacement && (
-                  <g className="city-map-label">
-                    <line x1={point.x + pointRadius * 0.72} y1={point.y} x2={labelPlacement.leaderX} y2={labelPlacement.leaderY} />
-                    <text x={labelPlacement.x} y={labelPlacement.y} textAnchor={labelPlacement.anchor}>{labelPlacement.text}</text>
-                  </g>
-                )}
-                {topCityRankByKey.has(city.key) && (
-                  <g className="city-map-rank-pin" aria-hidden="true">
-                    <circle cx={point.x - pointRadius - 9} cy={point.y - pointRadius - 8} r="9.5" />
-                    <text x={point.x - pointRadius - 9} y={point.y - pointRadius - 5} textAnchor="middle">
-                      {topCityRankByKey.get(city.key)}
-                    </text>
-                  </g>
-                )}
-              </g>
-              );
-            });
+            return nodeVisuals.map((node) => renderNodeVisual({
+              node,
+              labelPlacement: labelPlacements.get(node.city.key),
+              topCityRankByKey,
+              onSelectCity,
+              onHoverCity,
+            }));
           })()}
         </g>
       </svg>

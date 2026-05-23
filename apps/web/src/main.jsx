@@ -9,6 +9,9 @@ import './styles/pillar-score-display.css';
 import './styles/lens-aware-score-display.css';
 import { DashboardProvider } from './context/DashboardContext.jsx';
 import { MobilityProvider } from './context/MobilityContext.jsx';
+import { installArtifactPublishTelemetrySink } from './app/artifactPublishTelemetrySink.js';
+
+installArtifactPublishTelemetrySink();
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

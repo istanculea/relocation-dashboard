@@ -1836,11 +1836,10 @@ export const CityMapPage = function cityMapPage({
   onSelectCity,
   onBack,
   onGoToExplorer,
-  onGoToOutlook,
-  onGoToFamilyFit,
   onShare,
   onResetLink,
   isLinkCustomized,
+  embedded = false,
 }) {
   const mobilityDispatch = useMobilityDispatch();
   const { layerVisibility, timeWindowHours } = useMobilityState();
@@ -2053,7 +2052,8 @@ export const CityMapPage = function cityMapPage({
   };
 
   return (
-    <div className="app-shell explorer-page-shell city-map-shell">
+    <div className={embedded ? 'city-map-embedded' : 'app-shell explorer-page-shell city-map-shell city-map-shell--executive'}>
+      {!embedded && (
       <header className="ws-header city-map-header">
         <div className="ws-header__brand">
           <span className="ws-header__title">European Strategic Atlas</span>
@@ -2088,28 +2088,6 @@ export const CityMapPage = function cityMapPage({
           </a>
           <a
             className="ws-icon-btn"
-            href="#/outlook"
-            onClick={(event) => {
-              event.preventDefault();
-              onGoToOutlook();
-            }}
-            title="Open Future Outlook"
-          >
-            Outlook
-          </a>
-          <a
-            className="ws-icon-btn"
-            href="#/family-fit"
-            onClick={(event) => {
-              event.preventDefault();
-              onGoToFamilyFit();
-            }}
-            title="Open Family Fit"
-          >
-            Family Fit
-          </a>
-          <a
-            className="ws-icon-btn"
             href="#/"
             onClick={(event) => {
               event.preventDefault();
@@ -2121,9 +2099,10 @@ export const CityMapPage = function cityMapPage({
           </a>
         </div>
       </header>
+      )}
 
-      <main className="dashboard">
-        <section className="panel stack-gap-lg city-map-panel">
+      <main className="dashboard city-map-dashboard">
+        <section className="panel stack-gap-lg city-map-panel city-map-panel--executive">
           <section className="city-map-hero" aria-label="Europe strategic map summary">
             <div className="city-map-hero__copy">
               <p className="city-map-hero__eyebrow">Europe Connectivity Index</p>

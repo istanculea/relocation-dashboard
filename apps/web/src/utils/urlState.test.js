@@ -38,15 +38,11 @@ describe('urlState', () => {
     expect(readShareStateFromHash(hash)).toEqual({ page: 'map', city: 'vienna' });
   });
 
-  it('supports outlook and family-fit route hashing', () => {
-    const outlookHash = buildHashWithShareState('outlook', { page: 'outlook', shock: 'heatwave' });
-    const familyFitHash = buildHashWithShareState('family-fit', { page: 'family-fit', city: 'lisbon-pt' });
+  it('falls back unknown routes to dashboard root', () => {
+    const hash = buildHashWithShareState('outlook', { page: 'outlook', shock: 'heatwave' });
 
-    expect(parseHashLocation(outlookHash).route).toBe('outlook');
-    expect(readShareStateFromHash(outlookHash)).toEqual({ page: 'outlook', shock: 'heatwave' });
-
-    expect(parseHashLocation(familyFitHash).route).toBe('family-fit');
-    expect(readShareStateFromHash(familyFitHash)).toEqual({ page: 'family-fit', city: 'lisbon-pt' });
+    expect(parseHashLocation(hash).route).toBe('');
+    expect(readShareStateFromHash(hash)).toEqual({ page: 'outlook', shock: 'heatwave' });
   });
 
   it('clears share payload while preserving route', () => {

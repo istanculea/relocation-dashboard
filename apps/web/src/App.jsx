@@ -1,9 +1,10 @@
 import { Suspense, useState } from 'react';
-import { priorityPresets, scenarioMeta } from './data/dashboardConfig.js';
+import { DEFAULT_HOUSEHOLD_PROFILE, priorityPresets, scenarioMeta } from './data/dashboardConfig.js';
 import { WorkstationLayout } from './components/WorkstationLayout.jsx';
 import { ACTIONS, useDashboardDispatch, useDashboardState } from './application/compare/dashboardState.jsx';
 import { useMobilityDispatch, useMobilityState } from './application/atlas/mobilityState.jsx';
 import {
+  publishExportArtifactsWithTelemetry,
   exportCsvSnapshot,
   exportJsonSnapshot,
   exportXlsSnapshot,
@@ -14,8 +15,6 @@ import DashboardStatusPanel from './components/DashboardStatusPanel.jsx';
 import {
   LazyCityMapPage,
   LazyExplorerPage,
-  LazyFamilyFitPage,
-  LazyFutureOutlookPage,
   comparisonTitle,
   isBrowser,
 } from './app/appShellUtils.js';
@@ -45,11 +44,11 @@ const App = function app() {
     exportRows,
     exportStamp,
     explorerRankingRows,
-    familyFitExplorerRows,
     filteredComparisonRows,
     futureOutlookRows,
     hasActiveSimulation,
     hasActiveThresholds,
+    householdProfile,
     lensKey,
     mapComparisonCity,
     mapMode,
@@ -65,6 +64,14 @@ const App = function app() {
     selectedExplorerCity,
     selectedVerifiedSnapshot,
     selectedYear,
+    selectedScenarioLabPresetKey,
+    scenarioLabPresets,
+    savedScenarioLabRuns,
+    activeScenarioLabRun,
+    applyScenarioLabPreset,
+    saveScenarioLabRun,
+    loadScenarioLabRun,
+    deleteScenarioLabRun,
     setAirFilter,
     setBudgetFilter,
     setLensKey,
@@ -73,7 +80,7 @@ const App = function app() {
     setMapNeighborCount,
     setMapPersona,
     setMobilityFilter,
-    setScenarioKey,
+    setHouseholdProfile,
     setShockSeverity,
     setShockType,
     setSearchValue,
@@ -93,6 +100,7 @@ const App = function app() {
     page,
     lensKey,
     scenarioKey,
+    householdProfile,
     selectedCityKey,
     selectedYear,
     sortKey,
@@ -111,38 +119,38 @@ const App = function app() {
   });
   const isLinkCustomized = !isDefaultDashboardShareState(currentShareState);
 
-  const handleJsonExport = async () => {
-    try {
-      await exportJsonSnapshot({ exportPayload, filteredComparisonRows, exportStamp });
-    } catch {
-      if (isBrowser) {
-        window.alert('JSON export failed. Please retry.');
-      }
+  const alertIfBrowser = (message) => {
+    if (isBrowser) {
+      window.alert(message);
     }
   };
 
-  const handlePrint = () => {
-    try {
+  const handleJsonExport = () => exportJsonSnapshot({ exportPayload, filteredComparisonRows, exportStamp })
+    .then(() => publishExportArtifactsWithTelemetry({ exportPayload, exportFormat: 'json' }).catch(() => []))
+    .catch(() => {
+      alertIfBrowser('JSON export failed. Please retry.');
+    });
+
+  const handlePrint = () => Promise.resolve()
+    .then(() => {
       printDashboardSnapshot({ setIsPrinting });
-    } catch {
-      if (isBrowser) {
-        window.alert('PDF print export could not be opened. Please retry.');
-      }
-    }
-  };
+      return publishExportArtifactsWithTelemetry({ exportPayload, exportFormat: 'pdf' }).catch(() => []);
+    })
+    .catch(() => {
+      alertIfBrowser('PDF print export could not be opened. Please retry.');
+    });
 
-  const handleCsvExport = () => {
-    try {
+  const handleCsvExport = () => Promise.resolve()
+    .then(() => {
       exportCsvSnapshot({ exportRows, exportStamp });
-    } catch {
-      if (isBrowser) {
-        window.alert('CSV export failed. Please retry.');
-      }
-    }
-  };
+      return publishExportArtifactsWithTelemetry({ exportPayload, exportFormat: 'csv' }).catch(() => []);
+    })
+    .catch(() => {
+      alertIfBrowser('CSV export failed. Please retry.');
+    });
 
-  const handleXlsExport = () => {
-    try {
+  const handleXlsExport = () => Promise.resolve()
+    .then(() => {
       exportXlsSnapshot({
         filteredComparisonRows,
         exportStamp,
@@ -150,18 +158,18 @@ const App = function app() {
         scenarioLabel: scenarioMeta[scenarioKey].label,
         selectedYear,
       });
-    } catch {
-      if (isBrowser) {
-        window.alert('XLS export failed. Please retry.');
-      }
-    }
-  };
+      return publishExportArtifactsWithTelemetry({ exportPayload, exportFormat: 'xls' }).catch(() => []);
+    })
+    .catch(() => {
+      alertIfBrowser('XLS export failed. Please retry.');
+    });
 
   const handleShare = async () => {
     await shareDashboardSnapshot({
       page,
       lensKey,
       scenarioKey,
+      householdProfile,
       selectedCityKey,
       selectedYear,
       sortKey,
@@ -188,7 +196,7 @@ const App = function app() {
     }
 
     setLensKey('balanced');
-    setScenarioKey('oneParent');
+    setHouseholdProfile(DEFAULT_HOUSEHOLD_PROFILE);
     setSelectedCityKey(null);
     setSelectedYear(2026);
     setSortKey('score');
@@ -278,8 +286,6 @@ const App = function app() {
           onSelectCity={setSelectedCityKey}
           onBack={() => navigateTo('')}
           onGoToExplorer={() => navigateTo('explorer')}
-          onGoToOutlook={() => navigateTo('outlook')}
-          onGoToFamilyFit={() => navigateTo('family-fit')}
           comparisonCityKey={mapComparisonCity}
           onComparisonCityChange={setMapComparisonCity}
           nearestNeighborCount={mapNeighborCount}
@@ -296,70 +302,13 @@ const App = function app() {
     );
   }
 
-  if (page === 'outlook') {
-    return (
-      <Suspense
-        fallback={
-          <DashboardStatusPanel
-            title="Loading future outlook"
-            detail="Preparing temporal projections and volatility insights."
-          />
-        }
-      >
-        <LazyFutureOutlookPage
-          rows={futureOutlookRows}
-          cityOptions={citySelectorOptions}
-          selectedCityKey={selectedCityKey}
-          onSelectCity={setSelectedCityKey}
-          selectedYear={selectedYear}
-          onYearChange={setSelectedYear}
-          onBack={() => navigateTo('')}
-          onGoToMap={() => navigateTo('map')}
-          onGoToFamilyFit={() => navigateTo('family-fit')}
-          onShare={handleShare}
-          onResetLink={handleResetLink}
-          isLinkCustomized={isLinkCustomized}
-          shockType={shockType}
-          shockSeverity={shockSeverity}
-          onShockTypeChange={setShockType}
-          onShockSeverityChange={setShockSeverity}
-        />
-      </Suspense>
-    );
-  }
-
-  if (page === 'family-fit') {
-    return (
-      <Suspense
-        fallback={
-          <DashboardStatusPanel
-            title="Loading family fit explorer"
-            detail="Computing rhythm-based family relocation matches."
-          />
-        }
-      >
-        <LazyFamilyFitPage
-          rows={familyFitExplorerRows}
-          cityOptions={citySelectorOptions}
-          selectedCityKey={selectedCityKey}
-          onSelectCity={setSelectedCityKey}
-          onBack={() => navigateTo('')}
-          onGoToMap={() => navigateTo('map')}
-          onGoToOutlook={() => navigateTo('outlook')}
-          onShare={handleShare}
-          onResetLink={handleResetLink}
-          isLinkCustomized={isLinkCustomized}
-        />
-      </Suspense>
-    );
-  }
-
   return (
     <WorkstationLayout
       lensKey={lensKey}
       onLensChange={setLensKey}
       scenarioKey={scenarioKey}
-      onScenarioChange={setScenarioKey}
+      householdProfile={householdProfile}
+      onHouseholdProfileChange={setHouseholdProfile}
       rows={comparisonRows}
       filteredRows={filteredComparisonRows}
       searchValue={searchValue}
@@ -380,9 +329,42 @@ const App = function app() {
       onExportCsv={handleCsvExport}
       onExportJson={handleJsonExport}
       onGoToExplorer={() => navigateTo('explorer')}
-      onGoToMap={() => navigateTo('map')}
-      onGoToOutlook={() => navigateTo('outlook')}
-      onGoToFamilyFit={() => navigateTo('family-fit')}
+      onGoToMap={() => {
+        if (isBrowser) {
+          const target = window.document.getElementById('sec-map-intel');
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            return;
+          }
+        }
+        navigateTo('map');
+      }}
+      cityOptions={citySelectorOptions}
+      selectedExplorerCity={selectedExplorerCity}
+      selectedVerifiedSnapshot={selectedVerifiedSnapshot}
+      mapComparisonCity={mapComparisonCity}
+      onMapComparisonCityChange={setMapComparisonCity}
+      mapNeighborCount={mapNeighborCount}
+      onMapNeighborCountChange={setMapNeighborCount}
+      mapMode={mapMode}
+      onMapModeChange={setMapMode}
+      mapPersona={mapPersona}
+      onMapPersonaChange={setMapPersona}
+      futureOutlookRows={futureOutlookRows}
+      selectedYear={selectedYear}
+      onSelectedYearChange={setSelectedYear}
+      shockType={shockType}
+      onShockTypeChange={setShockType}
+      shockSeverity={shockSeverity}
+      onShockSeverityChange={setShockSeverity}
+      scenarioLabPresets={scenarioLabPresets}
+      selectedScenarioLabPresetKey={selectedScenarioLabPresetKey}
+      onScenarioLabPresetChange={applyScenarioLabPreset}
+      savedScenarioLabRuns={savedScenarioLabRuns}
+      activeScenarioLabRun={activeScenarioLabRun}
+      onScenarioLabSaveRun={saveScenarioLabRun}
+      onScenarioLabLoadRun={loadScenarioLabRun}
+      onScenarioLabDeleteRun={deleteScenarioLabRun}
       onShare={handleShare}
       onResetLink={handleResetLink}
       isLinkCustomized={isLinkCustomized}

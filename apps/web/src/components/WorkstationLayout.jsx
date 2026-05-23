@@ -1,10 +1,13 @@
 import { useCallback, useEffect, useState } from 'react';
-import { priorityPresets, scenarioMeta } from '../data/dashboardConfig.js';
+import { DEFAULT_HOUSEHOLD_PROFILE, priorityPresets, scenarioMeta } from '../data/dashboardConfig.js';
 import { PaneD } from './WorkstationDossierPanel.jsx';
 import { useShortlist } from '../context/DashboardContext.jsx';
 import { Scatterplot } from './WorkstationScatterplot.jsx';
 import { formatEuro } from '../utils/formatters.js';
 import { SimulationEngine } from './SimulationEngine.jsx';
+import { CityMapPage } from './CityMapPage.jsx';
+import { ScenarioLabSection } from './ScenarioLabSection.jsx';
+import { EvidenceCenterPanel } from './EvidenceCenterPanel.jsx';
 
 // ── Inline SVG icons ─────────────────────────────────────────────────────────
 const IconPdf = () => (
@@ -48,9 +51,81 @@ const MOBILITY_MATCHERS = {
   med: (carNeed) => carNeed === 'Medium',
 };
 
+const buildHouseholdImpactSummary = (profile) => {
+  const chips = [];
+
+  if (profile.kidsCount > DEFAULT_HOUSEHOLD_PROFILE.kidsCount) {
+    chips.push({
+      key: 'kids',
+      label: `Kids: ${profile.kidsCount}`,
+      reason: 'Higher childcare and school-quality impact in score weighting.',
+    });
+  }
+
+  if (profile.hasPets) {
+    chips.push({
+      key: 'pets',
+      label: 'Pets enabled',
+      reason: 'Adds environmental quality and social-capital influence.',
+    });
+  }
+
+  if (profile.remoteWorkRatio !== DEFAULT_HOUSEHOLD_PROFILE.remoteWorkRatio) {
+    chips.push({
+      key: 'remote',
+      label: `Remote: ${Math.round(profile.remoteWorkRatio * 100)}%`,
+      reason: 'Shifts score pressure toward jobs, social rhythm, and neighborhood fit.',
+    });
+  }
+
+  if (profile.languageLevel !== DEFAULT_HOUSEHOLD_PROFILE.languageLevel) {
+    chips.push({
+      key: 'language',
+      label: `Language: ${profile.languageLevel}`,
+      reason: 'Adjusts relocation-friction sensitivity in score adjustments.',
+    });
+  }
+
+  if (profile.budgetSensitivity !== DEFAULT_HOUSEHOLD_PROFILE.budgetSensitivity) {
+    chips.push({
+      key: 'budget',
+      label: `Budget: ${profile.budgetSensitivity}`,
+      reason: 'Rebalances score toward affordability stress or flexibility.',
+    });
+  }
+
+  if (profile.commuteTolerance !== DEFAULT_HOUSEHOLD_PROFILE.commuteTolerance) {
+    chips.push({
+      key: 'commute',
+      label: `Commute: ${profile.commuteTolerance}`,
+      reason: 'Changes mobility and infrastructure weight contribution.',
+    });
+  }
+
+  if (profile.riskAppetite !== DEFAULT_HOUSEHOLD_PROFILE.riskAppetite) {
+    chips.push({
+      key: 'risk',
+      label: `Risk: ${profile.riskAppetite}`,
+      reason: 'Tilts score between safety resilience and growth upside.',
+    });
+  }
+
+  if (chips.length === 0) {
+    chips.push({
+      key: 'baseline',
+      label: 'Baseline profile',
+      reason: 'Default household calibration with balanced score signals.',
+    });
+  }
+
+  return chips;
+};
+
 function PaneA({
   lensKey, onLensChange,
-  scenarioKey, onScenarioChange,
+  scenarioKey,
+  householdProfile,
+  onHouseholdProfileChange,
   searchValue, onSearchChange,
   budgetCap, onBudgetCapChange,
   airCapRaw, onAirCapChange,
@@ -59,7 +134,13 @@ function PaneA({
   sortPillarKey,
 }) {
   const lensEntries = Object.entries(priorityPresets);
-  const scenarioEntries = Object.entries(scenarioMeta);
+  const remoteWorkRatioPercent = Math.round((householdProfile.remoteWorkRatio ?? 0) * 100);
+  const scenarioLabel = scenarioMeta[scenarioKey]?.label ?? 'Adaptive';
+  const impactChips = buildHouseholdImpactSummary(householdProfile);
+
+  const updateHousehold = (patch) => {
+    onHouseholdProfileChange({ ...householdProfile, ...patch });
+  };
 
   const budgetMin = 1500, budgetMax = 4500;
   const airMin = 5, airMax = 40;
@@ -101,22 +182,112 @@ function PaneA({
           <p className="ws-control-hint">{priorityPresets[lensKey].detail}</p>
         </div>
 
-        {/* Household Scenario */}
+        {/* Household Builder */}
         <div className="ws-control-group">
-          <div className="ws-control-label">Household Scenario</div>
-          <div className="ws-seg-toggle" role="group" aria-label="Household scenario">
-            {scenarioEntries.map(([key, meta]) => (
-              <button
-                key={key}
-                className={`ws-seg-btn${scenarioKey === key ? ' ws-seg-btn--active' : ''}`}
-                onClick={() => onScenarioChange(key)}
-                type="button"
+          <div className="ws-control-label">Household Builder</div>
+          <div className="ws-household-grid">
+            <label className="ws-field">
+              <span className="ws-field__label">Kids</span>
+              <input
+                type="number"
+                min={0}
+                max={4}
+                className="ws-input"
+                value={householdProfile.kidsCount}
+                onChange={(event) => updateHousehold({ kidsCount: Number(event.target.value) })}
+                aria-label="Household kids count"
+              />
+            </label>
+            <label className="ws-field ws-field--checkbox">
+              <input
+                type="checkbox"
+                checked={householdProfile.hasPets}
+                onChange={(event) => updateHousehold({ hasPets: event.target.checked })}
+                aria-label="Household includes pets"
+              />
+              <span className="ws-field__label">Pets in household</span>
+            </label>
+            <label className="ws-field">
+              <span className="ws-field__label">Remote work ({remoteWorkRatioPercent}%)</span>
+              <input
+                type="range"
+                className="ws-slider"
+                min={0}
+                max={100}
+                step={5}
+                value={remoteWorkRatioPercent}
+                onChange={(event) => updateHousehold({ remoteWorkRatio: Number(event.target.value) / 100 })}
+                aria-label="Remote work ratio"
+              />
+            </label>
+            <label className="ws-field">
+              <span className="ws-field__label">Language readiness</span>
+              <select
+                className="ws-select"
+                value={householdProfile.languageLevel}
+                onChange={(event) => updateHousehold({ languageLevel: event.target.value })}
+                aria-label="Household language readiness"
               >
-                {meta.label}
-              </button>
+                <option value="beginner">Beginner</option>
+                <option value="intermediate">Intermediate</option>
+                <option value="fluent">Fluent</option>
+              </select>
+            </label>
+            <label className="ws-field">
+              <span className="ws-field__label">Budget stance</span>
+              <select
+                className="ws-select"
+                value={householdProfile.budgetSensitivity}
+                onChange={(event) => updateHousehold({ budgetSensitivity: event.target.value })}
+                aria-label="Household budget stance"
+              >
+                <option value="strict">Strict</option>
+                <option value="balanced">Balanced</option>
+                <option value="flexible">Flexible</option>
+              </select>
+            </label>
+            <label className="ws-field">
+              <span className="ws-field__label">Commute tolerance</span>
+              <select
+                className="ws-select"
+                value={householdProfile.commuteTolerance}
+                onChange={(event) => updateHousehold({ commuteTolerance: event.target.value })}
+                aria-label="Household commute tolerance"
+              >
+                <option value="low">Low</option>
+                <option value="moderate">Moderate</option>
+                <option value="high">High</option>
+              </select>
+            </label>
+            <label className="ws-field">
+              <span className="ws-field__label">Risk appetite</span>
+              <select
+                className="ws-select"
+                value={householdProfile.riskAppetite}
+                onChange={(event) => updateHousehold({ riskAppetite: event.target.value })}
+                aria-label="Household risk appetite"
+              >
+                <option value="low">Low</option>
+                <option value="balanced">Balanced</option>
+                <option value="high">High</option>
+              </select>
+            </label>
+          </div>
+          <div className="ws-household-foot">
+            <span className="ws-control-hint">Budget model: {scenarioLabel}</span>
+            <button type="button" className="ws-link-btn" onClick={() => onHouseholdProfileChange(DEFAULT_HOUSEHOLD_PROFILE)}>
+              Reset household
+            </button>
+          </div>
+          <div className="ws-household-impact" aria-label="Household impact summary">
+            {impactChips.map((chip) => (
+              <span key={chip.key} className="ws-impact-chip" title={chip.reason}>
+                <strong>{chip.label}</strong>
+                {chip.reason}
+              </span>
             ))}
           </div>
-          <p className="ws-control-hint">{scenarioMeta[scenarioKey].budgetLabel}</p>
+          <p className="ws-control-hint">{scenarioMeta[scenarioKey]?.budgetLabel}</p>
         </div>
 
         {/* Search */}
@@ -497,7 +668,9 @@ function PaneC({
 export function WorkstationLayout({
   // App-level state
   lensKey, onLensChange,
-  scenarioKey, onScenarioChange,
+  scenarioKey,
+  householdProfile,
+  onHouseholdProfileChange,
   rows,           // all scored rows (comparisonRows)
   filteredRows,   // filtered + sorted (filteredComparisonRows)
   searchValue, onSearchChange,
@@ -508,8 +681,32 @@ export function WorkstationLayout({
   // explorer nav
   onGoToExplorer,
   onGoToMap,
-  onGoToOutlook,
-  onGoToFamilyFit,
+  cityOptions,
+  selectedExplorerCity,
+  selectedVerifiedSnapshot,
+  mapComparisonCity,
+  onMapComparisonCityChange,
+  mapNeighborCount,
+  onMapNeighborCountChange,
+  mapMode,
+  onMapModeChange,
+  mapPersona,
+  onMapPersonaChange,
+  futureOutlookRows,
+  selectedYear,
+  onSelectedYearChange,
+  shockType,
+  onShockTypeChange,
+  shockSeverity,
+  onShockSeverityChange,
+  scenarioLabPresets,
+  selectedScenarioLabPresetKey,
+  onScenarioLabPresetChange,
+  savedScenarioLabRuns,
+  activeScenarioLabRun,
+  onScenarioLabSaveRun,
+  onScenarioLabLoadRun,
+  onScenarioLabDeleteRun,
   // share link action
   onShare,
   onResetLink,
@@ -704,12 +901,6 @@ export function WorkstationLayout({
           <button type="button" className="ws-icon-btn" onClick={onGoToMap} title="Open city map">
             Map
           </button>
-          <button type="button" className="ws-icon-btn" onClick={onGoToOutlook} title="Open future outlook">
-            Outlook
-          </button>
-          <button type="button" className="ws-icon-btn" onClick={onGoToFamilyFit} title="Open family fit explorer">
-            Family Fit
-          </button>
           <div className="ws-header__divider" />
           <button type="button" className="ws-icon-btn ws-icon-btn--cta" onClick={onGoToExplorer} title="Open City Explorer">
             City Explorer →
@@ -738,6 +929,19 @@ export function WorkstationLayout({
           <strong>{cleanAirShare}%</strong>
           <small>Share of cities at PM2.5 ≤ 12</small>
         </article>
+        <article className="ws-atlas-deck__card">
+          <span className="ws-atlas-deck__label">Decision Confidence</span>
+          <strong>
+            {topCity?.decisionEngine
+              ? `${Math.round(topCity.decisionEngine.overallConfidence * 100)}% (${topCity.decisionEngine.confidenceBand})`
+              : 'N/A'}
+          </strong>
+          <small>
+            {topCity?.decisionEngine?.reasonCodes?.length
+              ? topCity.decisionEngine.reasonCodes.slice(0, 2).map((reason) => reason.label).join(' · ')
+              : 'Reason codes unavailable'}
+          </small>
+        </article>
       </section>
 
       {/* ── Body: Sidebar + Main ── */}
@@ -746,7 +950,8 @@ export function WorkstationLayout({
           lensKey={lensKey}
           onLensChange={onLensChange}
           scenarioKey={scenarioKey}
-          onScenarioChange={onScenarioChange}
+          householdProfile={householdProfile}
+          onHouseholdProfileChange={onHouseholdProfileChange}
           searchValue={searchValue}
           onSearchChange={onSearchChange}
           budgetCap={budgetCap}
@@ -782,6 +987,54 @@ export function WorkstationLayout({
               onSortByPillar={handleSortByPillar}
             />
           </div>
+
+          <section className="ws-section-shell" aria-label="Map intelligence section" id="sec-map-intel">
+            <div className="ws-pane__header">
+              <span className="ws-pane__title">Map Intelligence</span>
+            </div>
+            <div className="ws-section-shell__body">
+              <CityMapPage
+                embedded
+                cityOptions={cityOptions}
+                selectedCity={selectedExplorerCity}
+                onSelectCity={onSelectCity}
+                comparisonCityKey={mapComparisonCity}
+                onComparisonCityChange={onMapComparisonCityChange}
+                nearestNeighborCount={mapNeighborCount}
+                onNearestNeighborCountChange={onMapNeighborCountChange}
+                selectedModeKey={mapMode}
+                onModeChange={onMapModeChange}
+                selectedPersonaKey={mapPersona}
+                onPersonaChange={onMapPersonaChange}
+              />
+            </div>
+          </section>
+
+          <ScenarioLabSection
+            rows={futureOutlookRows}
+            cityOptions={cityOptions}
+            selectedCityKey={selectedCityKey}
+            onSelectCity={onSelectCity}
+            selectedYear={selectedYear}
+            onYearChange={onSelectedYearChange}
+            shockType={shockType}
+            shockSeverity={shockSeverity}
+            onShockTypeChange={onShockTypeChange}
+            onShockSeverityChange={onShockSeverityChange}
+            presets={scenarioLabPresets}
+            selectedPresetKey={selectedScenarioLabPresetKey}
+            onApplyPreset={onScenarioLabPresetChange}
+            savedRuns={savedScenarioLabRuns}
+            activeRun={activeScenarioLabRun}
+            onSaveRun={onScenarioLabSaveRun}
+            onLoadRun={onScenarioLabLoadRun}
+            onDeleteRun={onScenarioLabDeleteRun}
+          />
+
+          <EvidenceCenterPanel
+            city={selectedExplorerCity}
+            snapshot={selectedVerifiedSnapshot}
+          />
         </div>
       </div>
 

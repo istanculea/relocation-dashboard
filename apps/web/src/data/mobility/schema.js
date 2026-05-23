@@ -33,13 +33,7 @@ const validateBoundedNumber = (value, field, min, max, errors) => {
   }
 };
 
-export const validateCityNode = (cityNode) => {
-  const errors = [];
-
-  if (!cityNode || typeof cityNode !== 'object') {
-    return { ok: false, errors: ['cityNode must be an object'] };
-  }
-
+const validateCityIdentity = (cityNode, errors) => {
   if (!cityNode.id || typeof cityNode.id !== 'string') {
     errors.push('id must be a non-empty string');
   }
@@ -49,16 +43,30 @@ export const validateCityNode = (cityNode) => {
   if (!cityNode.countryCode || typeof cityNode.countryCode !== 'string' || cityNode.countryCode.length !== 2) {
     errors.push('countryCode must be a 2-letter ISO code');
   }
+};
+
+const validateCityModes = (cityNode, errors) => {
+  const modes = ensureArray(cityNode.modes);
+  if (modes.length === 0) {
+    errors.push('modes must include at least one transport mode');
+    return;
+  }
+  modes.forEach((mode) => validateMembership(mode, CORRIDOR_MODES, 'modes[]', errors));
+};
+
+export const validateCityNode = (cityNode) => {
+  const errors = [];
+
+  if (!cityNode || typeof cityNode !== 'object') {
+    return { ok: false, errors: ['cityNode must be an object'] };
+  }
+
+  validateCityIdentity(cityNode, errors);
 
   validateBoundedNumber(cityNode.lat, 'lat', -90, 90, errors);
   validateBoundedNumber(cityNode.lon, 'lon', -180, 180, errors);
   validateMembership(cityNode.nodeType, CITY_NODE_TYPES, 'nodeType', errors);
-
-  const modes = ensureArray(cityNode.modes);
-  if (modes.length === 0) {
-    errors.push('modes must include at least one transport mode');
-  }
-  modes.forEach((mode) => validateMembership(mode, CORRIDOR_MODES, 'modes[]', errors));
+  validateCityModes(cityNode, errors);
 
   return { ok: errors.length === 0, errors };
 };

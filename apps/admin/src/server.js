@@ -9,6 +9,7 @@ export const startAdminApiServer = ({
   const server = createApiHttpServer({ handlers: apiV1Handlers });
   server.listen(port, host, () => {
     console.log(`admin api runtime listening on http://${host}:${port}`);
+    console.log('artifact endpoints enabled: /v1/admin/artifacts/scenario and /v1/admin/artifacts/evidence');
     resolve(server);
   });
 });

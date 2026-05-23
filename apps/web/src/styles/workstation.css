@@ -353,6 +353,17 @@
   align-items: flex-start;
 }
 
+.explorer-page-shell .route-dashboard .ws-pane {
+  height: auto;
+  overflow: visible;
+}
+
+.explorer-page-shell .route-dashboard .ws-pane__body {
+  flex: 0 0 auto;
+  min-height: 0;
+  overflow: visible;
+}
+
 .explorer-page-shell .route-dashboard .ws-atlas-deck__card .ws-atlas-deck__label,
 .explorer-page-shell .route-dashboard .ws-atlas-deck__card strong,
 .explorer-page-shell .route-dashboard .ws-atlas-deck__card small {
@@ -413,6 +424,35 @@
 .explorer-page-shell .route-dashboard--family-fit .family-fit-compatibility__card small {
   font-size: 13px;
   color: var(--ws-ink);
+}
+
+.explorer-page-shell .route-dashboard--family-fit .family-fit-narrative__card,
+.explorer-page-shell .route-dashboard--family-fit .family-fit-compatibility__card {
+  color: var(--ws-ink);
+}
+
+.explorer-page-shell .route-dashboard--family-fit .family-fit-narrative__card .ws-atlas-deck__label,
+.explorer-page-shell .route-dashboard--family-fit .family-fit-compatibility__card .ws-atlas-deck__label {
+  color: var(--ws-ink-2);
+  opacity: 1;
+}
+
+.explorer-page-shell .route-dashboard--family-fit .family-fit-narrative__card strong,
+.explorer-page-shell .route-dashboard--family-fit .family-fit-compatibility__card strong {
+  color: var(--ws-ink);
+  opacity: 1;
+}
+
+.explorer-page-shell .route-dashboard--family-fit .family-fit-narrative__card small,
+.explorer-page-shell .route-dashboard--family-fit .family-fit-compatibility__card small,
+.explorer-page-shell .route-dashboard--family-fit .family-fit-compatibility__card .route-chip-row span {
+  color: var(--ws-ink-2);
+  opacity: 1;
+}
+
+.explorer-page-shell .route-dashboard--family-fit .family-fit-narrative .route-card-stack,
+.explorer-page-shell .route-dashboard--family-fit .family-fit-compatibility .route-card-stack {
+  align-content: start;
 }
 
 /* ── Main area (scatter + heatmap stacked) ─────────────────────── */
@@ -724,6 +764,172 @@
   border-radius: 10px;
 }
 
+.ws-section-shell {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--ws-border);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 3px 12px rgba(84, 72, 56, 0.08);
+  overflow: hidden;
+}
+
+.ws-section-shell__body {
+  padding: 0;
+}
+
+.ws-section-shell .city-map-embedded .city-map-dashboard {
+  padding: 0;
+}
+
+.ws-section-shell .city-map-embedded .city-map-panel {
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+}
+
+.ws-scenario-lab {
+  display: grid;
+  gap: 12px;
+}
+
+.ws-scenario-lab__controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+}
+
+.ws-scenario-lab__controls label {
+  display: grid;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--ws-ink-2);
+  font-weight: 600;
+}
+
+.ws-scenario-lab__controls input[type='range'] {
+  width: 100%;
+}
+
+.ws-chip-button {
+  align-self: end;
+  border: 1px solid var(--ws-border-strong);
+  border-radius: 8px;
+  background: var(--ws-surface);
+  color: var(--ws-ink);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.ws-chip-button:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.ws-chip-button--danger {
+  border-color: rgba(169, 55, 55, 0.45);
+  color: #a93737;
+}
+
+.ws-scenario-lab__signals {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 8px;
+}
+
+.ws-scenario-lab__signal-card small {
+  white-space: normal;
+}
+
+.ws-scenario-lab__run-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ws-scenario-lab__run-chip {
+  border: 1px solid var(--ws-border);
+  border-radius: 999px;
+  padding: 5px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ws-ink-2);
+  background: color-mix(in srgb, var(--ws-surface) 72%, white 28%);
+}
+
+.ws-evidence-center {
+  display: grid;
+  gap: 10px;
+}
+
+.ws-evidence-center__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ws-evidence-chip {
+  border-radius: 999px;
+  border: 1px solid var(--ws-border);
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.ws-evidence-chip--low {
+  border-color: rgba(47, 127, 98, 0.35);
+  color: #1e644d;
+  background: rgba(47, 127, 98, 0.11);
+}
+
+.ws-evidence-chip--medium {
+  border-color: rgba(197, 124, 42, 0.35);
+  color: #8a5517;
+  background: rgba(197, 124, 42, 0.12);
+}
+
+.ws-evidence-chip--high {
+  border-color: rgba(178, 77, 72, 0.38);
+  color: #8d3733;
+  background: rgba(178, 77, 72, 0.14);
+}
+
+.ws-evidence-chip--neutral {
+  color: var(--ws-ink-2);
+  background: var(--ws-surface-2);
+}
+
+.ws-evidence-center__sources {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.ws-evidence-center__sources li {
+  border: 1px solid var(--ws-border);
+  border-radius: 8px;
+  padding: 7px 10px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.ws-evidence-center__sources li span {
+  color: var(--ws-ink);
+  font-size: 12px;
+}
+
+.ws-evidence-center__sources li small {
+  color: var(--ws-ink-3);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
 /* Description hint below a control */
 .ws-control-hint {
   margin: 0;
@@ -772,6 +978,85 @@
 
 .ws-select option {
   background: #fff;
+  color: var(--ws-ink);
+}
+
+.ws-household-grid {
+  display: grid;
+  gap: 8px;
+}
+
+.ws-field {
+  display: grid;
+  gap: 5px;
+}
+
+.ws-field .ws-input {
+  padding: 7px 10px;
+}
+
+.ws-field__label {
+  font-size: 12px;
+  color: var(--ws-ink-2);
+  font-weight: 600;
+}
+
+.ws-field--checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border: 1px solid var(--ws-border);
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.ws-field--checkbox input {
+  accent-color: var(--ws-accent);
+}
+
+.ws-household-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.ws-household-impact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.ws-impact-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border: 1px solid var(--ws-border-strong);
+  background: var(--ws-surface-3);
+  border-radius: 999px;
+  padding: 3px 9px;
+  font-size: 11px;
+  color: var(--ws-ink-2);
+  line-height: 1.3;
+}
+
+.ws-impact-chip strong {
+  color: var(--ws-ink);
+}
+
+.ws-link-btn {
+  border: none;
+  background: transparent;
+  color: var(--ws-blue);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.ws-link-btn:hover {
   color: var(--ws-ink);
 }
 
@@ -2428,6 +2713,41 @@
     overflow: visible;
   }
 
+  .ws-section-shell {
+    border-radius: 10px;
+  }
+
+  .ws-section-shell .city-map-embedded .city-map-panel {
+    padding: 8px;
+    gap: 8px;
+  }
+
+  .ws-section-shell .city-map-embedded .city-map-hero {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .ws-section-shell .city-map-embedded .city-map-control-grid,
+  .ws-section-shell .city-map-embedded .city-map-intel-grid,
+  .ws-section-shell .city-map-embedded .city-map-deep-intel-grid,
+  .ws-section-shell .city-map-embedded .city-map-top-grid {
+    gap: 8px;
+  }
+
+  .ws-section-shell .city-map-embedded .city-map-connectivity-board__map {
+    min-height: 300px;
+  }
+
+  .ws-scenario-lab__controls,
+  .ws-scenario-lab__signals {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .ws-scenario-lab .ws-atlas-deck {
+    grid-template-columns: 1fr;
+  }
+
   .ws-statusbar {
     overflow-x: auto;
     overflow-y: hidden;
@@ -2464,6 +2784,22 @@
   .ws-dos-kv__label,
   .ws-dos-kv__value {
     font-size: 12px;
+  }
+
+  .ws-household-foot {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .ws-field__label,
+  .ws-link-btn {
+    font-size: 11px;
+  }
+
+  .ws-impact-chip {
+    font-size: 10.5px;
+    padding: 3px 8px;
   }
 
   .ws-feed-row {
@@ -2562,12 +2898,42 @@
     font-size: 12.5px;
   }
 
+  .ws-field__label,
+  .ws-link-btn {
+    font-size: 11.5px;
+  }
+
+  .ws-impact-chip {
+    font-size: 11px;
+  }
+
   .ws-watchlist-panel {
     padding: 9px 10px;
   }
 
   .ws-main {
     gap: 8px;
+  }
+
+  .ws-section-shell .city-map-embedded .city-map-panel {
+    padding: 10px;
+    gap: 10px;
+  }
+
+  .ws-section-shell .city-map-embedded .city-map-connectivity-board__map {
+    min-height: 360px;
+  }
+
+  .ws-scenario-lab__controls {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ws-scenario-lab__signals {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ws-scenario-lab .ws-atlas-deck {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .ws-split-row > .ws-scatter-section {

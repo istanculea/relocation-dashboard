@@ -188,3 +188,25 @@ export const scenarioMeta = {
     budgetLabel: 'One parent working, stay-at-home parent with two children, 3-bedroom housing.',
   },
 };
+
+export const DEFAULT_HOUSEHOLD_PROFILE = {
+  kidsCount: 1,
+  hasPets: false,
+  remoteWorkRatio: 0.35,
+  languageLevel: 'intermediate',
+  budgetSensitivity: 'balanced',
+  commuteTolerance: 'moderate',
+  riskAppetite: 'balanced',
+};
+
+export const deriveScenarioKeyFromHousehold = (profile = DEFAULT_HOUSEHOLD_PROFILE) => {
+  const kidsCount = Number(profile.kidsCount) >= 2 ? 2 : 1;
+  const remoteWorkRatio = Number.isFinite(Number(profile.remoteWorkRatio)) ? Number(profile.remoteWorkRatio) : 0.5;
+  const singleIncomeBias = remoteWorkRatio <= 0.45;
+
+  if (kidsCount >= 2) {
+    return singleIncomeBias ? 'oneIncTwoKids' : 'twoKids';
+  }
+
+  return singleIncomeBias ? 'oneParent' : 'bothWorking';
+};

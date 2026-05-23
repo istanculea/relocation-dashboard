@@ -16,6 +16,8 @@ import {
   queryForecast,
   queryRhythm,
 } from '../../../../../packages/shared/contracts/api/v1Handlers.js';
+import { dispatchApiRequest } from '../../../../../packages/shared/contracts/api/httpRouteAdapter.js';
+import { apiV1Handlers } from './index.js';
 
 const schemaPath = (fileName) => path.resolve('packages', 'domain', 'schema', 'json', fileName);
 const openApiPath = path.resolve('packages', 'shared', 'contracts', 'api', 'openapi.v1.yaml');
@@ -181,5 +183,49 @@ describe('v1 API contract handlers', () => {
     expect(validateCandidate(candidate)).toBe(true);
     expect(validateEvidence(evidence)).toBe(true);
     expect(validateExport(exportJob)).toBe(true);
+  });
+
+  it('supports scenario and evidence artifact admin endpoints', async () => {
+    const scenarioCreate = await dispatchApiRequest({
+      handlers: apiV1Handlers,
+      method: 'POST',
+      pathname: '/v1/admin/artifacts/scenario',
+      query: {},
+      body: {
+        run_id: 'run-abc',
+        name: 'Scenario snapshot',
+        payload: { score: 7.8 },
+        tags: ['step7'],
+      },
+    });
+
+    expect(scenarioCreate.statusCode).toBe(201);
+    expect(scenarioCreate.payload.data.artifact_type).toBe('scenario');
+
+    const scenarioGet = await dispatchApiRequest({
+      handlers: apiV1Handlers,
+      method: 'GET',
+      pathname: `/v1/admin/artifacts/scenario/${scenarioCreate.payload.data.artifact_id}`,
+      query: {},
+      body: {},
+    });
+
+    expect(scenarioGet.statusCode).toBe(200);
+    expect(scenarioGet.payload.data.artifact_id).toBe(scenarioCreate.payload.data.artifact_id);
+
+    const evidenceCreate = await dispatchApiRequest({
+      handlers: apiV1Handlers,
+      method: 'POST',
+      pathname: '/v1/admin/artifacts/evidence',
+      query: {},
+      body: {
+        observation_id: 'obs-42',
+        name: 'Evidence bundle',
+        payload: { sourceCount: 3 },
+      },
+    });
+
+    expect(evidenceCreate.statusCode).toBe(201);
+    expect(evidenceCreate.payload.data.artifact_type).toBe('evidence');
   });
 });

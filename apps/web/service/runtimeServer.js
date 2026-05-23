@@ -3,17 +3,21 @@ const importModule = (specifier) => Function('s', 'return import(s);')(specifier
 export const startWebServiceRuntime = ({
   port = Number(process.env.WEB_SERVICE_PORT ?? 4174),
   host = process.env.WEB_SERVICE_HOST ?? '127.0.0.1',
-} = {}) => new Promise((resolve, reject) => {
-  Promise.all([
-    importModule('../../../packages/shared/contracts/api/httpRouteAdapter.js'),
-    importModule('../../../packages/shared/contracts/api/v1Handlers.js'),
-  ]).then(([{ createApiHttpServer }, { apiV1Handlers }]) => {
-  const server = createApiHttpServer({ handlers: apiV1Handlers });
-  server.listen(port, host, () => {
-    console.log(`web service runtime listening on http://${host}:${port}`);
-    resolve(server);
-  });
-  }).catch(reject);
+} = {}) => new Promise(async (resolve, reject) => {
+  try {
+    const [{ createApiHttpServer }, { apiV1Handlers }] = await Promise.all([
+      importModule('../../../packages/shared/contracts/api/httpRouteAdapter.js'),
+      importModule('../../../packages/shared/contracts/api/v1Handlers.js'),
+    ]);
+
+    const server = createApiHttpServer({ handlers: apiV1Handlers });
+    server.listen(port, host, () => {
+      console.log(`web service runtime listening on http://${host}:${port}`);
+      resolve(server);
+    });
+  } catch (error) {
+    reject(error);
+  }
 });
 
 const maybeStartFromCli = async () => {

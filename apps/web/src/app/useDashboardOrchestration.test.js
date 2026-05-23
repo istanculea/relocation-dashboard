@@ -1,6 +1,13 @@
 import { describe, expect, it } from 'vitest';
+import { DEFAULT_HOUSEHOLD_PROFILE } from '../data/dashboardConfig.js';
 import {
+  addScenarioLabRun,
+  buildEvidenceCenterExportBlock,
   buildDashboardShareState,
+  deleteScenarioLabRunById,
+  findScenarioLabRunById,
+  hydrateScenarioLabStateFromRun,
+  inferEvidenceRiskTier,
   isDefaultDashboardShareState,
   readDashboardShareState,
   resolveMobilityMapForPage,
@@ -9,11 +16,6 @@ import {
 describe('resolveMobilityMapForPage', () => {
   it('maps explorer route to reach layer', () => {
     expect(resolveMobilityMapForPage('explorer')).toBe('reach');
-  });
-
-  it('maps outlook and family-fit routes to reach layer', () => {
-    expect(resolveMobilityMapForPage('outlook')).toBe('reach');
-    expect(resolveMobilityMapForPage('family-fit')).toBe('reach');
   });
 
   it('maps map route to strategic network layer', () => {
@@ -30,6 +32,12 @@ describe('resolveMobilityMapForPage', () => {
       page: 'map',
       lensKey: 'balanced',
       scenarioKey: 'oneParent',
+      householdProfile: {
+        ...DEFAULT_HOUSEHOLD_PROFILE,
+        kidsCount: 2,
+        hasPets: true,
+        remoteWorkRatio: 0.7,
+      },
       selectedCityKey: 'vienna-at',
       selectedYear: 2026,
       sortKey: 'score',
@@ -79,6 +87,12 @@ describe('resolveMobilityMapForPage', () => {
         heat: false,
         isochrones: true,
       },
+      householdProfile: {
+        ...DEFAULT_HOUSEHOLD_PROFILE,
+        kidsCount: 2,
+        hasPets: true,
+        remoteWorkRatio: 0.7,
+      },
     });
   });
 
@@ -87,6 +101,7 @@ describe('resolveMobilityMapForPage', () => {
       page: 'map',
       lensKey: 'balanced',
       scenarioKey: 'oneParent',
+      householdProfile: DEFAULT_HOUSEHOLD_PROFILE,
       selectedCityKey: null,
       selectedYear: 2026,
       sortKey: 'score',
@@ -126,6 +141,7 @@ describe('resolveMobilityMapForPage', () => {
       page: 'explorer',
       lensKey: 'balanced',
       scenarioKey: 'oneParent',
+      householdProfile: DEFAULT_HOUSEHOLD_PROFILE,
       selectedCityKey: null,
       selectedYear: 2026,
       sortKey: 'score',
@@ -187,6 +203,15 @@ describe('resolveMobilityMapForPage', () => {
       page: 'map',
       lens: 'balanced',
       scenario: 'oneParent',
+      householdProfile: {
+        kidsCount: 1,
+        hasPets: false,
+        remoteWorkRatio: 0.35,
+        languageLevel: 'intermediate',
+        budgetSensitivity: 'balanced',
+        commuteTolerance: 'moderate',
+        riskAppetite: 'balanced',
+      },
       city: null,
       year: 2026,
       sort: 'score',
@@ -204,8 +229,89 @@ describe('resolveMobilityMapForPage', () => {
     });
   });
 
-  it('accepts normalized outlook and family-fit pages from share payload', () => {
-    expect(readDashboardShareState({ page: 'outlook' }).page).toBe('outlook');
-    expect(readDashboardShareState({ page: 'family-fit' }).page).toBe('family-fit');
+  it('normalizes unsupported pages to map', () => {
+    expect(readDashboardShareState({ page: 'outlook' }).page).toBe('map');
+    expect(readDashboardShareState({ page: 'family-fit' }).page).toBe('map');
+  });
+
+  it('derives household profile from legacy scenario-only payloads', () => {
+    const normalized = readDashboardShareState({ scenario: 'twoKids' });
+
+    expect(normalized.scenario).toBe('twoKids');
+    expect(normalized.householdProfile.kidsCount).toBe(2);
+    expect(normalized.householdProfile.remoteWorkRatio).toBe(0.6);
+  });
+});
+
+describe('scenario lab run orchestration helpers', () => {
+  it('adds a run at the top and keeps newest first', () => {
+    const existing = [
+      { id: 'run-a', name: 'A' },
+      { id: 'run-b', name: 'B' },
+    ];
+    const next = { id: 'run-c', name: 'C' };
+
+    expect(addScenarioLabRun(existing, next).map((run) => run.id)).toEqual(['run-c', 'run-a', 'run-b']);
+  });
+
+  it('loads/deletes run records by id', () => {
+    const runs = [
+      { id: 'run-a', name: 'A', selectedCityKey: 'vienna-at', selectedYear: 2028, shockType: 'none', shockSeverity: 1 },
+      { id: 'run-b', name: 'B', selectedCityKey: 'milan-it', selectedYear: 2029, shockType: 'heatwave', shockSeverity: 1.4 },
+    ];
+
+    expect(findScenarioLabRunById(runs, 'run-b')?.name).toBe('B');
+    expect(findScenarioLabRunById(runs, 'missing')).toBeNull();
+    expect(deleteScenarioLabRunById(runs, 'run-a').map((run) => run.id)).toEqual(['run-b']);
+  });
+
+  it('hydrates scenario state from a saved run snapshot', () => {
+    const hydrated = hydrateScenarioLabStateFromRun({
+      id: 'run-z',
+      selectedCityKey: 'vienna-at',
+      selectedYear: 2030,
+      shockType: 'railStrike',
+      shockSeverity: 1.3,
+    });
+
+    expect(hydrated).toEqual({
+      selectedCityKey: 'vienna-at',
+      selectedYear: 2030,
+      shockType: 'railStrike',
+      shockSeverity: 1.3,
+    });
+  });
+});
+
+describe('evidence center export helpers', () => {
+  it('builds exact evidenceCenter export block shape for selected city', () => {
+    const selectedCity = {
+      key: 'vienna-at',
+      verificationProfile: {
+        confidence: 0.81,
+        evidenceClass: 'sourceBacked',
+        sourceCount: 9,
+        sourceDiversityScore: 0.75,
+        freshnessDays: 42,
+        freshnessDecay: 0.92,
+      },
+    };
+
+    expect(buildEvidenceCenterExportBlock(selectedCity)).toEqual({
+      selectedCityKey: 'vienna-at',
+      confidence: 0.81,
+      evidenceClass: 'sourceBacked',
+      sourceCount: 9,
+      sourceDiversityScore: 0.75,
+      freshnessDays: 42,
+      freshnessDecay: 0.92,
+      riskTier: 'low',
+    });
+  });
+
+  it('maps risk tier thresholds for low, medium, and high evidence risk', () => {
+    expect(inferEvidenceRiskTier({ confidence: 0.8, freshnessDays: 120 })).toBe('low');
+    expect(inferEvidenceRiskTier({ confidence: 0.6, freshnessDays: 320 })).toBe('medium');
+    expect(inferEvidenceRiskTier({ confidence: 0.4, freshnessDays: 600 })).toBe('high');
   });
 });

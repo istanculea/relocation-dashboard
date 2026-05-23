@@ -27,7 +27,11 @@ const readJsonBody = async (request) => {
     return {};
   }
 
-  return JSON.parse(raw);
+  try {
+    return JSON.parse(raw);
+  } catch {
+    throw new Error('Malformed JSON request body');
+  }
 };
 
 const compileRoute = (method, pattern, handlerKey, mapParams = () => ({})) => ({
@@ -39,24 +43,28 @@ const compileRoute = (method, pattern, handlerKey, mapParams = () => ({})) => ({
 
 const routes = [
   compileRoute('POST', /^\/v1\/atlas\/layers\/query$/, 'queryAtlasLayers', ({ body }) => body),
-  compileRoute('GET', /^\/v1\/subjects\/([^/]+)\/([^/]+)\/snapshot$/, 'getSubjectSnapshot', ({ params, query }) => ({
-    subjectType: params[0],
-    subjectId: params[1],
+  compileRoute('GET', /^\/v1\/subjects\/([^/]+)\/([^/]+)\/snapshot$/, 'getSubjectSnapshot', ({ captures, query }) => ({
+    subjectType: captures[0],
+    subjectId: captures[1],
     horizon: query.horizon,
   })),
   compileRoute('POST', /^\/v1\/compare$/, 'compareSubjects', ({ body }) => body),
   compileRoute('POST', /^\/v1\/forecast\/query$/, 'queryForecast', ({ body }) => body),
   compileRoute('POST', /^\/v1\/rhythm\/query$/, 'queryRhythm', ({ body }) => body),
   compileRoute('POST', /^\/v1\/simulations\/runs$/, 'createSimulationRun', ({ body }) => body),
-  compileRoute('GET', /^\/v1\/simulations\/runs\/([^/]+)$/, 'getSimulationRun', ({ params }) => ({ runId: params[0] })),
-  compileRoute('GET', /^\/v1\/evidence\/observations\/([^/]+)$/, 'getObservationEvidence', ({ params }) => ({ observationId: params[0] })),
+  compileRoute('GET', /^\/v1\/simulations\/runs\/([^/]+)$/, 'getSimulationRun', ({ captures }) => ({ runId: captures[0] })),
+  compileRoute('GET', /^\/v1\/evidence\/observations\/([^/]+)$/, 'getObservationEvidence', ({ captures }) => ({ observationId: captures[0] })),
   compileRoute('POST', /^\/v1\/candidate-sets$/, 'createCandidateSet', ({ body }) => body),
-  compileRoute('GET', /^\/v1\/candidate-sets\/([^/]+)$/, 'getCandidateSet', ({ params }) => ({ candidateSetId: params[0] })),
-  compileRoute('PATCH', /^\/v1\/candidate-sets\/([^/]+)$/, 'patchCandidateSet', ({ params, body }) => ({
-    candidateSetId: params[0],
+  compileRoute('GET', /^\/v1\/candidate-sets\/([^/]+)$/, 'getCandidateSet', ({ captures }) => ({ candidateSetId: captures[0] })),
+  compileRoute('PATCH', /^\/v1\/candidate-sets\/([^/]+)$/, 'patchCandidateSet', ({ captures, body }) => ({
+    candidateSetId: captures[0],
     patch: body,
   })),
   compileRoute('POST', /^\/v1\/exports$/, 'createExport', ({ body }) => body),
+  compileRoute('POST', /^\/v1\/admin\/artifacts\/scenario$/, 'createScenarioArtifact', ({ body }) => body),
+  compileRoute('GET', /^\/v1\/admin\/artifacts\/scenario\/([^/]+)$/, 'getScenarioArtifact', ({ captures }) => ({ artifactId: captures[0] })),
+  compileRoute('POST', /^\/v1\/admin\/artifacts\/evidence$/, 'createEvidenceArtifact', ({ body }) => body),
+  compileRoute('GET', /^\/v1\/admin\/artifacts\/evidence\/([^/]+)$/, 'getEvidenceArtifact', ({ captures }) => ({ artifactId: captures[0] })),
 ];
 
 const createNotFoundBody = (pathname, method) => ({
@@ -98,14 +106,19 @@ export const dispatchApiRequest = async ({ handlers, method, pathname, query, bo
     };
   }
 
-  const params = route.pattern.exec(pathname)?.slice(1) ?? [];
-  const args = route.mapParams({ params, query, body });
+  const args = route.mapParams({
+    captures: route.pattern.exec(pathname)?.slice(1) ?? [],
+    query,
+    body,
+  });
   const payload = await handler(args);
 
   const acceptedStatuses = {
     createSimulationRun: 202,
     createExport: 202,
     createCandidateSet: 201,
+    createScenarioArtifact: 201,
+    createEvidenceArtifact: 201,
   };
 
   return {
@@ -114,10 +127,14 @@ export const dispatchApiRequest = async ({ handlers, method, pathname, query, bo
   };
 };
 
-export const createApiHttpServer = ({ handlers, allowCors = true, logger = console } = {}) => createServer(async (request, response) => {
+const createApiRequestListener = ({ handlers, allowCors, logger }) => async (request, response) => {
   try {
     if (allowCors) {
-      response.setHeader('access-control-allow-origin', '*');
+      const requestOrigin = request.headers.origin;
+      if (typeof requestOrigin === 'string' && requestOrigin.trim().length > 0) {
+        response.setHeader('access-control-allow-origin', requestOrigin);
+        response.setHeader('vary', 'origin');
+      }
       response.setHeader('access-control-allow-methods', 'GET,POST,PATCH,OPTIONS');
       response.setHeader('access-control-allow-headers', 'content-type,authorization');
     }
@@ -155,4 +172,23 @@ export const createApiHttpServer = ({ handlers, allowCors = true, logger = conso
       errors: [{ code: 'internal_error', message: error.message }],
     })}\n`);
   }
-});
+};
+
+export const createApiHttpServer = ({ handlers, allowCors = true, logger = console } = {}) => {
+  const requestListener = createApiRequestListener({ handlers, allowCors, logger });
+  const server = createServer();
+
+  server.on('request', requestListener);
+  server.on('error', (error) => {
+    logger.error?.(error);
+
+    if (server.listening) {
+      server.close();
+    }
+  });
+  server.on('close', () => {
+    logger.info?.('api_http_server_closed');
+  });
+
+  return server;
+};

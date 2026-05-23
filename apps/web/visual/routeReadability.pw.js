@@ -85,5 +85,12 @@ test.describe('route readability guards', () => {
       page.locator('.family-fit-compatibility__card small').first(),
       'Family fit compatibility detail',
     );
+
+    const narrativeVisibleText = page.locator('.family-fit-narrative__card').first();
+    await expect(narrativeVisibleText).toContainText('Current Interpretation');
+
+    const compatibilityFirst = page.locator('.family-fit-compatibility__card').first();
+    await expect(compatibilityFirst).toContainText(/Compatibility\s+[0-9]+\.[0-9]{2}/);
+    await expect(compatibilityFirst).toContainText(/Family\s+[0-9]+\.[0-9]{2}/);
   });
 });

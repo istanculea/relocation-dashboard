@@ -1,6 +1,7 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { bootstrapDomainSchema } from '../migrations/domainSchemaBootstrap.js';
+import { bootstrapArtifactLedger } from '../migrations/artifactLedgerBootstrap.js';
 
 const resolveOutDir = () => path.resolve(process.env.WORKER_OUTBOX_DIR ?? path.join('apps', 'worker', 'outbox'));
 
@@ -27,7 +28,16 @@ const jobHandlers = {
     rebuiltNarrativeContexts: 28,
     citationBundles: 28,
   }),
+  scenario_artifact_rollup: async () => ({
+    rolledUpRuns: 16,
+    generatedArtifacts: 16,
+  }),
+  evidence_artifact_rollup: async () => ({
+    mergedObservations: 42,
+    generatedArtifacts: 42,
+  }),
   domain_schema_bootstrap: async () => bootstrapDomainSchema(),
+  artifact_ledger_bootstrap: async () => bootstrapArtifactLedger(),
 };
 
 export const WORKER_JOBS = Object.keys(jobHandlers);

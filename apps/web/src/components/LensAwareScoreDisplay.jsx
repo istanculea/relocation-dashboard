@@ -49,7 +49,7 @@ const getLensDeltaState = (currentScore, balancedScore) => {
 /**
  * LensLabel — shows active lens with icon and description
  */
-export const LensLabel = ({ lensKey, compact = false }) => {
+const lensLabel = ({ lensKey, compact = false }) => {
   const preset = priorityPresets[lensKey] ?? priorityPresets.balanced;
   
   if (compact) {
@@ -73,7 +73,7 @@ export const LensLabel = ({ lensKey, compact = false }) => {
 /**
  * LensScoreImpact — shows how switching lenses changes a city's score
  */
-export const LensScoreImpact = ({
+const lensScoreImpact = ({
   city,
   currentLensKey,
   currentScore,
@@ -115,7 +115,7 @@ export const LensScoreImpact = ({
 /**
  * LensAwareScoreBreakdown — full score explanation with lens context
  */
-export const LensAwareScoreBreakdown = ({
+const lensAwareScoreBreakdown = ({
   city,
   strategicBalance,
   currentLensKey,
@@ -207,7 +207,7 @@ export const LensAwareScoreBreakdown = ({
 /**
  * LensSelector info — shows which lenses emphasize/de-emphasize a pillar
  */
-export const PillarLensRelevance = ({ pillarKey, allPresets = priorityPresets }) => {
+const pillarLensRelevance = ({ pillarKey, allPresets = priorityPresets }) => {
   const presetsEmphasizing = [];
   const presetsDeemphasizing = [];
   const presetsIgnoring = [];
@@ -254,4 +254,11 @@ export const PillarLensRelevance = ({ pillarKey, allPresets = priorityPresets })
       )}
     </div>
   );
+};
+
+export {
+  lensAwareScoreBreakdown as LensAwareScoreBreakdown,
+  lensLabel as LensLabel,
+  lensScoreImpact as LensScoreImpact,
+  pillarLensRelevance as PillarLensRelevance,
 };
